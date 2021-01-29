@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class Walkable : Unit
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector3 targetPoint;
+    public GameObject targetObject;
 
-    // Update is called once per frame
     void Update()
     {
+        if (targetPoint != Vector3.zero)
+        {
+            WalkTowards();
+        }
+    }
+
+    void WalkTowards()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, targetPoint, unitDetails.speed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
+        {
+            targetPoint = Vector3.zero;
+        }
         
     }
 }

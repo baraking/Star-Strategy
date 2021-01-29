@@ -57,8 +57,15 @@ public class mouseController : MonoBehaviour
         ///*
         if (Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
         {
-            print("clicked!");
-            Instantiate(signalObject, hit.point, new Quaternion());
+            //print("clicked!");
+            //Instantiate(signalObject, hit.point, new Quaternion());
+            foreach (Unit unit in selectedUnits)
+            {
+                if (unit.GetComponent<Walkable>())
+                {
+                    unit.GetComponent<Walkable>().targetPoint = hit.point;
+                }
+            }
         }
         //*/
     }

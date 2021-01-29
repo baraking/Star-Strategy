@@ -111,3 +111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSelected: 0
   unitDetails: {fileID: 0}
+  speed: 1
+  targetPoint: {x: 0, y: 0, z: 0}
+  targetObject: {fileID: 0}

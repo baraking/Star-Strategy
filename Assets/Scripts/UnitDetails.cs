@@ -11,5 +11,7 @@ public class UnitDetails : ScriptableObject
     public new string name;
     public int hp;
 
+    public float speed;
+
     public Sprite icon;
 }
