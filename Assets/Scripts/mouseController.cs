@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//get the coordinates (and unit) which I left click upon
 //be able to drag box for a multi selection
 //be able to select only units matching your player's number
-
+//give a world position a fast travel number
 public class mouseController : MonoBehaviour
 {
     public Player myPlayer;

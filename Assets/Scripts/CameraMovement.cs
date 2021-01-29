@@ -4,6 +4,7 @@ using UnityEngine;
 
 //zoom in and out with an xDeg angle correction
 //limit movement out of map borders
+//focus on selected unit/landmark
 public class CameraMovement : MonoBehaviour
 {
     float cameraMovementSpeed = 1;

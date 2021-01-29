@@ -9,7 +9,8 @@ using UnityEngine;
 public class UnitDetails : ScriptableObject
 {
     public new string name;
-    public int hp;
+    public int max_hp;
+    public int cur_hp;
 
     public float speed;
 
