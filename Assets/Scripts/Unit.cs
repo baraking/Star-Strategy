@@ -6,6 +6,9 @@ public class Unit : MonoBehaviour
 {
     Player myPlayer;
     int playerNumber;
+    public bool isSelected;
+
+    public UnitDetails unitDetails;
 
     void Start()
     {
