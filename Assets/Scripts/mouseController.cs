@@ -32,11 +32,14 @@ public class mouseController : MonoBehaviour
         {
             if (Input.GetKeyDown(PlayerButtons.LEFT_CLICK))
             {
-                foreach (Unit unit in selectedUnits)
+                if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
                 {
-                    unit.isSelected = false;
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        unit.isSelected = false;
+                    }
+                    selectedUnits.Clear();
                 }
-                selectedUnits.Clear();
 
                 Transform objectHit = hit.transform;
                 if (objectHit.GetComponent<Unit>())

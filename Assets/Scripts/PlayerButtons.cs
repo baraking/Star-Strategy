@@ -19,5 +19,7 @@ public class PlayerButtons
     #region mouseActions
     public static readonly KeyCode LEFT_CLICK = KeyCode.Mouse0;
     public static readonly KeyCode RIGHT_CLICK = KeyCode.Mouse1;
+
+    public static readonly KeyCode MULTI_SELECTION = KeyCode.LeftShift;
     #endregion
 }
