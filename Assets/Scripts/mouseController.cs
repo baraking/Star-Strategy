@@ -46,6 +46,14 @@ public class mouseController : MonoBehaviour
                     selectedUnits.Add(objectHit.GetComponent<Unit>());
                     objectHit.GetComponent<Unit>().isSelected = true;
                 }
+                else
+                {
+                    if (objectHit.parent.GetComponent<Unit>())
+                    {
+                        selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
+                        objectHit.parent.GetComponent<Unit>().isSelected = true;
+                    }
+                }
             }
 
             //Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
