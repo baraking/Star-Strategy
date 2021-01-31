@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//fix IsUnitSelectable(Unit other)
 public class Player : MonoBehaviour
 {
+    public int playerNumber;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +20,6 @@ public class Player : MonoBehaviour
 
     public bool IsUnitSelectable(Unit other)
     {
-        return true;
+        return (other.playerNumber==playerNumber);
     }
 }

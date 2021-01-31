@@ -11,8 +11,8 @@ using UnityEngine;
 //after taking damage set healthBar as not active after a time threshold
 public class Unit : MonoBehaviour
 {
-    Player myPlayer;
-    int playerNumber;
+    public Player myPlayer;
+    public int playerNumber;
     public bool isSelected;
 
     public UnitDetails unitDetails;

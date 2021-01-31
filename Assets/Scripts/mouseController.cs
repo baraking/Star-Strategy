@@ -44,17 +44,23 @@ public class mouseController : MonoBehaviour
                 Transform objectHit = hit.transform;
                 if (objectHit.GetComponent<Unit>())
                 {
-                    selectedUnits.Add(objectHit.GetComponent<Unit>());
-                    objectHit.GetComponent<Unit>().isSelected = true;
-                    objectHit.GetComponent<Unit>().setHealthBarActive(true);
+                    if (myPlayer.IsUnitSelectable(objectHit.GetComponent<Unit>()))
+                    {
+                        selectedUnits.Add(objectHit.GetComponent<Unit>());
+                        objectHit.GetComponent<Unit>().isSelected = true;
+                        objectHit.GetComponent<Unit>().setHealthBarActive(true);
+                    }
                 }
                 else
                 {
                     if (objectHit.parent.GetComponent<Unit>())
                     {
-                        selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
-                        objectHit.parent.GetComponent<Unit>().isSelected = true;
-                        objectHit.parent.GetComponent<Unit>().setHealthBarActive(true);
+                        if (myPlayer.IsUnitSelectable(objectHit.parent.GetComponent<Unit>()))
+                        {
+                            selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
+                            objectHit.parent.GetComponent<Unit>().isSelected = true;
+                            objectHit.parent.GetComponent<Unit>().setHealthBarActive(true);
+                        }
                     }
                 }
             }
