@@ -36,6 +36,7 @@ public class mouseController : MonoBehaviour
                     foreach (Unit unit in selectedUnits)
                     {
                         unit.isSelected = false;
+                        unit.setHealthBarActive(false);
                     }
                     selectedUnits.Clear();
                 }
@@ -45,6 +46,7 @@ public class mouseController : MonoBehaviour
                 {
                     selectedUnits.Add(objectHit.GetComponent<Unit>());
                     objectHit.GetComponent<Unit>().isSelected = true;
+                    objectHit.GetComponent<Unit>().setHealthBarActive(true);
                 }
                 else
                 {
@@ -52,6 +54,7 @@ public class mouseController : MonoBehaviour
                     {
                         selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
                         objectHit.parent.GetComponent<Unit>().isSelected = true;
+                        objectHit.parent.GetComponent<Unit>().setHealthBarActive(true);
                     }
                 }
             }

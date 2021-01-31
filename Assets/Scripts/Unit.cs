@@ -8,6 +8,7 @@ using UnityEngine;
 //change take damage, die etc to be events
 //set unitUI height as a paramter on each unit.
 //should set the active camera on script
+//after taking damage set healthBar as not active after a time threshold
 public class Unit : MonoBehaviour
 {
     Player myPlayer;
@@ -22,6 +23,7 @@ public class Unit : MonoBehaviour
     {
         //get playerNumber
         healthBar.SetMaxHealth(unitDetails.max_hp);
+        setHealthBarActive(false);
     }
 
     // Update is called once per frame
@@ -30,11 +32,17 @@ public class Unit : MonoBehaviour
         
     }
 
+    public void setHealthBarActive(bool setTo)
+    {
+        healthBar.gameObject.SetActive(setTo);
+    }
+
     void TakeDamage(int damage)
     {
         if (damage >= 0)
         {
             unitDetails.cur_hp -= damage;
+            healthBar.gameObject.SetActive(true);
             healthBar.setHealth(unitDetails.cur_hp);
         }
         if (unitDetails.cur_hp <= 0)
