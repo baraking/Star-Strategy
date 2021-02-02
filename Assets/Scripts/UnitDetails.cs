@@ -10,7 +10,6 @@ public class UnitDetails : ScriptableObject
 {
     public new string name;
     public int max_hp;
-    public int cur_hp;
 
     public float speed;
 

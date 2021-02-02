@@ -2,28 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//show hp
 //show unit datasheet,icon etc
 //be able to group units under a number
 //change take damage, die etc to be events
 //set unitUI height as a paramter on each unit.
 //should set the active camera on script
 //after taking damage set healthBar as not active after a time threshold
+//taking damage should cause particle effect of damage
+//add weapons automatically
 public class Unit : MonoBehaviour
 {
     public Player myPlayer;
     public int playerNumber;
     public bool isSelected;
 
+    public int curHP;
+
     public UnitDetails unitDetails;
+    public List<Weapon> unitWeapons = new List<Weapon>();
 
     public HealthBar healthBar;
 
+    //get my playerNumber
     void Start()
     {
-        //get playerNumber
         healthBar.SetMaxHealth(unitDetails.max_hp);
-        setHealthBarActive(false);
+        curHP = unitDetails.max_hp;
+        SetHealthBarActive(false);
     }
 
     // Update is called once per frame
@@ -32,22 +37,34 @@ public class Unit : MonoBehaviour
         
     }
 
-    public void setHealthBarActive(bool setTo)
+    public void SetHealthBarActive(bool setTo)
     {
         healthBar.gameObject.SetActive(setTo);
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if (damage >= 0)
         {
-            unitDetails.cur_hp -= damage;
-            healthBar.gameObject.SetActive(true);
-            healthBar.setHealth(unitDetails.cur_hp);
+            curHP -= damage;
+            SetHealthBarActive(true);
+            healthBar.setHealth(curHP);
         }
-        if (unitDetails.cur_hp <= 0)
+        if (curHP <= 0)
         {
             Die();
+        }
+    }
+
+    public void Fire(Unit targetUnit)
+    {
+        foreach (Weapon weapon in unitWeapons)
+        {
+            if (weapon.IsEligableToFire(targetUnit))
+            {
+                print(unitDetails.name + " is Firing!");
+                weapon.Fire(targetUnit);
+            }
         }
     }
 

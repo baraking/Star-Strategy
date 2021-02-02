@@ -36,7 +36,7 @@ public class mouseController : MonoBehaviour
                     foreach (Unit unit in selectedUnits)
                     {
                         unit.isSelected = false;
-                        unit.setHealthBarActive(false);
+                        unit.SetHealthBarActive(false);
                     }
                     selectedUnits.Clear();
                 }
@@ -48,7 +48,7 @@ public class mouseController : MonoBehaviour
                     {
                         selectedUnits.Add(objectHit.GetComponent<Unit>());
                         objectHit.GetComponent<Unit>().isSelected = true;
-                        objectHit.GetComponent<Unit>().setHealthBarActive(true);
+                        objectHit.GetComponent<Unit>().SetHealthBarActive(true);
                     }
                 }
                 else
@@ -59,7 +59,7 @@ public class mouseController : MonoBehaviour
                         {
                             selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
                             objectHit.parent.GetComponent<Unit>().isSelected = true;
-                            objectHit.parent.GetComponent<Unit>().setHealthBarActive(true);
+                            objectHit.parent.GetComponent<Unit>().SetHealthBarActive(true);
                         }
                     }
                 }
@@ -73,15 +73,43 @@ public class mouseController : MonoBehaviour
         ///*
         if (Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
         {
-            //print("clicked!");
-            //Instantiate(signalObject, hit.point, new Quaternion());
-            foreach (Unit unit in selectedUnits)
+            Transform objectHit = hit.transform;
+            if (objectHit.GetComponent<Unit>()&&selectedUnits.Count>0)
             {
-                if (unit.GetComponent<Walkable>())
+                if (objectHit.GetComponent<Unit>().playerNumber != myPlayer.playerNumber)
                 {
-                    unit.GetComponent<Walkable>().targetPoint = hit.point;
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        unit.Fire(objectHit.GetComponent<Unit>());
+                    }
                 }
             }
+            else if (objectHit.parent.GetComponent<Unit>() && selectedUnits.Count > 0)
+            {
+                if (objectHit.parent.GetComponent<Unit>().playerNumber != myPlayer.playerNumber)
+                {
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        unit.Fire(objectHit.parent.GetComponent<Unit>());
+                    }
+                }
+            }
+
+            //print("clicked!");
+            //Instantiate(signalObject, hit.point, new Quaternion());
+
+            //if target point is walkable
+            else
+            {
+                foreach (Unit unit in selectedUnits)
+                {
+                    if (unit.GetComponent<Walkable>())
+                    {
+                        unit.GetComponent<Walkable>().targetPoint = hit.point;
+                    }
+                }
+            }
+
         }
         //*/
     }
