@@ -8,11 +8,15 @@ using UnityEngine;
 //add shouldTurnToFire option 
 //finish the function Fire(Vector3 targetPosition)
 //fix targetUnit.transform.position into actuall targeting a point on the enemy
+//fix the update function!!!!!
 public class Weapon : MonoBehaviour
 {
     public WeaponDetails weaponDetails;
     public bool isInCooldown;
     public Vector3 rangeCalculationPoint;
+    public Unit weaponParent;
+
+    public Unit targetUnit;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +28,10 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (targetUnit != null)
+        {
+            Fire(targetUnit);
+        }
     }
 
     public void Fire(Vector3 targetPosition)
@@ -37,15 +44,28 @@ public class Weapon : MonoBehaviour
 
     public void Fire(Unit targetUnit)
     {
-        print(Vector3.Distance(rangeCalculationPoint, targetUnit.transform.position));
-        print(weaponDetails.range);
+        this.targetUnit = targetUnit;
         //if (!isInCooldown && Vector3.Distance(rangeCalculationPoint, targetUnit.transform.position) <= weaponDetails.range)
-        if (!isInCooldown && Vector3.Distance(transform.position, targetUnit.transform.position) <= weaponDetails.range)
+        float distanceToTarget = Vector3.Distance(transform.position, targetUnit.transform.position);
+        if (distanceToTarget <= weaponDetails.range)
         {
-            print(weaponDetails.name + "is Firing!");
-            targetUnit.TakeDamage(weaponDetails.damage);
-            isInCooldown = true;
-            StartCoroutine(AfterFire());
+            if (!isInCooldown)
+            {
+                targetUnit.TakeDamage(weaponDetails.damage);
+                isInCooldown = true;
+                StartCoroutine(AfterFire());
+            }
+        }
+        else
+        {
+            if (weaponParent.GetComponent<Walkable>())
+            {
+                if (weaponParent.GetComponent<Walkable>().targetPoint == Vector3.zero)
+                {
+                    print("start moving!");
+                    weaponParent.GetComponent<Walkable>().targetPoint = transform.position - (targetUnit.transform.position.normalized * distanceToTarget);
+                }
+            }
         }
     }
 

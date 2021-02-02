@@ -10,6 +10,7 @@ using UnityEngine;
 //after taking damage set healthBar as not active after a time threshold
 //taking damage should cause particle effect of damage
 //add weapons automatically
+//have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
 public class Unit : MonoBehaviour
 {
     public Player myPlayer;
@@ -22,6 +23,7 @@ public class Unit : MonoBehaviour
     public List<Weapon> unitWeapons = new List<Weapon>();
 
     public HealthBar healthBar;
+    public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
 
     //get my playerNumber
     void Start()
@@ -42,12 +44,24 @@ public class Unit : MonoBehaviour
         healthBar.gameObject.SetActive(setTo);
     }
 
+    public void DisplayeHealthForLimitedTime()
+    {
+        StartCoroutine(SetHealthBarActiveForLimitedTime());
+    }
+
+    public IEnumerator SetHealthBarActiveForLimitedTime()
+    {
+        SetHealthBarActive(true);
+        yield return new WaitForSeconds(HEALTH_BAR_LIMITED_TIME_DURATION);
+        SetHealthBarActive(false);
+    }
+
     public void TakeDamage(int damage)
     {
         if (damage >= 0)
         {
             curHP -= damage;
-            SetHealthBarActive(true);
+            DisplayeHealthForLimitedTime();
             healthBar.setHealth(curHP);
         }
         if (curHP <= 0)
@@ -68,8 +82,23 @@ public class Unit : MonoBehaviour
         }
     }
 
+    public float GetShortestRangeOfWeapons()
+    {
+        float shortestRange = float.MaxValue;
+        foreach (Weapon weapon in unitWeapons)
+        {
+            //if weapon is eligable for firing on target
+            if (weapon.weaponDetails.range< shortestRange)
+            {
+                shortestRange = weapon.weaponDetails.range;
+            }
+        }
+        return shortestRange;
+    }
+
     void Die()
     {
         print("I am dead :(");
+        Destroy(gameObject);
     }
 }
