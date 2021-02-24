@@ -14,12 +14,11 @@ public class mouseController : MonoBehaviour
 
     public GameObject signalObject;
 
-
     public List<Unit> selectedUnits = new List<Unit>();
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -36,7 +35,7 @@ public class mouseController : MonoBehaviour
                     foreach (Unit unit in selectedUnits)
                     {
                         unit.isSelected = false;
-                        unit.setHealthBarActive(false);
+                        unit.SetHealthBarActive(false);
                     }
                     selectedUnits.Clear();
                 }
@@ -44,17 +43,23 @@ public class mouseController : MonoBehaviour
                 Transform objectHit = hit.transform;
                 if (objectHit.GetComponent<Unit>())
                 {
-                    selectedUnits.Add(objectHit.GetComponent<Unit>());
-                    objectHit.GetComponent<Unit>().isSelected = true;
-                    objectHit.GetComponent<Unit>().setHealthBarActive(true);
+                    if (myPlayer.IsUnitSelectable(objectHit.GetComponent<Unit>()))
+                    {
+                        selectedUnits.Add(objectHit.GetComponent<Unit>());
+                        objectHit.GetComponent<Unit>().isSelected = true;
+                        objectHit.GetComponent<Unit>().SetHealthBarActive(true);
+                    }
                 }
                 else
                 {
                     if (objectHit.parent.GetComponent<Unit>())
                     {
-                        selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
-                        objectHit.parent.GetComponent<Unit>().isSelected = true;
-                        objectHit.parent.GetComponent<Unit>().setHealthBarActive(true);
+                        if (myPlayer.IsUnitSelectable(objectHit.parent.GetComponent<Unit>()))
+                        {
+                            selectedUnits.Add(objectHit.parent.GetComponent<Unit>());
+                            objectHit.parent.GetComponent<Unit>().isSelected = true;
+                            objectHit.parent.GetComponent<Unit>().SetHealthBarActive(true);
+                        }
                     }
                 }
             }
@@ -67,13 +72,38 @@ public class mouseController : MonoBehaviour
         ///*
         if (Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
         {
+            Transform objectHit = hit.transform;
+            if (objectHit.GetComponent<Unit>() && selectedUnits.Count>0)
+            {
+                if (objectHit.GetComponent<Unit>().myPlayerNumber != myPlayer.playerNumber)
+                {
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        unit.Fire(objectHit.GetComponent<Unit>());
+                    }
+                }
+            }
+            else if (objectHit.parent.GetComponent<Unit>() && selectedUnits.Count > 0)
+            {
+                if (objectHit.parent.GetComponent<Unit>().myPlayerNumber != myPlayer.playerNumber)
+                {
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        unit.Fire(objectHit.parent.GetComponent<Unit>());
+                    }
+                }
+            }
+
             //print("clicked!");
             //Instantiate(signalObject, hit.point, new Quaternion());
+
+            //if target point is walkable
             foreach (Unit unit in selectedUnits)
             {
                 if (unit.GetComponent<Walkable>())
                 {
-                    unit.GetComponent<Walkable>().targetPoint = hit.point;
+                    unit.GetComponent<Walkable>().hasTarget = true;
+                    unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
                 }
             }
         }

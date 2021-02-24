@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//fix IsUnitSelectable(Unit other)
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int playerNumber;
+    public List<Unit> playerUnits;
 
-    // Update is called once per frame
-    void Update()
+    public void Awake()
     {
-        
+        playerUnits = new List<Unit>();
     }
 
     public bool IsUnitSelectable(Unit other)
     {
-        return true;
+        return (other.myPlayerNumber==playerNumber);
     }
 }

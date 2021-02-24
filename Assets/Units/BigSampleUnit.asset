@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
-  m_Name: SampleUnitData
+  m_Name: BigSampleUnit
   m_EditorClassIdentifier: 
-  name: SampleUnitData
-  max_hp: 100
-  speed: 1
+  name: Big Sample Unit
+  max_hp: 180
+  speed: 0.7
   icon: {fileID: 0}

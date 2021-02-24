@@ -58,6 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69f7cc0e6b24abf4a98080941d2d8044, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myPlayer: {fileID: 0}
+  playerNumber: 1
   isSelected: 0
   unitDetails: {fileID: 11400000, guid: 2e70cb7d710577d48956e09572710f54, type: 2}
   healthBar: {fileID: 5506259955588792424}

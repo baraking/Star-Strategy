@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Walkable : Unit
 {
+    public bool hasTarget = false;
     public Vector3 targetPoint;
     public GameObject targetObject;
 
     void Update()
     {
-        if (targetPoint != Vector3.zero)
+        if (hasTarget)
         {
             WalkTowards();
         }
@@ -20,7 +21,7 @@ public class Walkable : Unit
         transform.position = Vector3.MoveTowards(transform.position, targetPoint, unitDetails.speed * Time.deltaTime);
         if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
         {
-            targetPoint = Vector3.zero;
+            hasTarget = false;
         }
         
     }
