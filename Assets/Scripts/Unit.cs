@@ -34,10 +34,10 @@ public class Unit : MonoBehaviour
 
         myPlayer = GameManager.Instance.playersHolder.getPlayer(myPlayerNumber);
 
-        if (!myPlayer.playerUnits.Contains(this))
+        /*if (!myPlayer.playerUnits.Contains(this))
         {
             myPlayer.playerUnits.Add(this);
-        }
+        }*/
     }
 
     // Update is called once per frame

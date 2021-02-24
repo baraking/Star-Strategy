@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
-  m_Name: SampleUnitData
+  m_Script: {fileID: 11500000, guid: 5f835c833d280a24c8996e3258ac54d0, type: 3}
+  m_Name: Big Sample Weapon
   m_EditorClassIdentifier: 
-  name: SampleUnitData
-  max_hp: 100
-  speed: 1
-  icon: {fileID: 0}
+  name: Sample Weapon Data
+  range: 1.5
+  damage: 3
+  fireRate: 0.7
+  shouldTurnToFire: 0
