@@ -11,6 +11,7 @@ using UnityEngine;
 //taking damage should cause particle effect of damage
 //add weapons automatically
 //have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
+//fix auto player pickup
 public class Unit : MonoBehaviour
 {
     public Player myPlayer;
