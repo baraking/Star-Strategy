@@ -9,6 +9,7 @@ using UnityEngine;
 //finish the function Fire(Vector3 targetPosition)
 //fix targetUnit.transform.position into actuall targeting a point on the enemy
 //fix the update function!!!!!
+//fix print("start moving!"); section, the vector could be opposite
 public class Weapon : MonoBehaviour
 {
     public WeaponDetails weaponDetails;

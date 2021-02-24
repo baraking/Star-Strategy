@@ -14,7 +14,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public Player myPlayer;
-    public int playerNumber;
+    public int myPlayerNumber;
     public bool isSelected;
 
     public int curHP;
@@ -31,6 +31,13 @@ public class Unit : MonoBehaviour
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
         SetHealthBarActive(false);
+
+        myPlayer = GameManager.Instance.playersHolder.getPlayer(myPlayerNumber);
+
+        if (!myPlayer.playerUnits.Contains(this))
+        {
+            myPlayer.playerUnits.Add(this);
+        }
     }
 
     // Update is called once per frame

@@ -14,12 +14,11 @@ public class mouseController : MonoBehaviour
 
     public GameObject signalObject;
 
-
     public List<Unit> selectedUnits = new List<Unit>();
 
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -74,9 +73,9 @@ public class mouseController : MonoBehaviour
         if (Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
         {
             Transform objectHit = hit.transform;
-            if (objectHit.GetComponent<Unit>()&&selectedUnits.Count>0)
+            if (objectHit.GetComponent<Unit>() && selectedUnits.Count>0)
             {
-                if (objectHit.GetComponent<Unit>().playerNumber != myPlayer.playerNumber)
+                if (objectHit.GetComponent<Unit>().myPlayerNumber != myPlayer.playerNumber)
                 {
                     foreach (Unit unit in selectedUnits)
                     {
@@ -86,7 +85,7 @@ public class mouseController : MonoBehaviour
             }
             else if (objectHit.parent.GetComponent<Unit>() && selectedUnits.Count > 0)
             {
-                if (objectHit.parent.GetComponent<Unit>().playerNumber != myPlayer.playerNumber)
+                if (objectHit.parent.GetComponent<Unit>().myPlayerNumber != myPlayer.playerNumber)
                 {
                     foreach (Unit unit in selectedUnits)
                     {
@@ -99,17 +98,14 @@ public class mouseController : MonoBehaviour
             //Instantiate(signalObject, hit.point, new Quaternion());
 
             //if target point is walkable
-            else
+            foreach (Unit unit in selectedUnits)
             {
-                foreach (Unit unit in selectedUnits)
+                if (unit.GetComponent<Walkable>())
                 {
-                    if (unit.GetComponent<Walkable>())
-                    {
-                        unit.GetComponent<Walkable>().targetPoint = hit.point;
-                    }
+                    unit.GetComponent<Walkable>().hasTarget = true;
+                    unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
                 }
             }
-
         }
         //*/
     }

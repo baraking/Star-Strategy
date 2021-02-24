@@ -6,20 +6,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int playerNumber;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<Unit> playerUnits;
 
-    // Update is called once per frame
-    void Update()
+    public void Awake()
     {
-        
+        playerUnits = new List<Unit>();
     }
 
     public bool IsUnitSelectable(Unit other)
     {
-        return (other.playerNumber==playerNumber);
+        return (other.myPlayerNumber==playerNumber);
     }
 }
