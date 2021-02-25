@@ -24,6 +24,7 @@ public class Weapon : MonoBehaviour
     {
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
+        weaponParent = gameObject.GetComponentInParent<Unit>();
     }
 
     // Update is called once per frame
