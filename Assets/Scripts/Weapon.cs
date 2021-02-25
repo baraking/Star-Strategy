@@ -10,6 +10,8 @@ using UnityEngine;
 //fix targetUnit.transform.position into actuall targeting a point on the enemy
 //fix the update function!!!!!
 //fix print("start moving!"); section, the vector could be opposite
+//should replace 1f with weapon rotation parameter
+//update rotate weapon should be more efficent
 public class Weapon : MonoBehaviour
 {
     public WeaponDetails weaponDetails;
@@ -33,6 +35,15 @@ public class Weapon : MonoBehaviour
         if (targetUnit != null)
         {
             Fire(targetUnit);
+            Vector3 targetDirection = targetUnit.transform.position - transform.position;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+        }
+        else
+        {
+            Vector3 targetDirection = gameObject.GetComponentInParent<Unit>().transform.forward;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
         }
     }
 
