@@ -64,6 +64,7 @@ public class Weapon : MonoBehaviour
         {
             if (!isInCooldown)
             {
+                print(weaponDetails.name + " is Firing!");
                 targetUnit.TakeDamage(weaponDetails.damage);
                 isInCooldown = true;
                 StartCoroutine(AfterFire());

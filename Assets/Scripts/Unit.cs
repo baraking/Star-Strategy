@@ -84,7 +84,7 @@ public class Unit : MonoBehaviour
         {
             if (weapon.IsEligableToFire(targetUnit))
             {
-                print(unitDetails.name + " is Firing!");
+                print(unitDetails.name + " is ordered to Fire!");
                 weapon.Fire(targetUnit);
             }
         }
