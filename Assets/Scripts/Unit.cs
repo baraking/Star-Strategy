@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour
     //get my playerNumber
     void Start()
     {
+        healthBar = gameObject.GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
         SetHealthBarActive(false);
@@ -39,6 +40,10 @@ public class Unit : MonoBehaviour
         {
             myPlayer.playerUnits.Add(this);
         }*/
+
+        addWeapons();
+
+        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors[myPlayerNumber]);
     }
 
     // Update is called once per frame
@@ -84,7 +89,7 @@ public class Unit : MonoBehaviour
         {
             if (weapon.IsEligableToFire(targetUnit))
             {
-                print(unitDetails.name + " is Firing!");
+                print(unitDetails.name + " is ordered to Fire!");
                 weapon.Fire(targetUnit);
             }
         }
@@ -102,6 +107,18 @@ public class Unit : MonoBehaviour
             }
         }
         return shortestRange;
+    }
+
+    void addWeapons()
+    {
+        Weapon[] tmpWeapons = gameObject.GetComponentsInChildren<Weapon>();
+        for(int i = 0; i < tmpWeapons.Length; i++)
+        {
+            if (!unitWeapons.Contains(tmpWeapons[i]))
+            {
+                unitWeapons.Add(tmpWeapons[i]);
+            }
+        }
     }
 
     void Die()

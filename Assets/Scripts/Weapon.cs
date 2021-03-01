@@ -10,6 +10,9 @@ using UnityEngine;
 //fix targetUnit.transform.position into actuall targeting a point on the enemy
 //fix the update function!!!!!
 //fix print("start moving!"); section, the vector could be opposite
+//should replace 1f with weapon rotation parameter
+//update rotate weapon should be more efficent
+//should fire only after weapon turned on target
 public class Weapon : MonoBehaviour
 {
     public WeaponDetails weaponDetails;
@@ -24,6 +27,7 @@ public class Weapon : MonoBehaviour
     {
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
+        weaponParent = gameObject.GetComponentInParent<Unit>();
     }
 
     // Update is called once per frame
@@ -32,6 +36,15 @@ public class Weapon : MonoBehaviour
         if (targetUnit != null)
         {
             Fire(targetUnit);
+            Vector3 targetDirection = targetUnit.transform.position - transform.position;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+        }
+        else
+        {
+            Vector3 targetDirection = gameObject.GetComponentInParent<Unit>().transform.forward;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
         }
     }
 
@@ -52,6 +65,7 @@ public class Weapon : MonoBehaviour
         {
             if (!isInCooldown)
             {
+                print(weaponDetails.name + " is Firing!");
                 targetUnit.TakeDamage(weaponDetails.damage);
                 isInCooldown = true;
                 StartCoroutine(AfterFire());
