@@ -42,6 +42,8 @@ public class Unit : MonoBehaviour
         }*/
 
         addWeapons();
+
+        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors[myPlayerNumber]);
     }
 
     // Update is called once per frame
