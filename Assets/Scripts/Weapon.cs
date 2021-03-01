@@ -12,6 +12,7 @@ using UnityEngine;
 //fix print("start moving!"); section, the vector could be opposite
 //should replace 1f with weapon rotation parameter
 //update rotate weapon should be more efficent
+//should fire only after weapon turned on target
 public class Weapon : MonoBehaviour
 {
     public WeaponDetails weaponDetails;

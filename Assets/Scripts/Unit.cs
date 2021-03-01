@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour
     //get my playerNumber
     void Start()
     {
+        healthBar = gameObject.GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
         SetHealthBarActive(false);
