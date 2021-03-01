@@ -40,6 +40,8 @@ public class Unit : MonoBehaviour
         {
             myPlayer.playerUnits.Add(this);
         }*/
+
+        addWeapons();
     }
 
     // Update is called once per frame
@@ -103,6 +105,18 @@ public class Unit : MonoBehaviour
             }
         }
         return shortestRange;
+    }
+
+    void addWeapons()
+    {
+        Weapon[] tmpWeapons = gameObject.GetComponentsInChildren<Weapon>();
+        for(int i = 0; i < tmpWeapons.Length; i++)
+        {
+            if (!unitWeapons.Contains(tmpWeapons[i]))
+            {
+                unitWeapons.Add(tmpWeapons[i]);
+            }
+        }
     }
 
     void Die()

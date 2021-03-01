@@ -18,7 +18,8 @@ public class mouseController : MonoBehaviour
 
     void Start()
     {
-
+        myPlayer = gameObject.GetComponent<Player>();
+        playerCamera = myPlayer.playerCamera;
     }
 
     void Update()
