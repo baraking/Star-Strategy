@@ -41,7 +41,7 @@ public class Unit : MonoBehaviour
             myPlayer.playerUnits.Add(this);
         }*/
 
-        addWeapons();
+        AddWeapons();
 
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors[myPlayerNumber]);
     }
@@ -109,7 +109,7 @@ public class Unit : MonoBehaviour
         return shortestRange;
     }
 
-    void addWeapons()
+    void AddWeapons()
     {
         Weapon[] tmpWeapons = gameObject.GetComponentsInChildren<Weapon>();
         for(int i = 0; i < tmpWeapons.Length; i++)
