@@ -64,23 +64,13 @@ public class mouseController : MonoBehaviour
             if (Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
             {
                 Transform objectHit = hit.transform;
-                if (objectHit.GetComponent<Unit>() && selectedUnits.Count > 0)
+                if (objectHit.GetComponentInParent<Unit>() && selectedUnits.Count > 0)
                 {
-                    if (objectHit.GetComponent<Unit>().myPlayerNumber != myPlayer.playerNumber)
+                    if (objectHit.GetComponentInParent<Unit>().myPlayerNumber != myPlayer.playerNumber)
                     {
                         foreach (Unit unit in selectedUnits)
                         {
-                            unit.Fire(objectHit.GetComponent<Unit>());
-                        }
-                    }
-                }
-                else if (objectHit.parent.GetComponent<Unit>() && selectedUnits.Count > 0)
-                {
-                    if (objectHit.parent.GetComponent<Unit>().myPlayerNumber != myPlayer.playerNumber)
-                    {
-                        foreach (Unit unit in selectedUnits)
-                        {
-                            unit.Fire(objectHit.parent.GetComponent<Unit>());
+                            unit.Fire(objectHit.GetComponentInParent<Unit>());
                         }
                     }
                 }
