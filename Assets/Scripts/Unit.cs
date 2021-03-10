@@ -33,7 +33,10 @@ public class Unit : MonoBehaviour
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
         SetHealthBarActive(false);
+    }
 
+    public void OnMyPlayerJoined()
+    {
         myPlayer = GameManager.Instance.playersHolder.getPlayer(myPlayerNumber);
 
         /*if (!myPlayer.playerUnits.Contains(this))
@@ -44,6 +47,8 @@ public class Unit : MonoBehaviour
         AddWeapons();
 
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors[myPlayerNumber]);
+
+        Debug.Log(gameObject.name + " is ready!");
     }
 
     // Update is called once per frame

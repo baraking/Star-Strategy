@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//should work for the active camera regardless of the player.
-//assign camera automaticallyl
 public class Billboard : MonoBehaviour {
 
     public Transform playerCamera;
@@ -22,8 +20,7 @@ public class Billboard : MonoBehaviour {
 
     public void setPlayerCamera()
     {
-        playerCamera = GameManager.Instance.playersHolder.allPlayers[0].playerCamera.transform;
-        //playerCamera = gameObject.GetComponentInParent<Unit>().myPlayer.playerCamera.transform;
+        playerCamera = GameManager.Instance.playersHolder.allPlayers[gameObject.GetComponentInParent<Unit>().myPlayer.playerNumber].playerCamera.transform;
     }
 
     void LateUpdate()

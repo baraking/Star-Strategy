@@ -20,14 +20,15 @@ public class Player : MonoBehaviourPunCallbacks
     {
         photonView = GetComponent<PhotonView>();
         playerUnits = new List<Unit>();
-        cameraHolder = gameObject.transform.FindChild("CameraHolder").gameObject;
+        GameManager.Instance.playersHolder.allPlayers.Add(this);
+        //cameraHolder = gameObject.transform.FindChild("CameraHolder").gameObject;
         if (photonView.IsMine)
         {
-            for (int i = 0; i < cameraHolder.transform.childCount; i++)
+            /*for (int i = 0; i < cameraHolder.transform.childCount; i++)
             {
                 cameraHolder.transform.GetChild(i).gameObject.SetActive(true);
             }
-            playerCamera = gameObject.GetComponentInChildren<Camera>();
+            playerCamera = gameObject.GetComponentInChildren<Camera>();*/
             playerCamera.gameObject.SetActive(true);
         }
         
