@@ -18,6 +18,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
+        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "eu";
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -30,6 +31,15 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinLobby(TypedLobby.Default);
         Debug.Log("Connected");
+
+        Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
+        Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
+    }
+
+    private void Update()
+    {
+        Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
+        Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
     }
 
     public void SetUsetName()
@@ -46,12 +56,15 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, TypedLobby.Default);
+        //PhotonNetwork.JoinOrCreateRoom(JoinGameInput.text, roomOptions, TypedLobby.Default);
+        PhotonNetwork.JoinRoom(JoinGameInput.text, null);
     }
 
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("SampleScene");
+        Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
     
 }

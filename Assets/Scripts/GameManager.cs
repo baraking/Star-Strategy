@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
 
     public GameObject PlayerPrefab;
     public GameObject SceneCamera;
+    public GameObject JoinCanvas;
 
     public GameObject Units;
     public GameObject newPlayer;
@@ -35,20 +36,29 @@ public class GameManager : MonoBehaviour
 
         SceneCamera.SetActive(false);
 
-        SpawnPlayer();
+        //SpawnPlayer();
+        JoinCanvas.SetActive(true);
+    }
+
+    private void Update()
+    {
+        Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
+        Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
+        Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
+        Debug.Log("My Player'r Number: " + PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
     public void SpawnPlayer()
     {
         newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity, 0);
 
-        newPlayer.name = "Player" + "_" + (curNumberOfPlayers + 1);
-        newPlayer.GetComponent<Player>().playerNumber = curNumberOfPlayers;
+        newPlayer.name = "Player" + "_" + (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        newPlayer.GetComponent<Player>().playerNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
         newPlayer.transform.parent = playersHolder.transform;
 
         for (int i = 0; i < Units.transform.childCount; i++)
         {
-            if (Units.transform.GetChild(i).GetComponent<Unit>().myPlayerNumber == curNumberOfPlayers)
+            if (Units.transform.GetChild(i).GetComponent<Unit>().myPlayerNumber == PhotonNetwork.LocalPlayer.ActorNumber - 1)
             {
                 print(newPlayer.GetComponent<Player>().playerUnits);
                 newPlayer.GetComponent<Player>().playerUnits.Add(Units.transform.GetChild(i).GetComponent<Unit>());
@@ -60,5 +70,7 @@ public class GameManager : MonoBehaviour
 
         curNumberOfPlayers++;
         Debug.Log("The number of players is: " + curNumberOfPlayers);
+
+        JoinCanvas.SetActive(false);
     }
 }
