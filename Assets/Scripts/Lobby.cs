@@ -16,8 +16,10 @@ public class Lobby : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField CreateGameInput;
     [SerializeField] private TMP_InputField JoinGameInput;
 
+
     private void Awake()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "eu";
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -49,7 +51,8 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void CreateGame()
     {
-        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() { MaxPlayers = 4 }, null);
+        //PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.CreateRoom(CreateGameInput.text, new RoomOptions() { MaxPlayers = 4 }, TypedLobby.Default);
     }
 
     public void JoinGame()

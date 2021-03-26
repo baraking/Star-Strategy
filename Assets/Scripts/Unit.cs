@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class Unit : MonoBehaviour
     public int myPlayerNumber;
     public bool isSelected;
 
+    [SerializeField]
     public int curHP;
 
     public UnitDetails unitDetails;
@@ -26,13 +28,21 @@ public class Unit : MonoBehaviour
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
 
+    public PhotonView photonView;
+
     //get my playerNumber
+    [PunRPC]
     void Start()
     {
         healthBar = gameObject.GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
         SetHealthBarActive(false);
+
+        if (gameObject.GetComponent<PhotonTransformView>() == null)
+        {
+            gameObject.AddComponent<PhotonTransformView>();
+        }
     }
 
     public void OnMyPlayerJoined()
@@ -80,7 +90,7 @@ public class Unit : MonoBehaviour
         {
             curHP -= damage;
             DisplayeHealthForLimitedTime();
-            healthBar.setHealth(curHP);
+         healthBar.setHealth(curHP);
         }
         if (curHP <= 0)
         {
@@ -88,6 +98,7 @@ public class Unit : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void Fire(Unit targetUnit)
     {
         foreach (Weapon weapon in unitWeapons)

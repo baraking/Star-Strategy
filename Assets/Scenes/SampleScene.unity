@@ -196,6 +196,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Basic_Bunker (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8012562916404245974, guid: db769116f5a4ae04e9295b01e792e74c,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9083515362151451550, guid: db769116f5a4ae04e9295b01e792e74c,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -463,6 +468,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5859382591130383551, guid: 5b2e98333116a9a469435366548d966b,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b2e98333116a9a469435366548d966b, type: 3}
 --- !u!4 &164749409 stripped
@@ -509,6 +519,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 626604099}
     m_Modifications:
+    - target: {fileID: 661024803732247396, guid: 7b2bb50c4b152a849840341f4616c7b3,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1764286934788313602, guid: 7b2bb50c4b152a849840341f4616c7b3,
         type: 3}
       propertyPath: mainCamera
@@ -2071,6 +2086,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5859382591130383551, guid: 5b2e98333116a9a469435366548d966b,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b2e98333116a9a469435366548d966b, type: 3}
 --- !u!4 &1755507485 stripped
@@ -2228,6 +2248,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Basic_Bunker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012562916404245974, guid: db769116f5a4ae04e9295b01e792e74c,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9083515362151451550, guid: db769116f5a4ae04e9295b01e792e74c,
         type: 3}
@@ -2672,6 +2697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2112318135}
   - component: {fileID: 2112318134}
+  - component: {fileID: 2112318136}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2717,6 +2743,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2112318136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112318133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 9
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &2132925962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2819,6 +2867,11 @@ PrefabInstance:
       propertyPath: unitWeapons.Array.data[0]
       value: 
       objectReference: {fileID: 2132925963}
+    - target: {fileID: 8454255393604704278, guid: 46817e8853f94e94f838b0f2ba690618,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46817e8853f94e94f838b0f2ba690618, type: 3}
 --- !u!114 &2132925963 stripped
@@ -2936,6 +2989,11 @@ PrefabInstance:
       propertyPath: unitWeapons.Array.data[0]
       value: 
       objectReference: {fileID: 1951347487}
+    - target: {fileID: 8454255393604704278, guid: 46817e8853f94e94f838b0f2ba690618,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46817e8853f94e94f838b0f2ba690618, type: 3}
 --- !u!4 &1619627533644249764 stripped
@@ -2951,6 +3009,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 626604099}
     m_Modifications:
+    - target: {fileID: 661024803732247396, guid: 7b2bb50c4b152a849840341f4616c7b3,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1764286934788313602, guid: 7b2bb50c4b152a849840341f4616c7b3,
         type: 3}
       propertyPath: mainCamera

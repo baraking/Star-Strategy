@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//fix setPlayersData to find Instantiated player's prefab
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         //SpawnPlayer();
         JoinCanvas.SetActive(true);
+
+        PhotonView PV = GetComponent<PhotonView>();
     }
 
     private void Update()
@@ -50,15 +53,43 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void SpawnPlayer()
     {
-        newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity, 0);
+        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        object[] instantiationData = new object[] {index};
+        newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity,0, instantiationData);
 
-        newPlayer.name = "Player" + "_" + (PhotonNetwork.LocalPlayer.ActorNumber - 1);
-        newPlayer.GetComponent<Player>().playerNumber = PhotonNetwork.LocalPlayer.ActorNumber - 1;
-        newPlayer.transform.parent = playersHolder.transform;
+        photonView.RPC("setPlayersData", RpcTarget.All, index);
+        
+        JoinCanvas.SetActive(false);
+    }
+
+    [PunRPC]
+    public void setPlayersData(int index)
+    {
+        Debug.Log("==================================Got a Message!!!=========================================");
+        //object[] instantiationData = info.photonView.InstantiationData;
+
+        Debug.Log("=================" + index + "=================");
+
+        Player[] tmpPlayers = GameObject.FindObjectsOfType<Player>();
+        foreach (Player player in tmpPlayers)
+        {
+            if (player.transform.parent != playersHolder)
+            {
+                newPlayer = player.gameObject;
+                player.name = "Player" + "_" + index;
+                player.GetComponent<Player>().playerNumber = (int)index;
+                player.transform.SetParent(playersHolder.transform);
+                Debug.Log("Set parent to player");
+
+                curNumberOfPlayers++;
+                Debug.Log("The number of players is: " + curNumberOfPlayers);
+                break;
+            }
+        }
 
         for (int i = 0; i < Units.transform.childCount; i++)
         {
-            if (Units.transform.GetChild(i).GetComponent<Unit>().myPlayerNumber == PhotonNetwork.LocalPlayer.ActorNumber - 1)
+            if (Units.transform.GetChild(i).GetComponent<Unit>().myPlayerNumber == index)
             {
                 print(newPlayer.GetComponent<Player>().playerUnits);
                 newPlayer.GetComponent<Player>().playerUnits.Add(Units.transform.GetChild(i).GetComponent<Unit>());
@@ -67,10 +98,29 @@ public class GameManager : MonoBehaviourPunCallbacks
             Units.transform.GetChild(i).gameObject.SetActive(true);
             Units.transform.GetChild(i).GetComponent<Unit>().OnMyPlayerJoined();
         }
+    }
 
-        curNumberOfPlayers++;
-        Debug.Log("The number of players is: " + curNumberOfPlayers);
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
 
-        JoinCanvas.SetActive(false);
+        Debug.Log("================="+ instantiationData[0]+ "=================");
+
+        GameObject[] tmpPlayers = (GameObject[])GameObject.FindObjectsOfType(typeof(Player));
+        foreach (GameObject player in tmpPlayers)
+        {
+            if (player.transform.parent != playersHolder)
+            {
+                newPlayer = player;
+                player.name = "Player" + "_" + instantiationData[0];
+                player.GetComponent<Player>().playerNumber = (int)instantiationData[0];
+                player.transform.SetParent(playersHolder.transform);
+                Debug.Log("Set parent to player");
+
+                curNumberOfPlayers++;
+                Debug.Log("The number of players is: " + curNumberOfPlayers);
+                return;
+            }
+        }
     }
 }

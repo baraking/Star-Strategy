@@ -19,6 +19,7 @@ public class Player : MonoBehaviourPunCallbacks
     public void Awake()
     {
         photonView = GetComponent<PhotonView>();
+
         playerUnits = new List<Unit>();
         GameManager.Instance.playersHolder.allPlayers.Add(this);
         //cameraHolder = gameObject.transform.FindChild("CameraHolder").gameObject;
