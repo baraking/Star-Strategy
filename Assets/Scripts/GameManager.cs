@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //fix setPlayersData to find Instantiated player's prefab
+//fix the basicColors1 name/colors issue
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject newPlayer;
 
     public PlayersHolder playersHolder;
-    public Color[] basicColors = { new Color(1, 0, 0, 1), new Color(0, 0, 1, 1), new Color(0, 1, 1, 1), new Color(0, 1, 1, 1) };
+    [SerializeField] public Color[] basicColors1 = { new Color(1, 0, 0, 1), new Color(0, 0, 1, 1), new Color(1, 1, 0, 1), new Color(0, 1, 0, 1) };
 
     private static GameManager _instance;
 

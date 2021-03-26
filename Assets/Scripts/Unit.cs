@@ -56,7 +56,7 @@ public class Unit : MonoBehaviour
 
         AddWeapons();
 
-        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors[myPlayerNumber]);
+        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);
 
         Debug.Log(gameObject.name + " is ready!");
     }
