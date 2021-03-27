@@ -15,4 +15,6 @@ MonoBehaviour:
   name: Basic Tank
   max_hp: 100
   speed: 1
+  buildTime: 10
+  costToBuild: 0
   icon: {fileID: 0}

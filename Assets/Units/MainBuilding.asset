@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
-  m_Name: Basic Heavy
+  m_Name: MainBuilding
   m_EditorClassIdentifier: 
-  name: Basic Heavy
-  max_hp: 200
-  speed: 0.25
-  buildTime: 25
-  costToBuild: 0
+  name: MainBuilding
+  max_hp: 1000
+  speed: 0
+  buildTime: 30
+  costToBuild: 100
   icon: {fileID: 0}

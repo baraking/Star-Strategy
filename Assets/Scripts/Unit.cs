@@ -33,7 +33,13 @@ public class Unit : MonoBehaviour, System.IComparable
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
+        InitUnit();
 
+    }
+
+    [PunRPC]
+    public void InitUnit()
+    {
         healthBar = gameObject.GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
@@ -50,12 +56,6 @@ public class Unit : MonoBehaviour, System.IComparable
             myPlayer.playerUnits.Add(this);
             myPlayer.SortUnits();
         }
-    }
-
-    [PunRPC]
-    public void InitUnit()
-    {
-
     }
 
     public void OnMyPlayerJoined()

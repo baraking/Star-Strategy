@@ -13,5 +13,8 @@ public class UnitDetails : ScriptableObject
 
     public float speed;
 
+    public float buildTime;
+    public int costToBuild;
+
     public Sprite icon;
 }
