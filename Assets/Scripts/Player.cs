@@ -35,6 +35,11 @@ public class Player : MonoBehaviourPunCallbacks
         
     }
 
+    public void SortUnits()
+    {
+        playerUnits.Sort();
+    }
+
     public bool IsUnitSelectable(Unit other)
     {
         return (other.myPlayerNumber==playerNumber);

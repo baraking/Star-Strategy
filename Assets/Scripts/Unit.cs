@@ -13,7 +13,7 @@ using UnityEngine;
 //add weapons automatically
 //have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
 //fix auto player pickup
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, System.IComparable
 {
     public Player myPlayer;
     public int myPlayerNumber;
@@ -30,10 +30,10 @@ public class Unit : MonoBehaviour
 
     public PhotonView photonView;
 
-    //get my playerNumber
-    [PunRPC]
     void Start()
     {
+        //photonView.RPC("InitUnit", RpcTarget.All);
+
         healthBar = gameObject.GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
@@ -43,6 +43,19 @@ public class Unit : MonoBehaviour
         {
             gameObject.AddComponent<PhotonTransformView>();
         }
+
+        if (myPlayer != null)
+        {
+            myPlayerNumber = myPlayer.playerNumber;
+            myPlayer.playerUnits.Add(this);
+            myPlayer.SortUnits();
+        }
+    }
+
+    [PunRPC]
+    public void InitUnit()
+    {
+
     }
 
     public void OnMyPlayerJoined()
@@ -141,5 +154,11 @@ public class Unit : MonoBehaviour
     {
         print("I am dead :(");
         Destroy(gameObject);
+    }
+
+    public int CompareTo(object obj)
+    {
+        Unit other = obj as Unit;
+        return this.name.CompareTo(other.name);
     }
 }

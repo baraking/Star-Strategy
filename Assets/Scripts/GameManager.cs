@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 newPlayer.GetComponent<Player>().playerUnits.Add(Units.transform.GetChild(i).GetComponent<Unit>());
                 print(newPlayer.GetComponent<Player>().playerUnits);
             }
+            newPlayer.GetComponent<Player>().SortUnits();
             Units.transform.GetChild(i).gameObject.SetActive(true);
             Units.transform.GetChild(i).GetComponent<Unit>().OnMyPlayerJoined();
         }
