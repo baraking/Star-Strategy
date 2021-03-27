@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +13,13 @@ using UnityEngine;
 //add weapons automatically
 //have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
 //fix auto player pickup
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, System.IComparable
 {
     public Player myPlayer;
     public int myPlayerNumber;
     public bool isSelected;
 
+    [SerializeField]
     public int curHP;
 
     public UnitDetails unitDetails;
@@ -26,14 +28,38 @@ public class Unit : MonoBehaviour
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
 
-    //get my playerNumber
+    public PhotonView photonView;
+
     void Start()
     {
+        //photonView.RPC("InitUnit", RpcTarget.All);
+
         healthBar = gameObject.GetComponentInChildren<HealthBar>();
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
         SetHealthBarActive(false);
 
+        if (gameObject.GetComponent<PhotonTransformView>() == null)
+        {
+            gameObject.AddComponent<PhotonTransformView>();
+        }
+
+        if (myPlayer != null)
+        {
+            myPlayerNumber = myPlayer.playerNumber;
+            myPlayer.playerUnits.Add(this);
+            myPlayer.SortUnits();
+        }
+    }
+
+    [PunRPC]
+    public void InitUnit()
+    {
+
+    }
+
+    public void OnMyPlayerJoined()
+    {
         myPlayer = GameManager.Instance.playersHolder.getPlayer(myPlayerNumber);
 
         /*if (!myPlayer.playerUnits.Contains(this))
@@ -41,9 +67,11 @@ public class Unit : MonoBehaviour
             myPlayer.playerUnits.Add(this);
         }*/
 
-        addWeapons();
+        AddWeapons();
 
-        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors[myPlayerNumber]);
+        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);
+
+        Debug.Log(gameObject.name + " is ready!");
     }
 
     // Update is called once per frame
@@ -75,7 +103,7 @@ public class Unit : MonoBehaviour
         {
             curHP -= damage;
             DisplayeHealthForLimitedTime();
-            healthBar.setHealth(curHP);
+         healthBar.setHealth(curHP);
         }
         if (curHP <= 0)
         {
@@ -83,6 +111,7 @@ public class Unit : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void Fire(Unit targetUnit)
     {
         foreach (Weapon weapon in unitWeapons)
@@ -109,7 +138,7 @@ public class Unit : MonoBehaviour
         return shortestRange;
     }
 
-    void addWeapons()
+    void AddWeapons()
     {
         Weapon[] tmpWeapons = gameObject.GetComponentsInChildren<Weapon>();
         for(int i = 0; i < tmpWeapons.Length; i++)
@@ -125,5 +154,11 @@ public class Unit : MonoBehaviour
     {
         print("I am dead :(");
         Destroy(gameObject);
+    }
+
+    public int CompareTo(object obj)
+    {
+        Unit other = obj as Unit;
+        return this.name.CompareTo(other.name);
     }
 }
