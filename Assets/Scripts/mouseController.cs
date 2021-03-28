@@ -76,6 +76,18 @@ public class mouseController : MonoBehaviour
                         }
                     }
                 }
+                else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
+                {
+                    foreach (Walkable unit in selectedUnits)
+                    {
+                        unit.GetComponent<Walkable>().hasTarget = true;
+                        unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                        if (unit.GetComponent<Gatherer>())
+                        {
+                            unit.GetComponent<Gatherer>().Gather(objectHit.GetComponentInParent<Resource>());
+                        }
+                    }
+                }
 
                 //print("clicked!");
                 //Instantiate(signalObject, hit.point, new Quaternion());
