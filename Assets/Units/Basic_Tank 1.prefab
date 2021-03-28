@@ -149,6 +149,7 @@ MonoBehaviour:
   unitDetails: {fileID: 11400000, guid: 38cb4eef932703b4c8afd779a5a7e208, type: 2}
   unitWeapons: []
   healthBar: {fileID: 2710405882814329290}
+  photonView: {fileID: 0}
   hasTarget: 0
   targetPoint: {x: 0, y: 0, z: 0}
   targetObject: {fileID: 0}
@@ -346,6 +347,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 474365207407084543}
     m_Modifications:
+    - target: {fileID: 2820588378273326292, guid: de06968c77f067a459908d7e657fc258,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2820588378673693650, guid: de06968c77f067a459908d7e657fc258,
         type: 3}
       propertyPath: m_RenderMode

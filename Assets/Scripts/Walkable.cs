@@ -10,6 +10,11 @@ public class Walkable : Unit
     public Vector3 targetPoint;
     public GameObject targetObject;
 
+    private void Start()
+    {
+        base.InitUnit();
+    }
+
     void Update()
     {
         if (hasTarget)

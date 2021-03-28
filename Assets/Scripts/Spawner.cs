@@ -12,6 +12,7 @@ public class Spawner : Unit
 
     void Start()
     {
+        base.InitUnit();
         isBuilding = false;
     }
 
@@ -38,7 +39,11 @@ public class Spawner : Unit
         yield return new WaitForSeconds(availableUnits[unitIndex].GetComponent<Unit>().unitDetails.buildTime);
         GameObject newUnit = Instantiate(availableUnits[unitIndex]);
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
+        newUnit.GetComponent<Unit>().myPlayer = myPlayer;
         newUnit.GetComponent<Unit>().InitUnit();
+        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+
+        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         Debug.Log("Finished building a " + availableUnits[unitIndex].GetComponent<Unit>().unitDetails.name);
         isBuilding = false;
     }

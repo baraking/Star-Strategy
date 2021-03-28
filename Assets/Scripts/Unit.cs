@@ -56,6 +56,8 @@ public class Unit : MonoBehaviour, System.IComparable
             myPlayer.playerUnits.Add(this);
             myPlayer.SortUnits();
         }
+
+        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
     }
 
     public void OnMyPlayerJoined()

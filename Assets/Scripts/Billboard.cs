@@ -20,7 +20,10 @@ public class Billboard : MonoBehaviour {
 
     public void setPlayerCamera()
     {
-        playerCamera = GameManager.Instance.playersHolder.allPlayers[gameObject.GetComponentInParent<Unit>().myPlayer.playerNumber].playerCamera.transform;
+        if (gameObject.GetComponentInParent<Unit>().myPlayer != null)
+        {
+            playerCamera = GameManager.Instance.playersHolder.allPlayers[gameObject.GetComponentInParent<Unit>().myPlayer.playerNumber].playerCamera.transform;
+        }
     }
 
     void LateUpdate()

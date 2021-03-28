@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject newPlayer;
 
     public PlayersHolder playersHolder;
-    public GameObject unitsHolder;
     [SerializeField] public Color[] basicColors1 = { new Color(1, 0, 0, 1), new Color(0, 0, 1, 1), new Color(1, 1, 0, 1), new Color(0, 1, 0, 1) };
 
     private static GameManager _instance;
