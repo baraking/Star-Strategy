@@ -44,6 +44,7 @@ public class mouseController : MonoBehaviour
                     }
 
                     Transform objectHit = hit.transform;
+                    //Debug.Log(objectHit.name);
                     if (objectHit.GetComponentInParent<Unit>())
                     {
                         if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
@@ -70,6 +71,7 @@ public class mouseController : MonoBehaviour
                     {
                         foreach (Unit unit in selectedUnits)
                         {
+                            //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
                             unit.Fire(objectHit.GetComponentInParent<Unit>());
                         }
                     }
