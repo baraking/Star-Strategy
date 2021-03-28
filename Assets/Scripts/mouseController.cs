@@ -84,7 +84,7 @@ public class mouseController : MonoBehaviour
                         unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
                         if (unit.GetComponent<Gatherer>())
                         {
-                            unit.GetComponent<Gatherer>().Gather(objectHit.GetComponentInParent<Resource>());
+                            unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
                         }
                     }
                 }

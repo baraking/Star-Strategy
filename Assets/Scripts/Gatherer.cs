@@ -9,11 +9,22 @@ public class Gatherer : Walkable
     public int carryingAmount;
     public Unit gathererParent;
 
+    public Resource targetResource;
+
     void Start()
     {
         isInGatheringCooldown = false;
         //rangeCalculationPoint = transform.position;
         gathererParent = gameObject.GetComponentInParent<Unit>();
+    }
+
+    private void Update()
+    {
+        base.AttempotToWalk();
+        if (targetResource != null)
+        {
+            Gather(targetResource);
+        }
     }
 
     public void Gather(Resource target)
@@ -26,14 +37,14 @@ public class Gatherer : Walkable
             {
                 if (!isInGatheringCooldown)
                 {
-                    print(gathererParent.unitDetails.name + " is Firing!");
                     if(gathererParent.unitDetails.gatheringCapacity - carryingAmount - gathererParent.unitDetails.gatherAmount < 0)
                     {
-                        target.GiveResources(gathererParent.unitDetails.gatheringCapacity - carryingAmount);
+                        carryingAmount += target.GiveResources(gathererParent.unitDetails.gatheringCapacity - carryingAmount);
+                        isFull = true;
                     }
                     else
                     {
-                        target.GiveResources(gathererParent.unitDetails.gatherAmount);
+                        carryingAmount += target.GiveResources(gathererParent.unitDetails.gatherAmount);
                     }
                     isInGatheringCooldown = true;
                     StartCoroutine(AfterGather());

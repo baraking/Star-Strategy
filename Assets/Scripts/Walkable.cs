@@ -17,6 +17,11 @@ public class Walkable : Unit
 
     void Update()
     {
+        AttempotToWalk();
+    }
+
+    public void AttempotToWalk()
+    {
         if (hasTarget)
         {
             WalkTowards();
