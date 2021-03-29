@@ -16,6 +16,8 @@ public class Player : MonoBehaviourPunCallbacks
     public GameObject cameraHolder;
     public Camera playerCamera;
 
+    public int resources;
+
     public void Awake()
     {
         photonView = GetComponent<PhotonView>();
