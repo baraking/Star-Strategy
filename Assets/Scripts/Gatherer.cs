@@ -33,53 +33,73 @@ public class Gatherer : Walkable
     {
         if (targetResourceSilo == null)
         {
-            //if (!isInCooldown && Vector3.Distance(rangeCalculationPoint, targetUnit.transform.position) <= weaponDetails.range)
-            float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-            if (distanceToTarget <= gathererParent.unitDetails.gatheringRange)
+            try
             {
-                if (!isInGatheringCooldown)
+                print(target);
+                if (target == null && carryingAmount > 0)
                 {
-                    if(gathererParent.unitDetails.gatheringCapacity - carryingAmount - gathererParent.unitDetails.gatherAmount < 0)
-                    {
-                        carryingAmount += target.GiveResources(gathererParent.unitDetails.gatheringCapacity - carryingAmount);
-                        isFull = true;
-                        GetClosestResourceSilo();
-                    }
-                    else
-                    {
-                        carryingAmount += target.GiveResources(gathererParent.unitDetails.gatherAmount);
-                    }
-                    isInGatheringCooldown = true;
-                    StartCoroutine(AfterGather());
+                    GetClosestResourceSilo();
                 }
-            }
-            else
-            {
-                if (gathererParent.GetComponent<Walkable>())
+                //if (!isInCooldown && Vector3.Distance(rangeCalculationPoint, targetUnit.transform.position) <= weaponDetails.range)
+                float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+                if (distanceToTarget <= gathererParent.unitDetails.gatheringRange)
                 {
-                    if (gathererParent.GetComponent<Walkable>().targetPoint == Vector3.zero)
+                    if (!isInGatheringCooldown)
                     {
-                        print("start moving!");
-                        gathererParent.GetComponent<Walkable>().targetPoint = transform.position - (target.transform.position.normalized * distanceToTarget);
+                        if (gathererParent.unitDetails.gatheringCapacity - carryingAmount - gathererParent.unitDetails.gatherAmount < 0)
+                        {
+                            carryingAmount += target.GiveResources(gathererParent.unitDetails.gatheringCapacity - carryingAmount);
+                            isFull = true;
+                            GetClosestResourceSilo();
+                        }
+                        else
+                        {
+                            carryingAmount += target.GiveResources(gathererParent.unitDetails.gatherAmount);
+                        }
+                        isInGatheringCooldown = true;
+                        StartCoroutine(AfterGather());
                     }
                 }
+                else
+                {
+                    if (gathererParent.GetComponent<Walkable>())
+                    {
+                        if (gathererParent.GetComponent<Walkable>().targetPoint == Vector3.zero)
+                        {
+                            print("start moving!");
+                            gathererParent.GetComponent<Walkable>().targetPoint = transform.position - (target.transform.position.normalized * distanceToTarget);
+                        }
+                    }
+                }
             }
+            catch (System.Exception e)
+            {
+                if(carryingAmount > 0)
+                {
+                    GetClosestResourceSilo();
+                }
+            }
+
         }
         else if(targetResourceSilo != null)
         {
+            gathererParent.GetComponent<Walkable>().hasTarget = true;
             float distanceToTarget = Vector3.Distance(transform.position, targetResourceSilo.transform.position);
             gathererParent.GetComponent<Walkable>().targetPoint = targetResourceSilo.transform.position;
             if (distanceToTarget <= gathererParent.unitDetails.gatheringRange)
             {
-                print(1);
                 isFull = false;
                 myPlayer.resources += carryingAmount;
                 carryingAmount = 0;
                 targetResourceSilo = null;
+                if (targetResource != null)
+                {
+                    gathererParent.GetComponent<Walkable>().hasTarget = true;
+                    gathererParent.GetComponent<Walkable>().targetPoint = targetResource.transform.position;
+                }
             }
             else
             {
-                print(2);
                 if (gathererParent.GetComponent<Walkable>())
                 {
                     if (gathererParent.GetComponent<Walkable>().targetPoint == Vector3.zero)
