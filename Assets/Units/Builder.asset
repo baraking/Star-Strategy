@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Builder
   max_hp: 200
   speed: 0.5
-  buildTime: 0
+  buildTime: 10
   costToBuild: 0
   gatherAmount: 10
   gatheringCapacity: 75
