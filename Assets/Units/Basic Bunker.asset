@@ -15,4 +15,6 @@ MonoBehaviour:
   name: Basic Bunker
   max_hp: 250
   speed: 0
+  buildTime: 10
+  costToBuild: 0
   icon: {fileID: 0}

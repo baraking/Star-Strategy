@@ -151,6 +151,7 @@ MonoBehaviour:
   unitWeapons:
   - {fileID: 8213704768068986239}
   healthBar: {fileID: 6425404355273108603}
+  photonView: {fileID: 0}
 --- !u!114 &6870924095644045795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +256,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6425404354725385627}
     m_Modifications:
+    - target: {fileID: 2820588378273326292, guid: de06968c77f067a459908d7e657fc258,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2820588378673693650, guid: de06968c77f067a459908d7e657fc258,
         type: 3}
       propertyPath: m_RenderMode

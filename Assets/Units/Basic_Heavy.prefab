@@ -186,6 +186,7 @@ MonoBehaviour:
   - {fileID: 4178310967951892713}
   - {fileID: 1951692838600207577}
   healthBar: {fileID: 1839431413865757267}
+  photonView: {fileID: 0}
   hasTarget: 0
   targetPoint: {x: 0, y: 0, z: 0}
   targetObject: {fileID: 0}
@@ -261,6 +262,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1839431414684886347}
     m_Modifications:
+    - target: {fileID: 2820588378273326292, guid: de06968c77f067a459908d7e657fc258,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2820588378673693650, guid: de06968c77f067a459908d7e657fc258,
         type: 3}
       propertyPath: m_RenderMode
@@ -275,6 +281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UnitUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2820588378673699886, guid: de06968c77f067a459908d7e657fc258,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2820588378673699887, guid: de06968c77f067a459908d7e657fc258,
         type: 3}

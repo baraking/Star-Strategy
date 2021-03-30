@@ -15,4 +15,6 @@ MonoBehaviour:
   name: Basic Scout
   max_hp: 60
   speed: 2
+  buildTime: 10
+  costToBuild: 0
   icon: {fileID: 0}

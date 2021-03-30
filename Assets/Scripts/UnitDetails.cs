@@ -13,5 +13,13 @@ public class UnitDetails : ScriptableObject
 
     public float speed;
 
+    public float buildTime;
+    public int costToBuild;
+
+    public int gatherAmount;
+    public int gatheringCapacity;
+    public float gatheringRange;
+    public float gatheringCooldown;
+
     public Sprite icon;
 }

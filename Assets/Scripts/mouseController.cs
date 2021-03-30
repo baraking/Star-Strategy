@@ -44,6 +44,7 @@ public class mouseController : MonoBehaviour
                     }
 
                     Transform objectHit = hit.transform;
+                    //Debug.Log(objectHit.name);
                     if (objectHit.GetComponentInParent<Unit>())
                     {
                         if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
@@ -70,9 +71,38 @@ public class mouseController : MonoBehaviour
                     {
                         foreach (Unit unit in selectedUnits)
                         {
+                            //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
                             unit.Fire(objectHit.GetComponentInParent<Unit>());
                         }
                     }
+                }
+                else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
+                {
+                    foreach (Walkable unit in selectedUnits)
+                    {
+                        unit.GetComponent<Walkable>().hasTarget = true;
+                        unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                        if (unit.GetComponent<Gatherer>())
+                        {
+                            unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
+                        }
+                    }
+                }
+                else if (objectHit.GetComponentInParent<ResourceSilo>() && selectedUnits.Count > 0)
+                {
+                    if (objectHit.GetComponentInParent<Unit>().myPlayerNumber != myPlayer.playerNumber)
+                    {
+                        foreach (Walkable unit in selectedUnits)
+                        {
+                            unit.GetComponent<Walkable>().hasTarget = true;
+                            unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                            if (unit.GetComponent<Gatherer>())
+                            {
+                                unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
+                            }
+                        }
+                    }
+
                 }
 
                 //print("clicked!");

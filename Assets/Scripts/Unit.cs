@@ -33,11 +33,20 @@ public class Unit : MonoBehaviour, System.IComparable
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
+        InitUnit();
 
-        healthBar = gameObject.GetComponentInChildren<HealthBar>();
+    }
+
+    [PunRPC]
+    public void InitUnit()
+    {
+        if (healthBar == null)
+        {
+            healthBar = gameObject.GetComponentInChildren<HealthBar>();
+        }
+        SetHealthBarActive(true);
         healthBar.SetMaxHealth(unitDetails.max_hp);
         curHP = unitDetails.max_hp;
-        SetHealthBarActive(false);
 
         if (gameObject.GetComponent<PhotonTransformView>() == null)
         {
@@ -50,12 +59,12 @@ public class Unit : MonoBehaviour, System.IComparable
             myPlayer.playerUnits.Add(this);
             myPlayer.SortUnits();
         }
-    }
 
-    [PunRPC]
-    public void InitUnit()
-    {
+        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
 
+        AddWeapons();
+
+        //SetHealthBarActive(false);
     }
 
     public void OnMyPlayerJoined()
@@ -72,12 +81,6 @@ public class Unit : MonoBehaviour, System.IComparable
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);
 
         Debug.Log(gameObject.name + " is ready!");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void SetHealthBarActive(bool setTo)
