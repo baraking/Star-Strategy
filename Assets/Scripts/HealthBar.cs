@@ -9,10 +9,28 @@ public class HealthBar : MonoBehaviour
 {
     public Slider healthSlider;
 
+    public static readonly float SET_UP_TIME = 0.5f;
+
+    void Start()
+    {
+        StartCoroutine(LateStart(SET_UP_TIME));
+    }
+
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        this.gameObject.SetActive(false);
+    }
+
     public void SetMaxHealth(int maxHealth)
     {
         healthSlider.maxValue = maxHealth;
         healthSlider.value = maxHealth;
+    }
+
+    public bool IsHealthVisible()
+    {
+        return gameObject.active;
     }
 
     public void setHealth(int health)

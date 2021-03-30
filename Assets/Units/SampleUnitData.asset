@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: SampleUnitData
   m_EditorClassIdentifier: 
   name: SampleUnitData
-  max_hp: 10
-  cur_hp: 0
+  max_hp: 100
   speed: 1
   icon: {fileID: 0}
