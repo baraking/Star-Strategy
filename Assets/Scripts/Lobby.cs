@@ -16,6 +16,8 @@ public class Lobby : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField CreateGameInput;
     [SerializeField] private TMP_InputField JoinGameInput;
 
+    [SerializeField] private TMP_Dropdown LevelSelection;
+
 
     private void Awake()
     {
@@ -65,7 +67,8 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("SampleScene");
+        print(LevelSelection.options[LevelSelection.value]);
+        PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
         Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
