@@ -3161,7 +3161,7 @@ MonoBehaviour:
   ConnectPanel: {fileID: 226233336}
   CreateGameInput: {fileID: 1699791295}
   JoinGameInput: {fileID: 1472204752}
-  LevelSelection: {fileID: 0}
+  LevelSelection: {fileID: 2113208783}
 --- !u!4 &1940416426
 Transform:
   m_ObjectHideFlags: 0
