@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Basic Ant
   max_hp: 10
   speed: 0.5
+  rotation_speed: 5
   buildTime: 2
   costToBuild: 10
   gatherAmount: 1

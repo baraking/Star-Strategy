@@ -12,6 +12,7 @@ public class UnitDetails : ScriptableObject
     public int max_hp;
 
     public float speed;
+    public float rotation_speed;
 
     public float buildTime;
     public int costToBuild;
