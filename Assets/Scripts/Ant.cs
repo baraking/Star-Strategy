@@ -8,18 +8,48 @@ public class Ant : Gatherer
 {
     GameObject detectionRange;
 
+    bool isScouting;
+    public float minRandomTime;
+    public float maxRandomTime;
+    public float startTime;
+    public float timeInDirection;
+
+    private void Start()
+    {
+        isScouting = true;
+        startTime = Time.time;
+        timeInDirection = 0;
+    }
+
     private void Update()
     {
-        if (targetResource != null)
+        if (!isScouting)
         {
-            if (Vector3.Distance(this.transform.position, targetResource.transform.position) < 0.1f)
+            if (targetResource != null)
             {
-                Gather(targetResource);
+                if (Vector3.Distance(this.transform.position, targetResource.transform.position) < 0.1f)
+                {
+                    Gather(targetResource);
+                }
+                else
+                {
+                    WalkTowards();
+                }
             }
-            else
+        }
+        else
+        {
+            if (timeInDirection <= 0 || startTime + timeInDirection <= Time.time)
             {
-                WalkTowards();
+                timeInDirection = Random.Range(minRandomTime, maxRandomTime);
+                startTime = Time.time;
+
+                float tiltAroundX = Random.Range(-maxRandomTime, maxRandomTime);
+                float tiltAroundZ = Random.Range(-maxRandomTime, maxRandomTime);
+
+                transform.rotation = Quaternion.LookRotation(new Vector3(tiltAroundX, 0, tiltAroundZ));
             }
+            transform.Translate(Vector3.forward * Time.deltaTime * unitDetails.speed);
         }
     }
 
@@ -29,6 +59,7 @@ public class Ant : Gatherer
         {
             targetResource = other.GetComponent<Resource>();
             targetPoint = other.transform.position;
+            isScouting = false;
         }
     }
 

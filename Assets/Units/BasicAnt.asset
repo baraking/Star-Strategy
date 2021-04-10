@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Basic Ant
   max_hp: 10
-  speed: 0.5
+  speed: 0.2
   rotation_speed: 5
   buildTime: 2
   costToBuild: 10

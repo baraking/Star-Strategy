@@ -6,5 +6,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Ant", menuName = "Ants")]
 public class AntDetails : UnitDetails
 {
-    
+
 }

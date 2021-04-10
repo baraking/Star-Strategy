@@ -171,6 +171,10 @@ MonoBehaviour:
   gathererParent: {fileID: 0}
   targetResource: {fileID: 0}
   targetResourceSilo: {fileID: 0}
+  minRandomTime: 0.5
+  maxRandomTime: 2
+  startTime: 0
+  timeInDirection: 0
 --- !u!136 &6422361900503456805
 CapsuleCollider:
   m_ObjectHideFlags: 0
