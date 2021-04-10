@@ -13,6 +13,7 @@ public class Ant : Gatherer
     public float maxRandomTime;
     public float startTime;
     public float timeInDirection;
+    Quaternion quaternionTarget;
 
     private void Start()
     {
@@ -44,12 +45,13 @@ public class Ant : Gatherer
                 timeInDirection = Random.Range(minRandomTime, maxRandomTime);
                 startTime = Time.time;
 
-                float tiltAroundX = Random.Range(-maxRandomTime, maxRandomTime);
-                float tiltAroundZ = Random.Range(-maxRandomTime, maxRandomTime);
+                float tiltAroundX = Random.Range(-.1f, .1f);
+                float tiltAroundZ = Random.Range(-.1f, .1f);
 
-                transform.rotation = Quaternion.LookRotation(new Vector3(tiltAroundX, 0, tiltAroundZ));
+                quaternionTarget = Quaternion.LookRotation(new Vector3(tiltAroundX, 0, tiltAroundZ));
             }
             transform.Translate(Vector3.forward * Time.deltaTime * unitDetails.speed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, quaternionTarget, Time.deltaTime * unitDetails.rotation_speed);
         }
     }
 
