@@ -6,6 +6,11 @@ using UnityEngine;
 //find other resources in view in case the cur one was moved / destroyed
 public class Ant : Gatherer
 {
+    public static readonly float Max_Value_Direction = 1f;
+    public static readonly float Min_Value_Direction = -1f;
+    public static readonly float Max_Interval_Direction = .5f;
+    public static readonly float Min_Interval_Direction = -.5f;
+
     GameObject detectionRange;
 
     bool isScouting;
@@ -13,13 +18,18 @@ public class Ant : Gatherer
     public float maxRandomTime;
     public float startTime;
     public float timeInDirection;
-    Quaternion quaternionTarget;
+    public Quaternion quaternionTarget;
+
+    public float tiltAroundX;
+    public float tiltAroundZ;
 
     private void Start()
     {
         isScouting = true;
         startTime = Time.time;
         timeInDirection = 0;
+
+        RandomizeDirection();
     }
 
     private void Update()
@@ -45,14 +55,35 @@ public class Ant : Gatherer
                 timeInDirection = Random.Range(minRandomTime, maxRandomTime);
                 startTime = Time.time;
 
-                float tiltAroundX = Random.Range(-.1f, .1f);
-                float tiltAroundZ = Random.Range(-.1f, .1f);
+                tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction),Min_Value_Direction, Max_Value_Direction);
+                tiltAroundZ = KeepNumberInRange(tiltAroundZ + Random.Range(Min_Interval_Direction, Max_Interval_Direction), Min_Value_Direction, Max_Value_Direction);
 
                 quaternionTarget = Quaternion.LookRotation(new Vector3(tiltAroundX, 0, tiltAroundZ));
             }
             transform.Translate(Vector3.forward * Time.deltaTime * unitDetails.speed);
             transform.rotation = Quaternion.Slerp(transform.rotation, quaternionTarget, Time.deltaTime * unitDetails.rotation_speed);
         }
+    }
+
+    private void RandomizeDirection()
+    {
+        tiltAroundX = Random.Range(Min_Value_Direction, Max_Value_Direction);
+        tiltAroundZ = Random.Range(Min_Value_Direction, Max_Value_Direction);
+    }
+
+    private float KeepNumberInRange(float number, float min, float max)
+    {
+        if (number > max)
+        {
+            float offset = max - number;
+            return max - offset;
+        }
+        else if (number < min)
+        {
+            float offset = min - number;
+            return min - offset;
+        }
+        return number;
     }
 
     private void OnTriggerEnter(Collider other)
