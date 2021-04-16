@@ -55,6 +55,22 @@ public class Ant : Gatherer
                     WalkTowards();
                 }
             }
+            else if (targetResourceSilo != null)
+            {
+                if (Vector3.Distance(this.transform.position, targetResourceSilo.transform.position) < 0.1f)
+                {
+                    Gather(targetResource);
+                    if (carryingAmount == 0) 
+                    {
+                        targetResourceSilo = null;
+                        isScouting = true;
+                    }
+                }
+                else
+                {
+                    WalkTowards();
+                }
+            }
         }
         else
         {
@@ -109,6 +125,7 @@ public class Ant : Gatherer
         {
             if (carryingAmount>0 && other.GetComponent<ResourceSilo>())
             {
+                print(this.gameObject.name + " sees a Silo: " + other);
                 targetResourceSilo = other.GetComponent<ResourceSilo>();
                 targetPoint = other.transform.position;
                 isScouting = false;
@@ -131,7 +148,14 @@ public class Ant : Gatherer
 
     void WalkTowards()
     {
-        targetPoint = targetResource.transform.position;
+        if (targetResource != null)
+        {
+            targetPoint = targetResource.transform.position;
+        }
+        else if (targetResourceSilo != null)
+        {
+            targetPoint = targetResourceSilo.transform.position;
+        }
         Vector3 targetDirection = targetPoint - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, unitDetails.rotation_speed * Time.deltaTime, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);
