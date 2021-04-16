@@ -30,6 +30,9 @@ public class Ant : Gatherer
         timeInDirection = 0;
 
         RandomizeDirection();
+        isInGatheringCooldown = false;
+        //rangeCalculationPoint = transform.position;
+        gathererParent = gameObject.GetComponentInParent<Unit>();
     }
 
     private void Update()

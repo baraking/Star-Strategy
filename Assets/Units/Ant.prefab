@@ -160,7 +160,7 @@ MonoBehaviour:
   curHP: 0
   unitDetails: {fileID: 11400000, guid: 7f92b148adcbcbb46aaf044ae846b567, type: 2}
   unitWeapons: []
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 7126934135887414454}
   photonView: {fileID: 0}
   hasTarget: 0
   targetPoint: {x: 0, y: 0, z: 0}
@@ -175,6 +175,9 @@ MonoBehaviour:
   maxRandomTime: 2
   startTime: 0
   timeInDirection: 0
+  quaternionTarget: {x: 0, y: 0, z: 0, w: 0}
+  tiltAroundX: 0
+  tiltAroundZ: 0
 --- !u!136 &6422361900503456805
 CapsuleCollider:
   m_ObjectHideFlags: 0

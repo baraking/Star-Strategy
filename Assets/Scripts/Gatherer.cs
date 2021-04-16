@@ -4,6 +4,7 @@ using UnityEngine;
 
 //GetClosestResourceSilo distance should be related to path and not actual aireal distance.
 //auto gathering - especially once a resource is depleted
+//check the gathererParent
 public class Gatherer : Walkable
 {
     public bool isInGatheringCooldown;
