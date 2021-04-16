@@ -13,7 +13,7 @@ public class Ant : Gatherer
 
     GameObject detectionRange;
 
-    bool isScouting;
+    public bool isScouting;
     public float minRandomTime;
     public float maxRandomTime;
     public float startTime;
@@ -44,6 +44,11 @@ public class Ant : Gatherer
                 if (Vector3.Distance(this.transform.position, targetResource.transform.position) < 0.1f)
                 {
                     Gather(targetResource);
+                    if (isFull)
+                    {
+                        targetResource = null;
+                        isScouting = true;
+                    }
                 }
                 else
                 {
@@ -91,11 +96,23 @@ public class Ant : Gatherer
 
     private void OnTriggerEnter(Collider other)
     {
-        if (targetResource == null && other.GetComponent<Resource>())
+        if (!isFull)
         {
-            targetResource = other.GetComponent<Resource>();
-            targetPoint = other.transform.position;
-            isScouting = false;
+            if (targetResource == null && other.GetComponent<Resource>())
+            {
+                targetResource = other.GetComponent<Resource>();
+                targetPoint = other.transform.position;
+                isScouting = false;
+            }
+        }
+        else
+        {
+            if (carryingAmount>0 && other.GetComponent<ResourceSilo>())
+            {
+                targetResourceSilo = other.GetComponent<ResourceSilo>();
+                targetPoint = other.transform.position;
+                isScouting = false;
+            }
         }
     }
 
