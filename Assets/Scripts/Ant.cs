@@ -27,6 +27,9 @@ public class Ant : Gatherer
 
     bool isSpreading;
 
+    public List<GameObject> spottedPheromnes;
+    public Vector3 averagePheromonesLocationPointInWorldPosition = new Vector3(0,0,0);
+
     private void Start()
     {
         isSpreading = false;
@@ -106,6 +109,8 @@ public class Ant : Gatherer
                 timeInDirection = Random.Range(minRandomTime, maxRandomTime);
                 startTime = Time.time;
 
+                averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
+
                 tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction),Min_Value_Direction, Max_Value_Direction);
                 tiltAroundZ = KeepNumberInRange(tiltAroundZ + Random.Range(Min_Interval_Direction, Max_Interval_Direction), Min_Value_Direction, Max_Value_Direction);
 
@@ -139,6 +144,18 @@ public class Ant : Gatherer
 
     private void OnTriggerEnter(Collider other)
     {
+        if (carryingAmount == 0 && targetResource == null)
+        {
+            if (other.GetComponent<Pheromone>())
+            {
+                if (other.GetComponent<Pheromone>().myPheromoneType == Pheromone.PheromoneType.ToFood)
+                {
+                    spottedPheromnes.Add(other.gameObject);
+                    averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
+                }
+            }
+        }
+
         if (!isFull)
         {
             if (targetResource == null && other.GetComponent<Resource>())
@@ -160,6 +177,18 @@ public class Ant : Gatherer
         }
     }
 
+    private Vector3 GetAveragePheromonPoint()
+    {
+        Vector3 ans = new Vector3(0,0,0);
+        foreach (GameObject pheromone in spottedPheromnes)
+        {
+            ans += new Vector3(pheromone.transform.position.x, 0f, pheromone.transform.position.z);
+            
+        }
+        ans = new Vector3(ans.x / spottedPheromnes.Count, ans.y / spottedPheromnes.Count, ans.z / spottedPheromnes.Count);
+        return ans;
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (targetResource != null)
@@ -170,6 +199,12 @@ public class Ant : Gatherer
                 targetResource = null;
                 hasTarget = false;
             }
+        }
+
+        if (other.GetComponent<Pheromone>())
+        {
+            spottedPheromnes.Remove(other.gameObject);
+            averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
         }
     }
 
