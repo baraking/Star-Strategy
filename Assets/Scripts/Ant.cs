@@ -110,11 +110,16 @@ public class Ant : Gatherer
                 startTime = Time.time;
 
                 averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
+                Quaternion pheromoneLocation = Quaternion.LookRotation(averagePheromonesLocationPointInWorldPosition, Vector3.up);
 
                 tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction),Min_Value_Direction, Max_Value_Direction);
                 tiltAroundZ = KeepNumberInRange(tiltAroundZ + Random.Range(Min_Interval_Direction, Max_Interval_Direction), Min_Value_Direction, Max_Value_Direction);
 
                 quaternionTarget = Quaternion.LookRotation(new Vector3(tiltAroundX, 0, tiltAroundZ));
+                if (pheromoneLocation != new Quaternion(0, 0, 0, 1))
+                {
+                    quaternionTarget = Quaternion.Lerp(pheromoneLocation, quaternionTarget, 0.1f);
+                }
             }
             transform.Translate(Vector3.forward * Time.deltaTime * unitDetails.speed);
             transform.rotation = Quaternion.Slerp(transform.rotation, quaternionTarget, Time.deltaTime * unitDetails.rotation_speed);
