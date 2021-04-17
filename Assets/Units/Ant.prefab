@@ -171,11 +171,14 @@ MonoBehaviour:
   gathererParent: {fileID: 0}
   targetResource: {fileID: 0}
   targetResourceSilo: {fileID: 0}
+  isScouting: 0
   minRandomTime: 0.5
   maxRandomTime: 2
   startTime: 0
   timeInDirection: 0
   quaternionTarget: {x: 0, y: 0, z: 0, w: 0}
+  pheromonePrefab: {fileID: 2015028902020046305, guid: 6bc96b8e6486b194e82794b72baea87e,
+    type: 3}
   tiltAroundX: 0
   tiltAroundZ: 0
 --- !u!136 &6422361900503456805

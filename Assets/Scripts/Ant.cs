@@ -20,11 +20,16 @@ public class Ant : Gatherer
     public float timeInDirection;
     public Quaternion quaternionTarget;
 
+    public GameObject pheromonePrefab;
+
     public float tiltAroundX;
     public float tiltAroundZ;
 
+    bool isSpreading;
+
     private void Start()
     {
+        isSpreading = false;
         isScouting = true;
         startTime = Time.time;
         timeInDirection = 0;
@@ -35,8 +40,30 @@ public class Ant : Gatherer
         gathererParent = gameObject.GetComponentInParent<Unit>();
     }
 
+    public IEnumerator SpreadPheromone()
+    {
+        isSpreading = true;
+        yield return new WaitForSeconds(.5f);
+        GameObject spreadedPheromone = Instantiate(pheromonePrefab, transform.position, new Quaternion());
+        if (isFull || targetResource != null)
+        {
+            spreadedPheromone.GetComponent<Pheromone>().SetPheromoneType(Pheromone.PheromoneType.ToFood);
+        }
+        else
+        {
+            spreadedPheromone.GetComponent<Pheromone>().SetPheromoneType(Pheromone.PheromoneType.ToHome);
+        }
+        yield return new WaitForSeconds(.5f);
+        isSpreading = false;
+    }
+
     private void Update()
     {
+        if (!isSpreading)
+        {
+            StartCoroutine(SpreadPheromone());
+        }
+        
         if (!isScouting)
         {
             if (targetResource != null)
