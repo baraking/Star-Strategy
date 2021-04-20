@@ -13,10 +13,13 @@ public class Pheromone : MonoBehaviour
     public float intensity;
     bool isShrinking;
 
+    public Vector3 layoutDirection;
+
     // Start is called before the first frame update
     void Start()
     {
         isShrinking = false;
+        layoutDirection = transform.forward;
     }
 
     public void SetPheromoneType(PheromoneType pheromoneType)

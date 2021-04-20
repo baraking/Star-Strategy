@@ -4,6 +4,7 @@ using UnityEngine;
 
 //Notice the collider is a sphere and not a cone or something.
 //find other resources in view in case the cur one was moved / destroyed
+//pheromones should be under the same parent object
 public class Ant : Gatherer
 {
     public static readonly float Max_Value_Direction = 1f;
@@ -28,7 +29,10 @@ public class Ant : Gatherer
     bool isSpreading;
 
     public List<GameObject> spottedPheromnes;
-    public Vector3 averagePheromonesLocationPointInWorldPosition = new Vector3(0,0,0);
+    public Vector3 averagePheromonesLocationPointInWorldPosition = new Vector3(0, 0, 0);
+    public Vector3 averagePheromonesForwardDirectionInWorldPosition = new Vector3(0, 0, 0);
+
+    public Vector3 myForwardDirecton;
 
     private void Start()
     {
@@ -47,7 +51,9 @@ public class Ant : Gatherer
     {
         isSpreading = true;
         yield return new WaitForSeconds(.5f);
-        GameObject spreadedPheromone = Instantiate(pheromonePrefab, transform.position, new Quaternion());
+        GameObject spreadedPheromone = Instantiate(pheromonePrefab, transform.position, Quaternion.LookRotation(transform.forward));
+        spreadedPheromone.GetComponent<Collider>().enabled = false;
+        spreadedPheromone.GetComponent<Collider>().enabled = true;
         if (isFull || targetResource != null)
         {
             spreadedPheromone.GetComponent<Pheromone>().SetPheromoneType(Pheromone.PheromoneType.ToFood);
@@ -56,12 +62,14 @@ public class Ant : Gatherer
         {
             spreadedPheromone.GetComponent<Pheromone>().SetPheromoneType(Pheromone.PheromoneType.ToHome);
         }
+        spottedPheromnes.Remove(spreadedPheromone);
         yield return new WaitForSeconds(.5f);
         isSpreading = false;
     }
 
     private void Update()
     {
+        myForwardDirecton = transform.forward;
         if (!isSpreading)
         {
             StartCoroutine(SpreadPheromone());
@@ -109,7 +117,17 @@ public class Ant : Gatherer
                 timeInDirection = Random.Range(minRandomTime, maxRandomTime);
                 startTime = Time.time;
 
-                averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
+                if (carryingAmount > 0)
+                {
+                    averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToHome);
+                    averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToHome);
+                }
+                else
+                {
+                    averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToFood);
+                    averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToFood);
+                }
+
                 Quaternion pheromoneLocation = Quaternion.LookRotation(averagePheromonesLocationPointInWorldPosition, Vector3.up);
 
                 tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction),Min_Value_Direction, Max_Value_Direction);
@@ -149,15 +167,18 @@ public class Ant : Gatherer
 
     private void OnTriggerEnter(Collider other)
     {
-        if (carryingAmount == 0 && targetResource == null)
+        if (other.GetComponent<Pheromone>())
         {
-            if (other.GetComponent<Pheromone>())
+            spottedPheromnes.Add(other.gameObject);
+            if (carryingAmount > 0)
             {
-                if (other.GetComponent<Pheromone>().myPheromoneType == Pheromone.PheromoneType.ToFood)
-                {
-                    spottedPheromnes.Add(other.gameObject);
-                    averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
-                }
+                averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToHome);
+                averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToHome);
+            }
+            else
+            {
+                averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToFood);
+                averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToFood);
             }
         }
 
@@ -182,15 +203,40 @@ public class Ant : Gatherer
         }
     }
 
-    private Vector3 GetAveragePheromonPoint()
+    private Vector3 GetAveragePheromonPointByType(Pheromone.PheromoneType pheromoneType)
     {
         Vector3 ans = new Vector3(0,0,0);
+        int count = 0;
         foreach (GameObject pheromone in spottedPheromnes)
         {
-            ans += new Vector3(pheromone.transform.position.x, 0f, pheromone.transform.position.z);
-            
+            if(pheromone.GetComponent<Pheromone>().myPheromoneType == pheromoneType)
+            {
+                ans += new Vector3(pheromone.transform.position.x, 0f, pheromone.transform.position.z);
+                count++;
+            }
         }
-        ans = new Vector3(ans.x / spottedPheromnes.Count, ans.y / spottedPheromnes.Count, ans.z / spottedPheromnes.Count);
+        if (count > 0)
+        {
+            ans = new Vector3(ans.x / spottedPheromnes.Count, ans.y / spottedPheromnes.Count, ans.z / spottedPheromnes.Count);
+        }
+        
+        return ans;
+    }
+
+    private Vector3 GetAveragePheromonDirectionByType(Pheromone.PheromoneType pheromoneType)
+    {
+        Vector3 ans = new Vector3(0, 0, 0);
+        int count = 0;
+        foreach (GameObject pheromone in spottedPheromnes)
+        {
+            if (pheromone.GetComponent<Pheromone>().myPheromoneType == pheromoneType)
+            {
+                ans += new Vector3(pheromone.transform.forward.x, 0f, pheromone.transform.forward.z);
+                count++;
+            }
+        }
+        ans = ans.normalized;
+
         return ans;
     }
 
@@ -209,7 +255,16 @@ public class Ant : Gatherer
         if (other.GetComponent<Pheromone>())
         {
             spottedPheromnes.Remove(other.gameObject);
-            averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPoint();
+            if (carryingAmount > 0)
+            {
+                averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToHome);
+                averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToHome);
+            }
+            else
+            {
+                averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToFood);
+                averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToFood);
+            }
         }
     }
 
