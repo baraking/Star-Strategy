@@ -38,6 +38,7 @@ public class Ant : Gatherer
     public GameObject myAveragePheromonesDirectionPrefab;
 
     public Vector3 myForwardDirecton;
+    public bool flippedDirection;
 
     private void Start()
     {
@@ -45,6 +46,7 @@ public class Ant : Gatherer
         isScouting = true;
         startTime = Time.time;
         timeInDirection = 0;
+        flippedDirection = false;
 
         RandomizeDirection();
         isInGatheringCooldown = false;
@@ -92,6 +94,7 @@ public class Ant : Gatherer
                     {
                         targetResource = null;
                         isScouting = true;
+                        FlipDirection();
                     }
                 }
                 else
@@ -108,6 +111,7 @@ public class Ant : Gatherer
                     {
                         targetResourceSilo = null;
                         isScouting = true;
+                        FlipDirection();
                     }
                 }
                 else
@@ -137,15 +141,22 @@ public class Ant : Gatherer
                 UpdatePheromonesIdentifiorHelper();
                 Quaternion pheromoneLocation = Quaternion.LookRotation(averagePheromonesLocationPointInWorldPosition, Vector3.up);
                 Quaternion pheromoneDirection = Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition, Vector3.up);
+                pheromoneDirection = FlipQuaternion();
 
-                tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction),Min_Value_Direction, Max_Value_Direction);
-                tiltAroundZ = KeepNumberInRange(tiltAroundZ + Random.Range(Min_Interval_Direction, Max_Interval_Direction), Min_Value_Direction, Max_Value_Direction);
+                if (!flippedDirection)
+                {
+                    tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction), Min_Value_Direction, Max_Value_Direction);
+                    tiltAroundZ = KeepNumberInRange(tiltAroundZ + Random.Range(Min_Interval_Direction, Max_Interval_Direction), Min_Value_Direction, Max_Value_Direction);
+                    flippedDirection = false;
+                }
+
 
                 quaternionTarget = Quaternion.LookRotation(new Vector3(tiltAroundX, 0, tiltAroundZ));
                 if (pheromoneLocation != new Quaternion(0, 0, 0, 1))
                 {
                     //quaternionTarget = Quaternion.Lerp(pheromoneLocation, quaternionTarget, 0.1f);
                     quaternionTarget = Quaternion.Lerp(pheromoneDirection, quaternionTarget, 0.1f);
+                    //quaternionTarget = Quaternion.Lerp(pheromoneDirection, Quaternion.Inverse(quaternionTarget), 0.1f);
                 }
             }
             transform.Translate(Vector3.forward * Time.deltaTime * unitDetails.speed);
@@ -157,6 +168,24 @@ public class Ant : Gatherer
     {
         tiltAroundX = Random.Range(Min_Value_Direction, Max_Value_Direction);
         tiltAroundZ = Random.Range(Min_Value_Direction, Max_Value_Direction);
+    }
+
+    private void FlipDirection()
+    {
+        float tmp = tiltAroundX;
+        tiltAroundX = -tiltAroundZ;
+        tiltAroundZ = tmp;
+        flippedDirection = true;
+    }
+
+    private Quaternion FlipQuaternion()
+    {
+        Quaternion toReverse = Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition);
+
+        Vector3 rot = toReverse.eulerAngles;
+        rot = new Vector3(rot.x, rot.y + 180, rot.z);
+
+        return Quaternion.Euler(rot);
     }
 
     private float KeepNumberInRange(float number, float min, float max)
@@ -251,7 +280,13 @@ public class Ant : Gatherer
             if (averagePheromonesLocationPointInWorldPosition!=new Vector3(0, 0, 0))
             {
                 myAveragePheromonesLocationPrefab = Instantiate(averagePheromonesLocationPrefab, averagePheromonesLocationPointInWorldPosition, Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition));
-                myAveragePheromonesDirectionPrefab = Instantiate(averagePheromonesDirectionPrefab, averagePheromonesLocationPointInWorldPosition, Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition));
+                //myAveragePheromonesDirectionPrefab = Instantiate(averagePheromonesDirectionPrefab, averagePheromonesLocationPointInWorldPosition, Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition));
+                Quaternion toReverse = Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition);
+
+                Vector3 rot = toReverse.eulerAngles;
+                rot = new Vector3(rot.x, rot.y + 180, rot.z);
+
+                myAveragePheromonesDirectionPrefab = Instantiate(averagePheromonesDirectionPrefab, averagePheromonesLocationPointInWorldPosition, Quaternion.Euler(rot));
             }
         }
     }
