@@ -32,6 +32,11 @@ public class Ant : Gatherer
     public Vector3 averagePheromonesLocationPointInWorldPosition = new Vector3(0, 0, 0);
     public Vector3 averagePheromonesForwardDirectionInWorldPosition = new Vector3(0, 0, 0);
 
+    public GameObject averagePheromonesLocationPrefab;
+    public GameObject averagePheromonesDirectionPrefab;
+    public GameObject myAveragePheromonesLocationPrefab;
+    public GameObject myAveragePheromonesDirectionPrefab;
+
     public Vector3 myForwardDirecton;
 
     private void Start()
@@ -128,6 +133,7 @@ public class Ant : Gatherer
                     averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToFood);
                 }
 
+                UpdatePheromonesIdentifiorHelper();
                 Quaternion pheromoneLocation = Quaternion.LookRotation(averagePheromonesLocationPointInWorldPosition, Vector3.up);
 
                 tiltAroundX = KeepNumberInRange(tiltAroundX + Random.Range(Min_Interval_Direction, Max_Interval_Direction),Min_Value_Direction, Max_Value_Direction);
@@ -180,6 +186,7 @@ public class Ant : Gatherer
                 averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToFood);
                 averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToFood);
             }
+            UpdatePheromonesIdentifiorHelper();
         }
 
         if (!isFull)
@@ -189,6 +196,7 @@ public class Ant : Gatherer
                 targetResource = other.GetComponent<Resource>();
                 targetPoint = other.transform.position;
                 isScouting = false;
+                DestroyAveragePheromones();
             }
         }
         else
@@ -199,6 +207,7 @@ public class Ant : Gatherer
                 targetResourceSilo = other.GetComponent<ResourceSilo>();
                 targetPoint = other.transform.position;
                 isScouting = false;
+                DestroyAveragePheromones();
             }
         }
     }
@@ -217,10 +226,31 @@ public class Ant : Gatherer
         }
         if (count > 0)
         {
-            ans = new Vector3(ans.x / spottedPheromnes.Count, ans.y / spottedPheromnes.Count, ans.z / spottedPheromnes.Count);
+            ans = new Vector3(ans.x / count, ans.y / count, ans.z / count);
         }
+
         
+
         return ans;
+    }
+
+    private void DestroyAveragePheromones()
+    {
+        GameObject.Destroy(myAveragePheromonesDirectionPrefab);
+        GameObject.Destroy(myAveragePheromonesLocationPrefab);
+    }
+
+    private void UpdatePheromonesIdentifiorHelper()
+    {
+        if (myPlayer.debugMode)
+        {
+            DestroyAveragePheromones();
+            if (averagePheromonesLocationPointInWorldPosition!=new Vector3(0, 0, 0))
+            {
+                myAveragePheromonesLocationPrefab = Instantiate(averagePheromonesLocationPrefab, averagePheromonesLocationPointInWorldPosition, Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition));
+                myAveragePheromonesDirectionPrefab = Instantiate(averagePheromonesDirectionPrefab, averagePheromonesLocationPointInWorldPosition, Quaternion.LookRotation(averagePheromonesForwardDirectionInWorldPosition));
+            }
+        }
     }
 
     private Vector3 GetAveragePheromonDirectionByType(Pheromone.PheromoneType pheromoneType)
@@ -265,6 +295,7 @@ public class Ant : Gatherer
                 averagePheromonesLocationPointInWorldPosition = GetAveragePheromonPointByType(Pheromone.PheromoneType.ToFood);
                 averagePheromonesForwardDirectionInWorldPosition = GetAveragePheromonDirectionByType(Pheromone.PheromoneType.ToFood);
             }
+            UpdatePheromonesIdentifiorHelper();
         }
     }
 

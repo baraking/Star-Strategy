@@ -181,6 +181,16 @@ MonoBehaviour:
     type: 3}
   tiltAroundX: 0
   tiltAroundZ: 0
+  spottedPheromnes: []
+  averagePheromonesLocationPointInWorldPosition: {x: 0, y: 0, z: 0}
+  averagePheromonesForwardDirectionInWorldPosition: {x: 0, y: 0, z: 0}
+  averagePheromonesLocationPrefab: {fileID: 7960405582978092814, guid: 7c12a3abfa89b3a49bb122f1fbe5380d,
+    type: 3}
+  averagePheromonesDirectionPrefab: {fileID: 7404259553354324070, guid: 1f0f727fc7d7c9c41849e22959ae6d66,
+    type: 3}
+  myAveragePheromonesLocationPrefab: {fileID: 0}
+  myAveragePheromonesDirectionPrefab: {fileID: 0}
+  myForwardDirecton: {x: 0, y: 0, z: 0}
 --- !u!136 &6422361900503456805
 CapsuleCollider:
   m_ObjectHideFlags: 0

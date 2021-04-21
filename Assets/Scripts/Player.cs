@@ -17,6 +17,8 @@ public class Player : MonoBehaviourPunCallbacks
     public GameObject cameraHolder;
     public Camera playerCamera;
 
+    public bool debugMode;
+
     public int resources;
 
     public void Awake()
