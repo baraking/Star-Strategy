@@ -7,6 +7,10 @@ using UnityEngine;
 //pheromones should be under the same parent object
 public class Ant : Gatherer
 {
+    public enum PheromoneSpredRate { Slow=8, Normal=5, Rapid=2};
+    public static readonly float Pheromone_Spread_Default_Rate = 0.1f;
+    public PheromoneSpredRate myPheromoneSpredRate;
+
     public static readonly float Max_Value_Direction = 1f;
     public static readonly float Min_Value_Direction = -1f;
     public static readonly float Max_Interval_Direction = .5f;
@@ -48,6 +52,8 @@ public class Ant : Gatherer
         timeInDirection = 0;
         flippedDirection = false;
 
+        myPheromoneSpredRate = PheromoneSpredRate.Normal;
+
         RandomizeDirection();
         isInGatheringCooldown = false;
         //rangeCalculationPoint = transform.position;
@@ -57,7 +63,7 @@ public class Ant : Gatherer
     public IEnumerator SpreadPheromone()
     {
         isSpreading = true;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds((int)myPheromoneSpredRate * Pheromone_Spread_Default_Rate);
         GameObject spreadedPheromone = Instantiate(pheromonePrefab, transform.position, Quaternion.LookRotation(transform.forward));
         spreadedPheromone.GetComponent<Collider>().enabled = false;
         spreadedPheromone.GetComponent<Collider>().enabled = true;
@@ -122,6 +128,7 @@ public class Ant : Gatherer
         }
         else
         {
+            myPheromoneSpredRate = PheromoneSpredRate.Normal;
             if (timeInDirection <= 0 || startTime + timeInDirection <= Time.time)
             {
                 timeInDirection = Random.Range(minRandomTime, maxRandomTime);
@@ -225,6 +232,7 @@ public class Ant : Gatherer
         {
             if (targetResource == null && other.GetComponent<Resource>())
             {
+                myPheromoneSpredRate = PheromoneSpredRate.Rapid;
                 targetResource = other.GetComponent<Resource>();
                 targetPoint = other.transform.position;
                 isScouting = false;
@@ -235,7 +243,7 @@ public class Ant : Gatherer
         {
             if (carryingAmount>0 && other.GetComponent<ResourceSilo>())
             {
-                print(this.gameObject.name + " sees a Silo: " + other);
+                myPheromoneSpredRate = PheromoneSpredRate.Rapid;
                 targetResourceSilo = other.GetComponent<ResourceSilo>();
                 targetPoint = other.transform.position;
                 isScouting = false;
