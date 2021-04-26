@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EmptyScene.unity
     guid: dd57c434a873a704eac444edf462ec6f
+  - enabled: 1
+    path: Assets/Scenes/AntsScene.unity
+    guid: cd387566e59a60540bb23576283cafd8
   m_configObjects: {}

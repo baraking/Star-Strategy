@@ -7,6 +7,14 @@ public class Resource : MonoBehaviour
 
     public int curValue;
 
+    private void Start()
+    {
+        if (!GetComponent<SphereCollider>().isTrigger)
+        {
+            GetComponent<SphereCollider>().isTrigger = true;
+        }
+    }
+
     public int GiveResources(int amountTaken)
     {
         int tmpValue = curValue;

@@ -7,6 +7,7 @@ using UnityEngine;
 //may need to update/fix the player camera part.
 //cameraHolder
 //awake is written pretty bad
+//give resources a set value
 public class Player : MonoBehaviourPunCallbacks
 {
     public PhotonView photonView;
@@ -15,6 +16,8 @@ public class Player : MonoBehaviourPunCallbacks
     public List<Unit> playerUnits;
     public GameObject cameraHolder;
     public Camera playerCamera;
+
+    public bool debugMode;
 
     public int resources;
 
@@ -35,6 +38,11 @@ public class Player : MonoBehaviourPunCallbacks
             playerCamera.gameObject.SetActive(true);
         }
         
+    }
+
+    public void Start()
+    {
+        resources = 1000;
     }
 
     public void SortUnits()

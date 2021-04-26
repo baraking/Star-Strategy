@@ -51,6 +51,7 @@ MonoBehaviour:
   playerUnits: []
   cameraHolder: {fileID: 5194411923385495345}
   playerCamera: {fileID: 688672781880643210}
+  debugMode: 0
   resources: 0
 --- !u!114 &8761641264708706018
 MonoBehaviour:
