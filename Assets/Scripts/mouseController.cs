@@ -5,12 +5,17 @@ using UnityEngine;
 //be able to drag box for a multi selection
 //be able to select only units matching your player's number
 //give a world position a fast travel number
+//2 on originalMousePositionOnClick should be a var
 public class mouseController : MonoBehaviour
 {
     public Player myPlayer;
 
     public Camera playerCamera;
     public Vector3 curPosition;
+
+    public bool isSelecting;
+
+    public Vector3 originalMousePositionOnClick;
 
     public GameObject signalObject;
 
@@ -22,38 +27,63 @@ public class mouseController : MonoBehaviour
         playerCamera = myPlayer.playerCamera;
     }
 
+
+
     void Update()
     {
         if (myPlayer.photonView.IsMine)
         {
+            if (!isSelecting && Input.GetKeyDown(PlayerButtons.LEFT_CLICK))
+            {
+                isSelecting = true;
+                originalMousePositionOnClick = Input.mousePosition;
+            }
+
             RaycastHit hit;
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))//could add collider
             {
-                if (Input.GetKeyDown(PlayerButtons.LEFT_CLICK))
+                if (isSelecting)
                 {
-                    if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                    if (Vector3.Distance(originalMousePositionOnClick, Input.mousePosition) < 2)
                     {
-                        foreach (Unit unit in selectedUnits)
+                        if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
                         {
-                            unit.isSelected = false;
-                            unit.SetHealthBarActive(false);
+                            foreach (Unit unit in selectedUnits)
+                            {
+                                unit.isSelected = false;
+                                unit.SetHealthBarActive(false);
+                            }
+                            selectedUnits.Clear();
                         }
-                        selectedUnits.Clear();
+
+                        Transform objectHit = hit.transform;
+                        //Debug.Log(objectHit.name);
+                        if (objectHit.GetComponentInParent<Unit>())
+                        {
+                            if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
+                            {
+                                selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
+                                objectHit.GetComponentInParent<Unit>().isSelected = true;
+                                objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach(Unit hooveredUnit in myPlayer.playerUnits)
+                        {
+                            print(hooveredUnit);
+                            if (IsWithinSelectionBounds(hooveredUnit.gameObject))
+                            {
+                                selectedUnits.Add(hooveredUnit);
+                                hooveredUnit.isSelected = true;
+                                hooveredUnit.SetHealthBarActive(true);
+                            }
+                        }
                     }
 
-                    Transform objectHit = hit.transform;
-                    //Debug.Log(objectHit.name);
-                    if (objectHit.GetComponentInParent<Unit>())
-                    {
-                        if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
-                        {
-                            selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
-                            objectHit.GetComponentInParent<Unit>().isSelected = true;
-                            objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
-                        }
-                    }
                 }
 
                 //Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow);
@@ -117,9 +147,53 @@ public class mouseController : MonoBehaviour
                         unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
                     }
                 }
+
             }
-            //*/
+
+            if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK))
+            {
+                isSelecting = false;
+            }
         }
+            //*/
+    }
+
+    private void OnGUI()
+    {
+        if (isSelecting)
+        {
+            var rect = MouseGUI.GetScreenRect(originalMousePositionOnClick, Input.mousePosition);
+            MouseGUI.DrawScreenRect(rect, new Color(0.8f, 0.8f, 0.95f, 0.25f));
+            MouseGUI.DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
+        }
+    }
+
+    public bool IsWithinSelectionBounds(GameObject gameObject)
+    {
+        if (!isSelecting)
+        {
+            return false;
+        }
+
+        //var camera = Camera.main;
+        var viewportBounds = GetViewPortBounds(playerCamera, originalMousePositionOnClick, Input.mousePosition);
+
+        return viewportBounds.Contains(playerCamera.WorldToViewportPoint(gameObject.transform.position));
+    }
+
+    public static Bounds GetViewPortBounds(Camera camera, Vector3 screenPosition1, Vector3 screenPosition2)
+    {
+        var v1 = camera.ScreenToViewportPoint(screenPosition1);
+        var v2 = camera.ScreenToViewportPoint(screenPosition2);
+        var min = Vector3.Min(v1, v2);
+        var max = Vector3.Max(v1, v2);
+        min.z = camera.nearClipPlane;
+        max.z = camera.farClipPlane;
+
+        var bounds = new Bounds();
+        bounds.SetMinMax(min, max);
+        return bounds;
+
     }
 
 }
