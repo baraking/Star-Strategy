@@ -84,6 +84,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -139,6 +140,7 @@ GameObject:
   - component: {fileID: 1764286935803790947}
   - component: {fileID: 2238005935965921392}
   - component: {fileID: 661024803732247396}
+  - component: {fileID: 6352224322544470642}
   m_Layer: 0
   m_Name: Basic_Scout
   m_TagString: Untagged
@@ -225,6 +227,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &6352224322544470642
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764286935803790944}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.1, z: 0.2}
+  m_Center: {x: 0, y: 0.025, z: 0}
 --- !u!114 &1764286934788313603
 MonoBehaviour:
   m_ObjectHideFlags: 0

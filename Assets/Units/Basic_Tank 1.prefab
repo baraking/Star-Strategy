@@ -52,6 +52,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -107,6 +108,7 @@ GameObject:
   - component: {fileID: 7198341450773178961}
   - component: {fileID: 3125208135920657529}
   - component: {fileID: 8454255393604704278}
+  - component: {fileID: 2466319366440656862}
   m_Layer: 0
   m_Name: Basic_Tank 1
   m_TagString: Untagged
@@ -192,6 +194,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!65 &2466319366440656862
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157031704152483399}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.15, z: 0.2}
+  m_Center: {x: 0, y: 0.025, z: 0}
 --- !u!114 &2710405882814329290
 MonoBehaviour:
   m_ObjectHideFlags: 0
