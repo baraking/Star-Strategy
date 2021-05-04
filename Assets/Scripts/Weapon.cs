@@ -86,7 +86,15 @@ public class Weapon : MonoBehaviour
 
     public IEnumerator AfterFire()
     {
+        if (GetComponent<LaserWeapon>())
+        {
+            GetComponent<LaserWeapon>().FireLaser(targetUnit.transform.position);
+        }
         yield return new WaitForSeconds(weaponDetails.fireRate);
+        if (GetComponent<LaserWeapon>())
+        {
+            GetComponent<LaserWeapon>().StopFiringLaser();
+        }
         isInCooldown = false;
     }
 
