@@ -13,7 +13,7 @@ using UnityEngine;
 //should replace 1f with weapon rotation parameter
 //update rotate weapon should be more efficent
 //should fire only after weapon turned on target
-public class Weapon : MonoBehaviour
+public class Weapon : Purchasables
 {
     public WeaponDetails weaponDetails;
     public bool isInCooldown;

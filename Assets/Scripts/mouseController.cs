@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 //be able to drag box for a multi selection
 //be able to select only units matching your player's number
@@ -27,11 +28,14 @@ public class mouseController : MonoBehaviour
         playerCamera = myPlayer.playerCamera;
     }
 
-
+    public bool IsMouseHoverOnUIElement()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
 
     void Update()
     {
-        if (myPlayer.photonView.IsMine)
+        if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
         {
 
             if (selectedUnits.Count > 0)

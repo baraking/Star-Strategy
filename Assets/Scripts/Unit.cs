@@ -13,7 +13,7 @@ using UnityEngine;
 //add weapons automatically
 //have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
 //fix auto player pickup
-public class Unit : MonoBehaviour, System.IComparable
+public class Unit : Purchasables, System.IComparable
 {
     public Player myPlayer;
     public int myPlayerNumber;
