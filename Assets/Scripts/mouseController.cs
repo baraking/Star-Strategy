@@ -33,6 +33,16 @@ public class mouseController : MonoBehaviour
     {
         if (myPlayer.photonView.IsMine)
         {
+
+            if (selectedUnits.Count > 0)
+            {
+                GameManager.Instance.SetUnitCanvasActive();
+            }
+            else
+            {
+                GameManager.Instance.SetUnitCanvasDeactive();
+            }
+
             if (!isSelecting && Input.GetKeyDown(PlayerButtons.LEFT_CLICK))
             {
                 isSelecting = true;
