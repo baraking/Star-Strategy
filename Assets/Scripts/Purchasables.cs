@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Purchasables : MonoBehaviour
 {
+    public UnitDetails unitDetails;
+
     // Start is called before the first frame update
     void Start()
     {

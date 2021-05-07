@@ -22,8 +22,7 @@ public class Unit : Purchasables, System.IComparable
     [SerializeField]
     public int curHP;
 
-    public UnitDetails unitDetails;
-    public List<Weapon> unitWeapons = new List<Weapon>();
+   public List<Weapon> unitWeapons = new List<Weapon>();
 
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;

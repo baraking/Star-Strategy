@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 //be able to drag box for a multi selection
 //be able to select only units matching your player's number
@@ -40,16 +42,21 @@ public class mouseController : MonoBehaviour
 
     public void DisplayUnitPurchasables(Unit selectedUnit)
     {
+        isUnitUIDisplaying = true;
+        print("***************************"+selectedUnit.unitDetails.purchasables);
         foreach(Purchasables curPurchasable in selectedUnit.unitDetails.purchasables)
         {
             print("purchasables: " + curPurchasable);
-            Purchasables newPurchasableUI = Instantiate(curPurchasable);
+            GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
+            newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.unitDetails.icon;
             newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
         }
+        
     }
 
     public void ResetDisplayedUnitPurchasableUnits()
     {
+        isUnitUIDisplaying = false;
         foreach (Transform child in GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform)
         {
             GameObject.Destroy(child.gameObject);
@@ -66,15 +73,21 @@ public class mouseController : MonoBehaviour
             {
                 ResetDisplayedUnitPurchasableUnits();
                 GameManager.Instance.SetUnitCanvasDeactive();
-                isUnitUIDisplaying = false;
             }
             if (selectedUnits.Count > 0)
             {
-                isUnitUIDisplaying = true;
                 GameManager.Instance.SetUnitCanvasActive();
             }
+
+            print("All: " + (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit == null || displayingUnit.name != selectedUnits[0].name)))));
+
+            print("isUnitUIDisplaying: " + isUnitUIDisplaying);
+
+            print("MultyLogic: " + (displayingUnit == null || displayingUnit.name != selectedUnits[0].name));
+
             if (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit==null || displayingUnit.name!= selectedUnits[0].name))))
             {
+                print("Good");
                 ResetDisplayedUnitPurchasableUnits();
                 DisplayUnitPurchasables(selectedUnits[0]);
             }

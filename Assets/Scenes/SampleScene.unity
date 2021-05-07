@@ -4030,6 +4030,8 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 1, a: 1}
   - {r: 1, g: 1, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
+  purchaseablePrefab: {fileID: 1436898179569455325, guid: 173fb31ab89d7694c9ee43ada994d67e,
+    type: 3}
 --- !u!4 &2112318135
 Transform:
   m_ObjectHideFlags: 0
