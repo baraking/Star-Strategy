@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public static int curNumberOfPlayers = 0;
 
+    public GameObject purchaseablePrefab;
+
     public static GameManager Instance { get { return _instance; } }
 
 

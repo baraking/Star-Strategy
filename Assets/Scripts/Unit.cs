@@ -28,6 +28,9 @@ public class Unit : Purchasables, System.IComparable
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
 
+    [SerializeField] public GameObject[] availableUnits;
+    public bool isBuilding;
+
     public PhotonView photonView;
 
     void Start()
@@ -64,7 +67,32 @@ public class Unit : Purchasables, System.IComparable
 
         AddWeapons();
 
+        isBuilding = false;
         //SetHealthBarActive(false);
+    }
+
+    public void StartSpawningUnit(int unitIndex)
+    {
+        if (isSelected && !isBuilding)
+        {
+            StartCoroutine(SpawnUnit(unitIndex));
+        }
+    }
+
+    public IEnumerator SpawnUnit(int unitIndex)
+    {
+        isBuilding = true;
+        Debug.Log("Started building a " + availableUnits[unitIndex].GetComponent<Unit>().unitDetails.name);
+        yield return new WaitForSeconds(availableUnits[unitIndex].GetComponent<Unit>().unitDetails.buildTime);
+        GameObject newUnit = Instantiate(availableUnits[unitIndex]);
+        newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
+        newUnit.GetComponent<Unit>().myPlayer = myPlayer;
+        newUnit.GetComponent<Unit>().InitUnit();
+        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+
+        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        Debug.Log("Finished building a " + availableUnits[unitIndex].GetComponent<Unit>().unitDetails.name);
+        isBuilding = false;
     }
 
     public void OnMyPlayerJoined()

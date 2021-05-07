@@ -15,6 +15,11 @@ MonoBehaviour:
   name: MainBuilding
   max_hp: 1000
   speed: 0
+  rotation_speed: 0
   buildTime: 30
   costToBuild: 100
-  icon: {fileID: 0}
+  gatherAmount: 0
+  gatheringCapacity: 0
+  gatheringRange: 0
+  gatheringCooldown: 0
+  icon: {fileID: 21300000, guid: 5b645e930c531624d8c2385d31d5d43b, type: 3}

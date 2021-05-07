@@ -22,5 +22,7 @@ public class UnitDetails : ScriptableObject
     public float gatheringRange;
     public float gatheringCooldown;
 
+    public List<Purchasables> purchasables;
+
     public Sprite icon;
 }

@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 //be able to select only units matching your player's number
 //give a world position a fast travel number
 //2 on originalMousePositionOnClick should be a var
+//should write a different ui for units if more than 1 is seleted, and they share a purchasable
 public class mouseController : MonoBehaviour
 {
     public Player myPlayer;
@@ -33,6 +34,23 @@ public class mouseController : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject();
     }
 
+    public void DisplayUnitPurchasables(Unit selectedUnit)
+    {
+        foreach(Purchasables curPurchasable in selectedUnit.unitDetails.purchasables)
+        {
+            Purchasables newPurchasableUI = Instantiate(curPurchasable);
+            newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform);
+        }
+    }
+
+    public void ResetDisplayedUnitPurchasableUnits()
+    {
+        foreach (Transform child in GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
+
     void Update()
     {
         if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
@@ -42,8 +60,14 @@ public class mouseController : MonoBehaviour
             {
                 GameManager.Instance.SetUnitCanvasActive();
             }
+            else if (selectedUnits.Count == 1)
+            {
+                ResetDisplayedUnitPurchasableUnits();
+                DisplayUnitPurchasables(selectedUnits[0]);
+            }
             else
             {
+                ResetDisplayedUnitPurchasableUnits();
                 GameManager.Instance.SetUnitCanvasDeactive();
             }
 
