@@ -21,12 +21,16 @@ public class mouseController : MonoBehaviour
 
     public GameObject signalObject;
 
+    public Unit displayingUnit;
+    public bool isUnitUIDisplaying;
+
     public List<Unit> selectedUnits = new List<Unit>();
 
     void Start()
     {
         myPlayer = gameObject.GetComponent<Player>();
         playerCamera = myPlayer.playerCamera;
+        isUnitUIDisplaying = false;
     }
 
     public bool IsMouseHoverOnUIElement()
@@ -40,7 +44,7 @@ public class mouseController : MonoBehaviour
         {
             print("purchasables: " + curPurchasable);
             Purchasables newPurchasableUI = Instantiate(curPurchasable);
-            newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform);
+            newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
         }
     }
 
@@ -58,19 +62,25 @@ public class mouseController : MonoBehaviour
         {
             print("selectedUnits.Count: " + selectedUnits.Count);
 
+            if (selectedUnits.Count == 0)
+            {
+                ResetDisplayedUnitPurchasableUnits();
+                GameManager.Instance.SetUnitCanvasDeactive();
+                isUnitUIDisplaying = false;
+            }
             if (selectedUnits.Count > 0)
             {
+                isUnitUIDisplaying = true;
                 GameManager.Instance.SetUnitCanvasActive();
             }
-            if (selectedUnits.Count == 1)
+            if (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit==null || displayingUnit.name!= selectedUnits[0].name))))
             {
                 ResetDisplayedUnitPurchasableUnits();
                 DisplayUnitPurchasables(selectedUnits[0]);
             }
-            else
+            else if(selectedUnits.Count>1)
             {
                 ResetDisplayedUnitPurchasableUnits();
-                GameManager.Instance.SetUnitCanvasDeactive();
             }
 
             if (!isSelecting && Input.GetKeyDown(PlayerButtons.LEFT_CLICK))
@@ -109,7 +119,15 @@ public class mouseController : MonoBehaviour
                                     selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
                                     objectHit.GetComponentInParent<Unit>().isSelected = true;
                                     objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
-                                }  
+                                }
+                                if (selectedUnits.Count == 1)
+                                {
+                                    displayingUnit = objectHit.GetComponentInParent<Unit>();
+                                }
+                                else
+                                {
+                                    displayingUnit = null;
+                                }
                             }
                         }
                     }
@@ -125,6 +143,14 @@ public class mouseController : MonoBehaviour
                                     selectedUnits.Add(hooveredUnit);
                                     hooveredUnit.isSelected = true;
                                     hooveredUnit.SetHealthBarActive(true);
+                                }
+                                if (selectedUnits.Count == 1)
+                                {
+                                    displayingUnit = hooveredUnit;
+                                }
+                                else
+                                {
+                                    displayingUnit = null;
                                 }
                             }
                         }
