@@ -15,6 +15,12 @@ MonoBehaviour:
   name: Basic Tank
   max_hp: 100
   speed: 1
+  rotation_speed: 0
   buildTime: 10
   costToBuild: 0
-  icon: {fileID: 0}
+  gatherAmount: 0
+  gatheringCapacity: 0
+  gatheringRange: 0
+  gatheringCooldown: 0
+  purchasables: []
+  icon: {fileID: 21300000, guid: 830f49a478c820440a70ea3a8aa20acb, type: 3}

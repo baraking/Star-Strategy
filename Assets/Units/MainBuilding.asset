@@ -22,4 +22,7 @@ MonoBehaviour:
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
+  purchasables:
+  - {fileID: 7198341450773178961, guid: 46817e8853f94e94f838b0f2ba690618, type: 3}
+  - {fileID: 1589385821079909538, guid: caccf9dc6e35f354593fcb2f38cb392a, type: 3}
   icon: {fileID: 21300000, guid: 5b645e930c531624d8c2385d31d5d43b, type: 3}

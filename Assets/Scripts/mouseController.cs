@@ -38,6 +38,7 @@ public class mouseController : MonoBehaviour
     {
         foreach(Purchasables curPurchasable in selectedUnit.unitDetails.purchasables)
         {
+            print("purchasables: " + curPurchasable);
             Purchasables newPurchasableUI = Instantiate(curPurchasable);
             newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform);
         }
@@ -55,12 +56,13 @@ public class mouseController : MonoBehaviour
     {
         if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
         {
+            print("selectedUnits.Count: " + selectedUnits.Count);
 
             if (selectedUnits.Count > 0)
             {
                 GameManager.Instance.SetUnitCanvasActive();
             }
-            else if (selectedUnits.Count == 1)
+            if (selectedUnits.Count == 1)
             {
                 ResetDisplayedUnitPurchasableUnits();
                 DisplayUnitPurchasables(selectedUnits[0]);
@@ -102,9 +104,12 @@ public class mouseController : MonoBehaviour
                         {
                             if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
                             {
-                                selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
-                                objectHit.GetComponentInParent<Unit>().isSelected = true;
-                                objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()))
+                                {
+                                    selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
+                                    objectHit.GetComponentInParent<Unit>().isSelected = true;
+                                    objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                }  
                             }
                         }
                     }
@@ -115,9 +120,12 @@ public class mouseController : MonoBehaviour
                             print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
                             {
-                                selectedUnits.Add(hooveredUnit);
-                                hooveredUnit.isSelected = true;
-                                hooveredUnit.SetHealthBarActive(true);
+                                if (!selectedUnits.Contains(hooveredUnit))
+                                {
+                                    selectedUnits.Add(hooveredUnit);
+                                    hooveredUnit.isSelected = true;
+                                    hooveredUnit.SetHealthBarActive(true);
+                                }
                             }
                         }
                     }
