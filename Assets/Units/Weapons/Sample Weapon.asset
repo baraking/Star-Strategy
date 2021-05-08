@@ -17,3 +17,5 @@ MonoBehaviour:
   damage: 2
   fireRate: 1
   shouldTurnToFire: 0
+  purchasables: []
+  icon: {fileID: 21300000, guid: 4d30646d08cae6842832301c32e19a68, type: 3}
