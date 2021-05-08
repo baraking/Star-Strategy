@@ -43,8 +43,9 @@ public class mouseController : MonoBehaviour
     public void DisplayUnitPurchasables(Unit selectedUnit)
     {
         isUnitUIDisplaying = true;
-        print("***************************"+selectedUnit.unitDetails.purchasables);
-        foreach(Purchasables curPurchasable in selectedUnit.unitDetails.purchasables)
+        displayingUnit = selectedUnit;
+
+        foreach (Purchasables curPurchasable in selectedUnit.unitDetails.purchasables)
         {
             print("purchasables: " + curPurchasable);
             GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
@@ -120,13 +121,14 @@ public class mouseController : MonoBehaviour
                         {
                             if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
                             {
+                                bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
                                 if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()))
                                 {
                                     selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
                                     objectHit.GetComponentInParent<Unit>().isSelected = true;
                                     objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
                                 }
-                                if (selectedUnits.Count == 1)
+                                if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
                                 {
                                     displayingUnit = objectHit.GetComponentInParent<Unit>();
                                 }
@@ -139,7 +141,8 @@ public class mouseController : MonoBehaviour
                     }
                     else
                     {
-                        foreach(Unit hooveredUnit in myPlayer.playerUnits)
+                        bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
+                        foreach (Unit hooveredUnit in myPlayer.playerUnits)
                         {
                             print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
@@ -150,7 +153,7 @@ public class mouseController : MonoBehaviour
                                     hooveredUnit.isSelected = true;
                                     hooveredUnit.SetHealthBarActive(true);
                                 }
-                                if (selectedUnits.Count == 1)
+                                if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
                                 {
                                     displayingUnit = hooveredUnit;
                                 }
