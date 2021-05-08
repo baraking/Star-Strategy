@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Purchasables : MonoBehaviour
 {
-    public UnitDetails unitDetails;
+    public PurchasableDetails purchasableDetails;
 
     // Start is called before the first frame update
     void Start()
@@ -16,5 +16,10 @@ public class Purchasables : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public virtual Sprite GetIcon()
+    {
+        return null;
     }
 }

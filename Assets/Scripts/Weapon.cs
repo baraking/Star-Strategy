@@ -25,9 +25,20 @@ public class Weapon : Purchasables
     // Start is called before the first frame update
     void Start()
     {
+        purchasableDetails = weaponDetails;
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
         weaponParent = gameObject.GetComponentInParent<Unit>();
+    }
+
+    public List<Purchasables> GetPurchasables()
+    {
+        return weaponDetails.purchasables;
+    }
+
+    public override Sprite GetIcon()
+    {
+        return weaponDetails.icon;
     }
 
     // Update is called once per frame

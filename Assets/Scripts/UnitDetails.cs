@@ -6,7 +6,7 @@ using UnityEngine;
 //...
 
 [CreateAssetMenu(fileName ="New Unit", menuName ="Units")]
-public class UnitDetails : ScriptableObject
+public class UnitDetails : PurchasableDetails
 {
     public new string name;
     public int max_hp;

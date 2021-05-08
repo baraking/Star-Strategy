@@ -15,6 +15,8 @@ using UnityEngine;
 //fix auto player pickup
 public class Unit : Purchasables, System.IComparable
 {
+    public UnitDetails unitDetails;
+
     public Player myPlayer;
     public int myPlayerNumber;
     public bool isSelected;
@@ -22,7 +24,7 @@ public class Unit : Purchasables, System.IComparable
     [SerializeField]
     public int curHP;
 
-   public List<Weapon> unitWeapons = new List<Weapon>();
+    public List<Weapon> unitWeapons = new List<Weapon>();
 
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
@@ -39,9 +41,20 @@ public class Unit : Purchasables, System.IComparable
 
     }
 
+    public List<Purchasables> GetPurchasables()
+    {
+        return unitDetails.purchasables;
+    }
+
+    public override Sprite GetIcon()
+    {
+        return unitDetails.icon;
+    }
+
     [PunRPC]
     public void InitUnit()
     {
+        purchasableDetails = unitDetails;
         if (healthBar == null)
         {
             healthBar = gameObject.GetComponentInChildren<HealthBar>();
