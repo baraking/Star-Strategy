@@ -79,15 +79,8 @@ public class mouseController : MonoBehaviour
                 GameManager.Instance.SetUnitCanvasActive();
             }
 
-            print("All: " + (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit == null || displayingUnit.name != selectedUnits[0].name)))));
-
-            print("isUnitUIDisplaying: " + isUnitUIDisplaying);
-
-            print("MultyLogic: " + (displayingUnit == null || displayingUnit.name != selectedUnits[0].name));
-
             if (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit==null || displayingUnit.name!= selectedUnits[0].name))))
             {
-                print("Good");
                 ResetDisplayedUnitPurchasableUnits();
                 DisplayUnitPurchasables(selectedUnits[0]);
             }
@@ -234,13 +227,12 @@ public class mouseController : MonoBehaviour
                 }
 
             }
-
-            if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK))
-            {
-                isSelecting = false;
-            }
         }
-            //*/
+        if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK) || !Input.GetKey(PlayerButtons.LEFT_CLICK))
+        {
+            isSelecting = false;
+        }
+        //*/
     }
 
     private void OnGUI()
