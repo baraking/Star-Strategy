@@ -181,7 +181,7 @@ public class Unit : Purchasables, System.IComparable
         return shortestRange;
     }
 
-    void AddWeapons()
+    public void AddWeapons()
     {
         Weapon[] tmpWeapons = gameObject.GetComponentsInChildren<Weapon>();
         for(int i = 0; i < tmpWeapons.Length; i++)

@@ -47,13 +47,13 @@ public class mouseController : MonoBehaviour
 
         foreach (Purchasables curPurchasable in selectedUnit.GetPurchasables())
         {
-            print("purchasables: " + curPurchasable);
+            //print("purchasables: " + curPurchasable);
             GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
             newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
 
             newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
-        }
-        
+            newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
+        } 
     }
 
     public void ResetDisplayedUnitPurchasableUnits()
