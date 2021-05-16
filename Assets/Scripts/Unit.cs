@@ -29,7 +29,6 @@ public class Unit : Purchasables, System.IComparable
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
 
-    [SerializeField] public GameObject[] availableUnits;
     public bool isBuilding;
 
     public PhotonView photonView;
@@ -94,16 +93,16 @@ public class Unit : Purchasables, System.IComparable
     public IEnumerator SpawnUnit(int unitIndex)
     {
         isBuilding = true;
-        Debug.Log("Started building a " + availableUnits[unitIndex].GetComponent<Unit>().unitDetails.name);
-        yield return new WaitForSeconds(availableUnits[unitIndex].GetComponent<Unit>().unitDetails.buildTime);
-        GameObject newUnit = Instantiate(availableUnits[unitIndex]);
+        Debug.Log("Started building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+        yield return new WaitForSeconds(unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.buildTime);
+        GameObject newUnit = Instantiate(unitDetails.purchasables[unitIndex].gameObject);
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
         newUnit.GetComponent<Unit>().InitUnit();
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
 
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
-        Debug.Log("Finished building a " + availableUnits[unitIndex].GetComponent<Unit>().unitDetails.name);
+        Debug.Log("Finished building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
         isBuilding = false;
     }
 
@@ -190,6 +189,10 @@ public class Unit : Purchasables, System.IComparable
             {
                 unitWeapons.Add(tmpWeapons[i]);
             }
+        }
+        foreach(WeaponHolder weaponHolder in GetComponentsInChildren<WeaponHolder>())
+        {
+            weaponHolder.UpdateIfHasAWeapon();
         }
     }
 

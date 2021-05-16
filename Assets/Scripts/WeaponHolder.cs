@@ -10,6 +10,11 @@ public class WeaponHolder : MonoBehaviour
 
     private void Start()
     {
+        UpdateIfHasAWeapon();
+    }
+
+    public void UpdateIfHasAWeapon()
+    {
         hasAWeapon = GetComponentInChildren<Weapon>();
     }
 
