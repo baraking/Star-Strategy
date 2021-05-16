@@ -28,6 +28,7 @@ public class Unit : Purchasables, System.IComparable
 
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
+    public static readonly Vector3 DEFAULT_SPAWN_LOCATION = new Vector3(0, 0, 0.25f);
 
     public bool isBuilding;
 
@@ -98,6 +99,7 @@ public class Unit : Purchasables, System.IComparable
         GameObject newUnit = Instantiate(unitDetails.purchasables[unitIndex].gameObject);
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
+        newUnit.transform.position = transform.position + DEFAULT_SPAWN_LOCATION;
         newUnit.GetComponent<Unit>().InitUnit();
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
 
