@@ -18,8 +18,18 @@ public class WeaponHolder : MonoBehaviour
         hasAWeapon = GetComponentInChildren<Weapon>();
     }
 
-    public void BuildUpgrade(GameObject chosenPurchasable)
+    public void StartBuildingUpgrade(GameObject chosenPurchasable)
     {
+        if (!hasAWeapon)
+        {
+            StartCoroutine(SpawnUpgrade(chosenPurchasable));
+        }
+    }
+
+    public IEnumerator SpawnUpgrade(GameObject chosenPurchasable)
+    {
+        hasAWeapon = true;
+        yield return new WaitForSeconds(chosenPurchasable.GetComponent<Weapon>().weaponDetails.buildTime);
         GameObject upgrade = Instantiate(chosenPurchasable);
         upgrade.transform.SetParent(this.transform, false);
         upgrade.transform.localPosition = spawnPoint;

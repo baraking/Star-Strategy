@@ -64,7 +64,7 @@ public class Purchasables : MonoBehaviour
                 {
                     if (purchasable.name == this.gameObject.name)
                     {
-                        purchasingParent.GetComponentInChildren<WeaponHolder>().BuildUpgrade(purchasable.gameObject);
+                        purchasingParent.GetComponentInChildren<WeaponHolder>().StartBuildingUpgrade(purchasable.gameObject);
                         return;
                     }
                 }

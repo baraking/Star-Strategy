@@ -11,6 +11,9 @@ public class WeaponDetails : PurchasableDetails
     public float fireRate;
     public bool shouldTurnToFire;
 
+    public float buildTime;
+    public int costToBuild;
+
     public List<Purchasables> purchasables;
 
     public Sprite icon;
