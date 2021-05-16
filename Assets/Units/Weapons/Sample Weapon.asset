@@ -18,4 +18,4 @@ MonoBehaviour:
   fireRate: 1
   shouldTurnToFire: 0
   purchasables: []
-  icon: {fileID: 21300000, guid: 4d30646d08cae6842832301c32e19a68, type: 3}
+  icon: {fileID: 21300000, guid: d81eac7d019167f4ba7a4cfc83645722, type: 3}
