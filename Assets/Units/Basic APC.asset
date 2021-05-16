@@ -24,4 +24,4 @@ MonoBehaviour:
   gatheringCooldown: 0
   purchasables:
   - {fileID: 2942943752841473789, guid: 028849d5b788dcd4db41dded8f9d9de7, type: 3}
-  icon: {fileID: 21300000, guid: 830f49a478c820440a70ea3a8aa20acb, type: 3}
+  icon: {fileID: 21300000, guid: b4bd4fa6b2002a741a126589d78f777e, type: 3}

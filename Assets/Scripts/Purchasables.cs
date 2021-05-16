@@ -25,18 +25,37 @@ public class Purchasables : MonoBehaviour
 
     public void Purchase(GameObject purchasingParent)
     {
-        print("Purchase " + gameObject.name + " for " + purchasingParent.gameObject.name);
-        print("My Position: " + purchasingParent.transform.position);
+        //print("Purchase " + gameObject.name + " for " + purchasingParent.gameObject.name);
+        //print("My Position: " + purchasingParent.transform.position);
 
         if (this.GetComponent<Weapon>())
         {
             PurchaseWeapon(purchasingParent);
         }
+
+        if (this.GetComponent<Unit>())
+        {
+            PurchaseUnit(purchasingParent);
+        }
+    }
+
+    public void PurchaseUnit(GameObject purchasingParent)
+    {
+        int i = 0;
+        foreach (Purchasables purchasable in purchasingParent.GetComponentInChildren<Unit>().GetPurchasables())
+        {
+            if (purchasable.name == this.gameObject.name)
+            {
+                purchasingParent.GetComponentInChildren<Unit>().StartSpawningUnit(i);
+                return;
+            }
+            i++;
+        }
     }
 
     public void PurchaseWeapon(GameObject purchasingParent)
     {
-        print(purchasingParent.GetComponentInChildren<WeaponHolder>());
+        //print(purchasingParent.GetComponentInChildren<WeaponHolder>());
         if (purchasingParent.GetComponentInChildren<WeaponHolder>())
         {
             if (!purchasingParent.GetComponentInChildren<WeaponHolder>().hasAWeapon)

@@ -4713,6 +4713,17 @@ PrefabInstance:
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 7399669954968898029}
+    - target: {fileID: 1589385821079909538, guid: caccf9dc6e35f354593fcb2f38cb392a,
+        type: 3}
+      propertyPath: availableUnits.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1589385821079909538, guid: caccf9dc6e35f354593fcb2f38cb392a,
+        type: 3}
+      propertyPath: availableUnits.Array.data[4]
+      value: 
+      objectReference: {fileID: 2143826105338946143, guid: 33de378a9a3cc6945b40d65cde375c7b,
+        type: 3}
     - target: {fileID: 4490547813879864235, guid: caccf9dc6e35f354593fcb2f38cb392a,
         type: 3}
       propertyPath: sceneViewId

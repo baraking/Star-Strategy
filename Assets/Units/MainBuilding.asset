@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: MainBuilding
   m_EditorClassIdentifier: 
   name: MainBuilding
-  purchasables:
-  - {fileID: 7198341450773178961, guid: 46817e8853f94e94f838b0f2ba690618, type: 3}
-  icon: {fileID: 21300000, guid: 5b645e930c531624d8c2385d31d5d43b, type: 3}
-  name: MainBuilding
   max_hp: 1000
   speed: 0
   rotation_speed: 0
@@ -26,3 +22,7 @@ MonoBehaviour:
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
+  purchasables:
+  - {fileID: 6194072957137350217, guid: 33de378a9a3cc6945b40d65cde375c7b, type: 3}
+  - {fileID: 7198341450773178961, guid: 46817e8853f94e94f838b0f2ba690618, type: 3}
+  icon: {fileID: 21300000, guid: 5b645e930c531624d8c2385d31d5d43b, type: 3}
