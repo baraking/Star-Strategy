@@ -36,6 +36,8 @@ public class Player : MonoBehaviourPunCallbacks
             }
             playerCamera = gameObject.GetComponentInChildren<Camera>();*/
             playerCamera.gameObject.SetActive(true);
+
+            GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber-1];
         }
         
     }

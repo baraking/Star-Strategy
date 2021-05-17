@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject PlayerPrefab;
     public GameObject SceneCamera;
     public GameObject JoinCanvas;
+    public GameObject UnitCanvas;
 
     public GameObject Units;
     public GameObject newPlayer;
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private static GameManager _instance;
 
     public static int curNumberOfPlayers = 0;
+
+    public GameObject purchaseablePrefab;
 
     public static GameManager Instance { get { return _instance; } }
 
@@ -40,8 +43,19 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         //SpawnPlayer();
         JoinCanvas.SetActive(true);
+        UnitCanvas.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
+    }
+
+    public void SetUnitCanvasActive()
+    {
+        UnitCanvas.SetActive(true);
+    }
+
+    public void SetUnitCanvasDeactive()
+    {
+        UnitCanvas.SetActive(false);
     }
 
     private void Update()

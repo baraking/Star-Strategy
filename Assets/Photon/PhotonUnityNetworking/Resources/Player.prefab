@@ -72,6 +72,8 @@ MonoBehaviour:
   originalMousePositionOnClick: {x: 0, y: 0, z: 0}
   signalObject: {fileID: 6142774770063362455, guid: 742f411a84e0324419c58a5e76a512b1,
     type: 3}
+  displayingUnit: {fileID: 0}
+  isUnitUIDisplaying: 0
   selectedUnits: []
 --- !u!114 &1251872124643505152
 MonoBehaviour:

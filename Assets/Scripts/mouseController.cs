@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 //be able to drag box for a multi selection
 //be able to select only units matching your player's number
 //give a world position a fast travel number
 //2 on originalMousePositionOnClick should be a var
+//should write a different ui for units if more than 1 is seleted, and they share a purchasable
 public class mouseController : MonoBehaviour
 {
     public Player myPlayer;
@@ -19,20 +23,74 @@ public class mouseController : MonoBehaviour
 
     public GameObject signalObject;
 
+    public Unit displayingUnit;
+    public bool isUnitUIDisplaying;
+
     public List<Unit> selectedUnits = new List<Unit>();
 
     void Start()
     {
         myPlayer = gameObject.GetComponent<Player>();
         playerCamera = myPlayer.playerCamera;
+        isUnitUIDisplaying = false;
     }
 
+    public bool IsMouseHoverOnUIElement()
+    {
+        return EventSystem.current.IsPointerOverGameObject();
+    }
 
+    public void DisplayUnitPurchasables(Unit selectedUnit)
+    {
+        isUnitUIDisplaying = true;
+        displayingUnit = selectedUnit;
+
+        foreach (Purchasables curPurchasable in selectedUnit.GetPurchasables())
+        {
+            //print("purchasables: " + curPurchasable);
+            GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
+            newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
+
+            newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
+            newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
+        } 
+    }
+
+    public void ResetDisplayedUnitPurchasableUnits()
+    {
+        isUnitUIDisplaying = false;
+        foreach (Transform child in GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
 
     void Update()
     {
-        if (myPlayer.photonView.IsMine)
+        if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
         {
+            print("selectedUnits.Count: " + selectedUnits.Count);
+
+            if (selectedUnits.Count == 0)
+            {
+                ResetDisplayedUnitPurchasableUnits();
+                GameManager.Instance.SetUnitCanvasDeactive();
+            }
+            if (selectedUnits.Count > 0)
+            {
+                GameManager.Instance.SetUnitCanvasActive();
+            }
+
+            if (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit==null || displayingUnit.name!= selectedUnits[0].name))))
+            {
+                ResetDisplayedUnitPurchasableUnits();
+                DisplayUnitPurchasables(selectedUnits[0]);
+            }
+            else if(selectedUnits.Count>1)
+            {
+                ResetDisplayedUnitPurchasableUnits();
+            }
+
             if (!isSelecting && Input.GetKeyDown(PlayerButtons.LEFT_CLICK))
             {
                 isSelecting = true;
@@ -64,22 +122,46 @@ public class mouseController : MonoBehaviour
                         {
                             if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
                             {
-                                selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
-                                objectHit.GetComponentInParent<Unit>().isSelected = true;
-                                objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
+                                if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()))
+                                {
+                                    selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
+                                    objectHit.GetComponentInParent<Unit>().isSelected = true;
+                                    objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                }
+                                if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
+                                {
+                                    displayingUnit = objectHit.GetComponentInParent<Unit>();
+                                }
+                                else
+                                {
+                                    displayingUnit = null;
+                                }
                             }
                         }
                     }
                     else
                     {
-                        foreach(Unit hooveredUnit in myPlayer.playerUnits)
+                        bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
+                        foreach (Unit hooveredUnit in myPlayer.playerUnits)
                         {
                             print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
                             {
-                                selectedUnits.Add(hooveredUnit);
-                                hooveredUnit.isSelected = true;
-                                hooveredUnit.SetHealthBarActive(true);
+                                if (!selectedUnits.Contains(hooveredUnit))
+                                {
+                                    selectedUnits.Add(hooveredUnit);
+                                    hooveredUnit.isSelected = true;
+                                    hooveredUnit.SetHealthBarActive(true);
+                                }
+                                if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
+                                {
+                                    displayingUnit = hooveredUnit;
+                                }
+                                else
+                                {
+                                    displayingUnit = null;
+                                }
                             }
                         }
                     }
@@ -149,13 +231,12 @@ public class mouseController : MonoBehaviour
                 }
 
             }
-
-            if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK))
-            {
-                isSelecting = false;
-            }
         }
-            //*/
+        if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK) || !Input.GetKey(PlayerButtons.LEFT_CLICK))
+        {
+            isSelecting = false;
+        }
+        //*/
     }
 
     private void OnGUI()

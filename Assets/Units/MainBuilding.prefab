@@ -170,20 +170,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62df15e2442373a4bbb5435d44c6f2a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  purchasableDetails: {fileID: 0}
+  unitDetails: {fileID: 11400000, guid: 4ff9d8de671c5cd46812265731fef88a, type: 2}
   myPlayer: {fileID: 0}
   myPlayerNumber: 0
   isSelected: 0
   curHP: 0
-  unitDetails: {fileID: 11400000, guid: 4ff9d8de671c5cd46812265731fef88a, type: 2}
   unitWeapons: []
   healthBar: {fileID: 7399669953857090422}
-  photonView: {fileID: 0}
   availableUnits:
   - {fileID: 3157031704152483399, guid: 46817e8853f94e94f838b0f2ba690618, type: 3}
-  - {fileID: 1764286935803790944, guid: 7b2bb50c4b152a849840341f4616c7b3, type: 3}
-  - {fileID: 1839431414684886345, guid: 5b2e98333116a9a469435366548d966b, type: 3}
+  - {fileID: 2143826105338946143, guid: 33de378a9a3cc6945b40d65cde375c7b, type: 3}
   - {fileID: 6991408682690523944, guid: 3ce97692faaac194cb946de3354dd10c, type: 3}
   isBuilding: 0
+  photonView: {fileID: 0}
 --- !u!114 &4490547813879864235
 MonoBehaviour:
   m_ObjectHideFlags: 0

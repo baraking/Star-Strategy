@@ -13,8 +13,10 @@ using UnityEngine;
 //add weapons automatically
 //have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
 //fix auto player pickup
-public class Unit : MonoBehaviour, System.IComparable
+public class Unit : Purchasables, System.IComparable
 {
+    public UnitDetails unitDetails;
+
     public Player myPlayer;
     public int myPlayerNumber;
     public bool isSelected;
@@ -22,11 +24,13 @@ public class Unit : MonoBehaviour, System.IComparable
     [SerializeField]
     public int curHP;
 
-    public UnitDetails unitDetails;
     public List<Weapon> unitWeapons = new List<Weapon>();
 
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
+    public static readonly Vector3 DEFAULT_SPAWN_LOCATION = new Vector3(0, 0, 0.25f);
+
+    public bool isBuilding;
 
     public PhotonView photonView;
 
@@ -37,9 +41,20 @@ public class Unit : MonoBehaviour, System.IComparable
 
     }
 
+    public List<Purchasables> GetPurchasables()
+    {
+        return unitDetails.purchasables;
+    }
+
+    public override Sprite GetIcon()
+    {
+        return unitDetails.icon;
+    }
+
     [PunRPC]
     public void InitUnit()
     {
+        purchasableDetails = unitDetails;
         if (healthBar == null)
         {
             healthBar = gameObject.GetComponentInChildren<HealthBar>();
@@ -64,7 +79,33 @@ public class Unit : MonoBehaviour, System.IComparable
 
         AddWeapons();
 
+        isBuilding = false;
         //SetHealthBarActive(false);
+    }
+
+    public void StartSpawningUnit(int unitIndex)
+    {
+        if (isSelected && !isBuilding)
+        {
+            StartCoroutine(SpawnUnit(unitIndex));
+        }
+    }
+
+    public IEnumerator SpawnUnit(int unitIndex)
+    {
+        isBuilding = true;
+        Debug.Log("Started building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+        yield return new WaitForSeconds(unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.buildTime);
+        GameObject newUnit = Instantiate(unitDetails.purchasables[unitIndex].gameObject);
+        newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
+        newUnit.GetComponent<Unit>().myPlayer = myPlayer;
+        newUnit.transform.position = transform.position + DEFAULT_SPAWN_LOCATION;
+        newUnit.GetComponent<Unit>().InitUnit();
+        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+
+        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        Debug.Log("Finished building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+        isBuilding = false;
     }
 
     public void OnMyPlayerJoined()
@@ -141,7 +182,7 @@ public class Unit : MonoBehaviour, System.IComparable
         return shortestRange;
     }
 
-    void AddWeapons()
+    public void AddWeapons()
     {
         Weapon[] tmpWeapons = gameObject.GetComponentsInChildren<Weapon>();
         for(int i = 0; i < tmpWeapons.Length; i++)
@@ -150,6 +191,10 @@ public class Unit : MonoBehaviour, System.IComparable
             {
                 unitWeapons.Add(tmpWeapons[i]);
             }
+        }
+        foreach(WeaponHolder weaponHolder in GetComponentsInChildren<WeaponHolder>())
+        {
+            weaponHolder.UpdateIfHasAWeapon();
         }
     }
 

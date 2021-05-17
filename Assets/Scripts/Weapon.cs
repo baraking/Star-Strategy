@@ -13,7 +13,7 @@ using UnityEngine;
 //should replace 1f with weapon rotation parameter
 //update rotate weapon should be more efficent
 //should fire only after weapon turned on target
-public class Weapon : MonoBehaviour
+public class Weapon : Purchasables
 {
     public WeaponDetails weaponDetails;
     public bool isInCooldown;
@@ -25,9 +25,20 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        purchasableDetails = weaponDetails;
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
         weaponParent = gameObject.GetComponentInParent<Unit>();
+    }
+
+    public List<Purchasables> GetPurchasables()
+    {
+        return weaponDetails.purchasables;
+    }
+
+    public override Sprite GetIcon()
+    {
+        return weaponDetails.icon;
     }
 
     // Update is called once per frame
