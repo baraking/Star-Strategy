@@ -72,15 +72,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   purchasableDetails: {fileID: 0}
+  timeStartedUpgrading: 0
+  isBuilding: 0
   unitDetails: {fileID: 11400000, guid: 80bd1eb04537fa14db4ddff302c34e1a, type: 2}
   myPlayer: {fileID: 0}
   myPlayerNumber: 1
   isSelected: 0
+  buildTime: 0
   curHP: 0
   unitWeapons: []
   healthBar: {fileID: 1408828618449008082}
-  availableUnits: []
-  isBuilding: 0
   photonView: {fileID: 0}
   hasTarget: 0
   targetPoint: {x: 0, y: 0, z: 0}
