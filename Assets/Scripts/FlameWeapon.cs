@@ -5,7 +5,8 @@ using UnityEngine;
 public class FlameWeapon : MonoBehaviour
 {
 
-    public GameObject fire;
+    public GameObject firePrefab;
+    public GameObject existingFire;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +22,17 @@ public class FlameWeapon : MonoBehaviour
 
     public void Fire()
     {
-        GameObject newExplosion = Instantiate(fire);
-        newExplosion.transform.localPosition = transform.position;
-        newExplosion.GetComponentInChildren<ParticleSystem>().Play();
+        existingFire = Instantiate(firePrefab);
+        existingFire.transform.localPosition = transform.position;
+        existingFire.transform.rotation = transform.rotation;
+        existingFire.GetComponentInChildren<ParticleSystem>().Play();
+    }
+
+    public void StopFiring()
+    {
+        if (existingFire != null)
+        {
+            existingFire.GetComponentInChildren<ParticleSystem>().Stop();
+        }
     }
 }

@@ -482,4 +482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8518d732f2fec1244b32ef3b1f249c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fire: {fileID: 265032037181435373, guid: 131ae523f43d9af47b395781f1063c1e, type: 3}
+  firePrefab: {fileID: 265032037181435373, guid: 131ae523f43d9af47b395781f1063c1e,
+    type: 3}
+  existingFire: {fileID: 0}

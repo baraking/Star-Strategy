@@ -5,7 +5,7 @@ using UnityEngine;
 public class ExplosiveWeapon : MonoBehaviour
 {
 
-    public GameObject explosion;
+    public GameObject explosionPrefab;
     public Vector3 location;
 
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class ExplosiveWeapon : MonoBehaviour
 
     public void Explode()
     {
-        GameObject newExplosion = Instantiate(explosion);
+        GameObject newExplosion = Instantiate(explosionPrefab);
         newExplosion.transform.localPosition = location;
         newExplosion.GetComponentInChildren<ParticleSystem>().Play();
     }

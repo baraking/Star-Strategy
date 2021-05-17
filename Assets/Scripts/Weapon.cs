@@ -115,6 +115,10 @@ public class Weapon : Purchasables
         {
             GetComponent<LaserWeapon>().StopFiringLaser();
         }
+        if (GetComponent<FlameWeapon>())
+        {
+            GetComponent<FlameWeapon>().StopFiring();
+        }
         isInCooldown = false;
     }
 
