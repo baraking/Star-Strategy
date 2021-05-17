@@ -25,6 +25,7 @@ public class mouseController : MonoBehaviour
 
     public Unit displayingUnit;
     public bool isUnitUIDisplaying;
+    public float timeToFinishUpgrade;
 
     public List<Unit> selectedUnits = new List<Unit>();
 
@@ -80,6 +81,12 @@ public class mouseController : MonoBehaviour
             {
                 GameManager.Instance.SetUnitCanvasActive();
             }
+
+            /*if (selectedUnits.Count == 1)
+            {
+                timeToFinishUpgrade = Time.time / (selectedUnits[0].timeStartedUpgrading + selectedUnits[0].buildTime);
+                print(timeToFinishUpgrade);
+            }*/
 
             if (selectedUnits.Count == 1 && (!isUnitUIDisplaying || (isUnitUIDisplaying && (displayingUnit==null || displayingUnit.name!= selectedUnits[0].name))))
             {

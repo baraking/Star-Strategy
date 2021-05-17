@@ -101,6 +101,15 @@ public class Weapon : Purchasables
         {
             GetComponent<LaserWeapon>().FireLaser(targetUnit.transform.position);
         }
+        if (GetComponent<ExplosiveWeapon>())
+        {
+            GetComponent<ExplosiveWeapon>().location = targetUnit.transform.position;
+            GetComponent<ExplosiveWeapon>().Explode();
+        }
+        if (GetComponent<FlameWeapon>())
+        {
+            GetComponent<FlameWeapon>().Fire();
+        }
         yield return new WaitForSeconds(weaponDetails.fireRate);
         if (GetComponent<LaserWeapon>())
         {

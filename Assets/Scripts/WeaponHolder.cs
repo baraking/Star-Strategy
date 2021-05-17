@@ -7,6 +7,7 @@ public class WeaponHolder : MonoBehaviour
     public Vector3 spawnPoint;
     public bool hasAWeapon;
     public List<Purchasables> possibleUpgrades;
+    public float buildTime;
 
     private void Start()
     {
@@ -29,6 +30,7 @@ public class WeaponHolder : MonoBehaviour
     public IEnumerator SpawnUpgrade(GameObject chosenPurchasable)
     {
         hasAWeapon = true;
+        buildTime = chosenPurchasable.GetComponent<Weapon>().weaponDetails.buildTime;
         yield return new WaitForSeconds(chosenPurchasable.GetComponent<Weapon>().weaponDetails.buildTime);
         GameObject upgrade = Instantiate(chosenPurchasable);
         upgrade.transform.SetParent(this.transform, false);

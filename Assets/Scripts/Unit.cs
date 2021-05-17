@@ -20,6 +20,7 @@ public class Unit : Purchasables, System.IComparable
     public Player myPlayer;
     public int myPlayerNumber;
     public bool isSelected;
+    public float buildTime;
 
     [SerializeField]
     public int curHP;
@@ -29,8 +30,6 @@ public class Unit : Purchasables, System.IComparable
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
     public static readonly Vector3 DEFAULT_SPAWN_LOCATION = new Vector3(0, 0, 0.25f);
-
-    public bool isBuilding;
 
     public PhotonView photonView;
 
@@ -94,6 +93,7 @@ public class Unit : Purchasables, System.IComparable
     public IEnumerator SpawnUnit(int unitIndex)
     {
         isBuilding = true;
+        buildTime = unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.buildTime;
         Debug.Log("Started building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
         yield return new WaitForSeconds(unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.buildTime);
         GameObject newUnit = Instantiate(unitDetails.purchasables[unitIndex].gameObject);

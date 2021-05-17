@@ -106,6 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8491256260718087249}
   - component: {fileID: 6676915221380271608}
+  - component: {fileID: -6542875481566445879}
   m_Layer: 0
   m_Name: Missile Turrent
   m_TagString: Untagged
@@ -141,11 +142,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   purchasableDetails: {fileID: 0}
+  timeStartedUpgrading: 0
+  isBuilding: 0
   weaponDetails: {fileID: 11400000, guid: 8ee2cc00fd9c0c64aa28596927d86aca, type: 2}
   isInCooldown: 0
   rangeCalculationPoint: {x: 0, y: 0, z: 0}
   weaponParent: {fileID: 0}
   targetUnit: {fileID: 0}
+--- !u!114 &-6542875481566445879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5233486490850220153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dae694c04bcb85f4b8c97927dd219ad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 265032037181435373, guid: 4cb0f8ddf8460274a980ba064e0f2b56,
+    type: 3}
 --- !u!1 &5826370890107103354
 GameObject:
   m_ObjectHideFlags: 0

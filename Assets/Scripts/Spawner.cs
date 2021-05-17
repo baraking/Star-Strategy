@@ -9,6 +9,11 @@ public class Spawner : Unit
 {
     void Update()
     {
+        if (isBuilding && Time.time - timeStartedUpgrading < buildTime)
+        {
+            //print(Time.time-timeStartedUpgrading);
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             StartSpawningUnit(0);
