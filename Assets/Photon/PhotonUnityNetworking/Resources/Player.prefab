@@ -74,6 +74,7 @@ MonoBehaviour:
     type: 3}
   displayingUnit: {fileID: 0}
   isUnitUIDisplaying: 0
+  timeToFinishUpgrade: 0
   selectedUnits: []
 --- !u!114 &1251872124643505152
 MonoBehaviour:

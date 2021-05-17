@@ -5,6 +5,8 @@ using UnityEngine;
 public class Purchasables : MonoBehaviour
 {
     public PurchasableDetails purchasableDetails;
+    public float timeStartedUpgrading;
+    public bool isBuilding;
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +32,16 @@ public class Purchasables : MonoBehaviour
 
         if (this.GetComponent<Weapon>())
         {
+            purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
             PurchaseWeapon(purchasingParent);
+            return;
         }
 
         if (this.GetComponent<Unit>())
         {
+            purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
             PurchaseUnit(purchasingParent);
+            return;
         }
     }
 
