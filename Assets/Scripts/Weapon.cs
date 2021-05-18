@@ -49,13 +49,27 @@ public class Weapon : Purchasables
             Fire(targetUnit);
             Vector3 targetDirection = targetUnit.transform.position - transform.position;
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDirection);
+            if (!weaponDetails.shouldTurnToFire)
+            {
+                transform.rotation = Quaternion.LookRotation(newDirection);
+            }
+            else
+            {
+                weaponParent.transform.rotation = Quaternion.LookRotation(newDirection);
+            }
         }
         else
         {
             Vector3 targetDirection = gameObject.GetComponentInParent<Unit>().transform.forward;
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDirection);
+            if (!weaponDetails.shouldTurnToFire)
+            {
+                transform.rotation = Quaternion.LookRotation(newDirection);
+            }
+            else
+            {
+                weaponParent.transform.rotation = Quaternion.LookRotation(newDirection);
+            }
         }
     }
 
