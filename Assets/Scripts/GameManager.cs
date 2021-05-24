@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject SceneCamera;
     public GameObject JoinCanvas;
     public GameObject UnitCanvas;
-    public GameObject MovementCanvas;
+    public GameObject ExpandedMovementCanvas;
+    public GameObject MinimizedMovementCanvas;
 
     public GameObject Units;
     public GameObject newPlayer;
@@ -61,12 +62,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void SetMovementCanvasActive()
     {
-        MovementCanvas.SetActive(true);
+        ExpandedMovementCanvas.SetActive(true);
+        MinimizedMovementCanvas.SetActive(false);
     }
 
     public void SetMovementCanvasDeactive()
     {
-        MovementCanvas.SetActive(false);
+        MinimizedMovementCanvas.SetActive(true);
+        ExpandedMovementCanvas.SetActive(false);
     }
 
     private void Update()

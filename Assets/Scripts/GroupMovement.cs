@@ -1,18 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public class GroupMovement : MonoBehaviour
 {
-    public Image smallChosenIcon;
-
-    public Sprite smallArcDefensiveFormation;
-    public Sprite smallArcOffensiveFormation;
-    public Sprite smallCircleFormation;
-    public Sprite smallRowFormation;
-    public Sprite smallPointFormation;
+    public GameObject minimizedGroupMovement;
 
     public static float GetRotationDegree(Vector3 rightDirection, float additionalRotation)
     {
@@ -117,53 +110,53 @@ public class GroupMovement : MonoBehaviour
         return ans;
     }
 
-    public static void SetCircleFormationActive()
+    public void SetCircleFormationActive()
     {
         foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = CircleFormation;
-                //smallChosenIcon = smallCircleFormation;
+                minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallChosenIcon.sprite = minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallCircleFormation;
                 return;
             }
         }
     }
 
-    public static void SetOffensiveArcFormationActive()
+    public void SetOffensiveArcFormationActive()
     {
         foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = ArcOffensiveFormation;
-                //smallChosenIcon = smallArcOffensiveFormation;
+                minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallChosenIcon.sprite = minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallArcOffensiveFormation;
                 return;
             }
         }
     }
 
-    public static void SetDefensiveArcFormationActive()
+    public void SetDefensiveArcFormationActive()
     {
         foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = ArcDefensiveFormation;
-                //smallChosenIcon = smallArcDefensiveFormation;
+                minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallChosenIcon.sprite = minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallArcDefensiveFormation;
                 return;
             }
         }
     }
 
-    public static void SetRowFormationActive()
+    public void SetRowFormationActive()
     {
         foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = RowFormation;
-                //smallChosenIcon = smallRowFormation;
+                minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallChosenIcon.sprite = minimizedGroupMovement.GetComponent<MinimizedGroupMovement>().smallRowFormation;
                 return;
             }
         }
