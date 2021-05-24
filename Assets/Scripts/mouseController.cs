@@ -202,6 +202,23 @@ public class mouseController : MonoBehaviour
             }
 
             ///*
+            ///
+
+            Vector3[] formation;
+
+            if (Input.GetKey(PlayerButtons.RIGHT_CLICK))
+            {
+                if (Vector3.Distance(curRightMousePoint, hit.point) > .1f)
+                {
+                    Vector3 newdir = (hit.point - curRightMousePoint);
+                    formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+
+                    foreach (Vector3 position in formation)
+                    {
+                        Instantiate(signalObject, position, new Quaternion());
+                    }
+                }
+            }
             if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
             {
                 Transform objectHit = hit.transform;
@@ -247,7 +264,7 @@ public class mouseController : MonoBehaviour
 
                 //print("clicked!");
                 //Instantiate(signalObject, hit.point, new Quaternion());
-                Vector3[] formation;
+                
  
                 if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
                 {
