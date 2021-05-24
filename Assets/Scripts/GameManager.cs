@@ -59,6 +59,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         UnitCanvas.SetActive(false);
     }
 
+    public void SetMovementCanvasActive()
+    {
+        MovementCanvas.SetActive(true);
+    }
+
+    public void SetMovementCanvasDeactive()
+    {
+        MovementCanvas.SetActive(false);
+    }
+
     private void Update()
     {
         Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);

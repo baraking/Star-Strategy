@@ -74,7 +74,7 @@ public class mouseController : MonoBehaviour
     {
         if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
         {
-            print("selectedUnits.Count: " + selectedUnits.Count);
+            //print("selectedUnits.Count: " + selectedUnits.Count);
 
             if (selectedUnits.Count == 0)
             {

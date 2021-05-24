@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class GroupMovement : MonoBehaviour
 {
+    public Image smallChosenIcon;
+
+    public Sprite smallArcDefensiveFormation;
+    public Sprite smallArcOffensiveFormation;
+    public Sprite smallCircleFormation;
+    public Sprite smallRowFormation;
+    public Sprite smallPointFormation;
 
     public static float GetRotationDegree(Vector3 rightDirection, float additionalRotation)
     {
@@ -15,6 +24,16 @@ public class GroupMovement : MonoBehaviour
         }
         rotationDeg -= additionalRotation;
         return rotationDeg;
+    }
+
+    public void closeMovementCanvas()
+    {
+        GameManager.Instance.SetMovementCanvasDeactive();
+    }
+
+    public void openMovementCanvas()
+    {
+        GameManager.Instance.SetMovementCanvasActive();
     }
 
     public static Vector3[] ArcFormation(List<Unit> selectedUnits, Vector3 targetLocation, Vector3 rightDirection, float radius, float additionalRotation)
@@ -105,6 +124,7 @@ public class GroupMovement : MonoBehaviour
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = CircleFormation;
+                //smallChosenIcon = smallCircleFormation;
                 return;
             }
         }
@@ -117,6 +137,7 @@ public class GroupMovement : MonoBehaviour
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = ArcOffensiveFormation;
+                //smallChosenIcon = smallArcOffensiveFormation;
                 return;
             }
         }
@@ -129,6 +150,7 @@ public class GroupMovement : MonoBehaviour
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = ArcDefensiveFormation;
+                //smallChosenIcon = smallArcDefensiveFormation;
                 return;
             }
         }
@@ -141,6 +163,7 @@ public class GroupMovement : MonoBehaviour
             if (player.photonView.IsMine)
             {
                 player.gameObject.GetComponentInChildren<mouseController>().selectedGroupMovement = RowFormation;
+                //smallChosenIcon = smallRowFormation;
                 return;
             }
         }
