@@ -24,6 +24,7 @@ public class mouseController : MonoBehaviour
     public Vector3 curRightMousePoint;
 
     public Vector3 originalMousePositionOnClick;
+    public List<GameObject> showingFormaitionLocation = new List<GameObject>();
 
     public GameObject signalObject;
 
@@ -213,9 +214,14 @@ public class mouseController : MonoBehaviour
                     Vector3 newdir = (hit.point - curRightMousePoint);
                     formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
 
+                    foreach(GameObject tmpObject in showingFormaitionLocation)
+                    {
+                        Destroy(tmpObject);
+                    }
+
                     foreach (Vector3 position in formation)
                     {
-                        Instantiate(signalObject, position, new Quaternion());
+                        showingFormaitionLocation.Add(Instantiate(signalObject, position, new Quaternion()));
                     }
                 }
             }
@@ -264,8 +270,12 @@ public class mouseController : MonoBehaviour
 
                 //print("clicked!");
                 //Instantiate(signalObject, hit.point, new Quaternion());
-                
- 
+
+                foreach (GameObject tmpObject in showingFormaitionLocation)
+                {
+                    Destroy(tmpObject);
+                }
+
                 if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
                 {
                     formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
