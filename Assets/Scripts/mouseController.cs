@@ -18,6 +18,10 @@ public class mouseController : MonoBehaviour
     public Vector3 curPosition;
 
     public bool isSelecting;
+    public bool isClicking;
+
+    public float curDistance;
+    public Vector3 curRightMousePoint;
 
     public Vector3 originalMousePositionOnClick;
 
@@ -107,6 +111,19 @@ public class mouseController : MonoBehaviour
                 isSelecting = true;
                 originalMousePositionOnClick = Input.mousePosition;
             }
+            else if (!isSelecting && !isClicking && Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
+            {
+                isClicking = true;
+                RaycastHit rightClickHit;
+                Ray rightClickRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(rightClickRay, out rightClickHit))//could add collider
+                {
+                    curRightMousePoint = rightClickHit.point;
+                }
+                    
+            
+            }
 
             RaycastHit hit;
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -185,7 +202,7 @@ public class mouseController : MonoBehaviour
             }
 
             ///*
-            if (Input.GetKeyDown(PlayerButtons.RIGHT_CLICK))
+            if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
             {
                 Transform objectHit = hit.transform;
                 if (objectHit.GetComponentInParent<Unit>() && selectedUnits.Count > 0)
@@ -230,13 +247,17 @@ public class mouseController : MonoBehaviour
 
                 //print("clicked!");
                 //Instantiate(signalObject, hit.point, new Quaternion());
-                //Vector3[] formation = GroupMovement.ArcDefensiveFormation(selectedUnits, hit.point, playerCamera.transform.right, 1f);
-                //Vector3[] formation = GroupMovement.ArcOffensiveFormation(selectedUnits, hit.point, playerCamera.transform.right, 1f);
-                //Vector3[] formation = GroupMovement.CircleFormation(selectedUnits, hit.point, playerCamera.transform.right, .5f);
-                //Vector3[] formation = GroupMovement.PointFormation(selectedUnits, hit.point, playerCamera.transform.right, .5f);
-                //Vector3[] formation = GroupMovement.RowFormation(selectedUnits, hit.point, playerCamera.transform.right, 1f);
-
-                Vector3[] formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
+                Vector3[] formation;
+ 
+                if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
+                {
+                    formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
+                }
+                else
+                {
+                    Vector3 newdir = (hit.point - curRightMousePoint);
+                    formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+                }
 
                 int i = 0;
                 //if target point is walkable
@@ -255,6 +276,10 @@ public class mouseController : MonoBehaviour
         if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK) || !Input.GetKey(PlayerButtons.LEFT_CLICK))
         {
             isSelecting = false;
+        }
+        if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK) || !Input.GetKey(PlayerButtons.RIGHT_CLICK))
+        {
+            isClicking = false;
         }
         //*/
     }

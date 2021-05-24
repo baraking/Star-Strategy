@@ -69,6 +69,9 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   curPosition: {x: 0, y: 0, z: 0}
   isSelecting: 0
+  isClicking: 0
+  curDistance: 0
+  curRightMousePoint: {x: 0, y: 0, z: 0}
   originalMousePositionOnClick: {x: 0, y: 0, z: 0}
   signalObject: {fileID: 6142774770063362455, guid: 742f411a84e0324419c58a5e76a512b1,
     type: 3}
