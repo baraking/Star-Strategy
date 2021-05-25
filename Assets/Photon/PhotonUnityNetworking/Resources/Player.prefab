@@ -74,7 +74,7 @@ MonoBehaviour:
   curRightMousePoint: {x: 0, y: 0, z: 0}
   originalMousePositionOnClick: {x: 0, y: 0, z: 0}
   showingFormaitionLocation: []
-  signalObject: {fileID: 6142774770063362455, guid: 742f411a84e0324419c58a5e76a512b1,
+  signalObject: {fileID: 5506259956204291047, guid: 78f6927b948806947ad28b8042959fd8,
     type: 3}
   displayingUnit: {fileID: 0}
   isUnitUIDisplaying: 0
