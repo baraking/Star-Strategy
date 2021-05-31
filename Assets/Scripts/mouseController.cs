@@ -36,6 +36,8 @@ public class mouseController : MonoBehaviour
 
     public delegate Vector3[] SelectedGroupMovement(List<Unit> selectedUnits, Vector3 targetLocation, Vector3 rightDirection, float radius);
     public SelectedGroupMovement selectedGroupMovement;
+    public SelectedGroupMovement previouslySelectedGroupMovement;
+    public bool isActionPointMovementByDefault;
 
     void Start()
     {
@@ -43,6 +45,7 @@ public class mouseController : MonoBehaviour
         playerCamera = myPlayer.playerCamera;
         isUnitUIDisplaying = false;
         selectedGroupMovement = GroupMovement.PointFormation;
+        isActionPointMovementByDefault = false;
     }
 
     public bool IsMouseHoverOnUIElement()
@@ -212,9 +215,16 @@ public class mouseController : MonoBehaviour
                 if (Vector3.Distance(curRightMousePoint, hit.point) > .1f)
                 {
                     Vector3 newdir = (hit.point - curRightMousePoint);
-                    formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+                    if (isActionPointMovementByDefault)
+                    {
+                        formation = previouslySelectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+                    }
+                    else
+                    {
+                        formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+                    }
 
-                    foreach(GameObject tmpObject in showingFormaitionLocation)
+                    foreach (GameObject tmpObject in showingFormaitionLocation)
                     {
                         Destroy(tmpObject);
                     }
@@ -237,6 +247,14 @@ public class mouseController : MonoBehaviour
                             //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
                             unit.Fire(objectHit.GetComponentInParent<Unit>());
                         }
+
+                        if (!isActionPointMovementByDefault)
+                        {
+                            isActionPointMovementByDefault = true;
+                            previouslySelectedGroupMovement = selectedGroupMovement;
+                            selectedGroupMovement = GroupMovement.PointFormation;
+                        }
+
                     }
                 }
                 else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
@@ -250,6 +268,14 @@ public class mouseController : MonoBehaviour
                             unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
                         }
                     }
+
+                    if (!isActionPointMovementByDefault)
+                    {
+                        isActionPointMovementByDefault = true;
+                        previouslySelectedGroupMovement = selectedGroupMovement;
+                        selectedGroupMovement = GroupMovement.PointFormation;
+                    }
+
                 }
                 else if (objectHit.GetComponentInParent<ResourceSilo>() && selectedUnits.Count > 0)
                 {
@@ -264,12 +290,25 @@ public class mouseController : MonoBehaviour
                                 unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
                             }
                         }
+
+                        if (!isActionPointMovementByDefault)
+                        {
+                            isActionPointMovementByDefault = true;
+                            previouslySelectedGroupMovement = selectedGroupMovement;
+                            selectedGroupMovement = GroupMovement.PointFormation;
+                        }
+
                     }
 
                 }
-
-                //print("clicked!");
-                //Instantiate(signalObject, hit.point, new Quaternion());
+                else
+                {
+                    if (isActionPointMovementByDefault)
+                    {
+                        isActionPointMovementByDefault = false;
+                        selectedGroupMovement = previouslySelectedGroupMovement;
+                    }
+                }           
 
                 foreach (GameObject tmpObject in showingFormaitionLocation)
                 {
@@ -297,7 +336,6 @@ public class mouseController : MonoBehaviour
                     }
                     i++;
                 }
-
             }
         }
         if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK) || !Input.GetKey(PlayerButtons.LEFT_CLICK))
