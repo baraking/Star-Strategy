@@ -2245,7 +2245,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1903502382}
     - target: {fileID: 3158406428149280192, guid: 30988c7fa68e60a4ba7c7d44ea28a39b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -2254,12 +2254,12 @@ PrefabInstance:
     - target: {fileID: 3158406428149280192, guid: 30988c7fa68e60a4ba7c7d44ea28a39b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: closeMovementCanvas
+      value: openMovementCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 3158406428149280192, guid: 30988c7fa68e60a4ba7c7d44ea28a39b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GroupMovement, Assembly-CSharp
+      value: MinimizedGroupMovement, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3158406428149280192, guid: 30988c7fa68e60a4ba7c7d44ea28a39b,
         type: 3}

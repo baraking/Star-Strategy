@@ -14,4 +14,14 @@ public class MinimizedGroupMovement : MonoBehaviour
     public Sprite smallCircleFormation;
     public Sprite smallRowFormation;
     public Sprite smallPointFormation;
+
+    public void closeMovementCanvas()
+    {
+        GameManager.Instance.SetMovementCanvasDeactive();
+    }
+
+    public void openMovementCanvas()
+    {
+        GameManager.Instance.SetMovementCanvasActive();
+    }
 }
