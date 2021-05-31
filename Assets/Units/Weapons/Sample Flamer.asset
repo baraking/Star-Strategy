@@ -15,7 +15,9 @@ MonoBehaviour:
   name: Sample Flamer Data
   range: 0.5
   damage: 2
-  fireRate: 0.5
+  timeToShoot: 0.75
+  timeToReload: 3
+  magazineSize: 24
   shouldTurnToFire: 0
   buildTime: 3
   costToBuild: 100

@@ -15,7 +15,9 @@ MonoBehaviour:
   name: Sample Weapon Data
   range: 1
   damage: 2
-  fireRate: 1
+  timeToShoot: 1
+  timeToReload: 1
+  magazineSize: 1
   shouldTurnToFire: 0
   buildTime: 3
   costToBuild: 100

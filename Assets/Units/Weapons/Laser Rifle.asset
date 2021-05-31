@@ -15,7 +15,9 @@ MonoBehaviour:
   name: Laser Rifle
   range: 0.5
   damage: 1
-  fireRate: 1
+  timeToShoot: 0.5
+  timeToReload: 2
+  magazineSize: 10
   shouldTurnToFire: 1
   buildTime: 0
   costToBuild: 0

@@ -15,7 +15,9 @@ MonoBehaviour:
   name: Sample Missile Data
   range: 2.5
   damage: 7
-  fireRate: 4
+  timeToShoot: 2
+  timeToReload: 5
+  magazineSize: 4
   shouldTurnToFire: 0
   buildTime: 3
   costToBuild: 100
