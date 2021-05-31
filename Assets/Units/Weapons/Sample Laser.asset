@@ -10,10 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f835c833d280a24c8996e3258ac54d0, type: 3}
-  m_Name: Sample Light Weapon
+  m_Name: Sample Laser
   m_EditorClassIdentifier: 
-  name: Sample Light Weapon
-  range: 0.75
-  damage: 1
-  fireRate: 3
+  name: Sample Laser Data
+  range: 1
+  damage: 2
+  timeToShoot: 1
+  timeToReload: 1
+  magazineSize: 1
   shouldTurnToFire: 0
+  buildTime: 3
+  costToBuild: 100
+  purchasables: []
+  icon: {fileID: 21300000, guid: d81eac7d019167f4ba7a4cfc83645722, type: 3}
