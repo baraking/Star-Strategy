@@ -64,14 +64,17 @@ public class Purchasables : MonoBehaviour
         //print(purchasingParent.GetComponentInChildren<WeaponHolder>());
         if (purchasingParent.GetComponentInChildren<WeaponHolder>())
         {
-            if (!purchasingParent.GetComponentInChildren<WeaponHolder>().hasAWeapon)
+            foreach(WeaponHolder weaponHolder in purchasingParent.GetComponentsInChildren<WeaponHolder>())
             {
-                foreach(Purchasables purchasable in purchasingParent.GetComponentInChildren<Unit>().GetPurchasables())
+                if (!weaponHolder.hasAWeapon)
                 {
-                    if (purchasable.name == this.gameObject.name)
+                    foreach (Purchasables purchasable in purchasingParent.GetComponentInChildren<Unit>().GetPurchasables())
                     {
-                        purchasingParent.GetComponentInChildren<WeaponHolder>().StartBuildingUpgrade(purchasable.gameObject);
-                        return;
+                        if (purchasable.name == this.gameObject.name)
+                        {
+                            weaponHolder.StartBuildingUpgrade(purchasable.gameObject);
+                            return;
+                        }
                     }
                 }
             }
