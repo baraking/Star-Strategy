@@ -256,6 +256,23 @@ public class mouseController : MonoBehaviour
                         }
 
                     }
+                    else if(objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                    {
+                        foreach (Unit unit in selectedUnits)
+                        {
+                            if(objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
+                            {
+                                objectHit.GetComponentInParent<Unit>().Embark(unit);
+                            }
+                        }
+
+                        if (!isActionPointMovementByDefault)
+                        {
+                            isActionPointMovementByDefault = true;
+                            previouslySelectedGroupMovement = selectedGroupMovement;
+                            selectedGroupMovement = GroupMovement.PointFormation;
+                        }
+                    }
                 }
                 else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
                 {

@@ -31,6 +31,9 @@ public class Unit : Purchasables, System.IComparable
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
     public static readonly Vector3 DEFAULT_SPAWN_LOCATION = new Vector3(0, 0, 0.25f);
 
+    public List<Unit> carriedUnits = new List<Unit>();
+    public int carriedAmount;
+
     public PhotonView photonView;
 
     void Start()
@@ -201,6 +204,16 @@ public class Unit : Purchasables, System.IComparable
             print(gameObject.name);
             weaponHolder.UpdateIfHasAWeapon();
         }
+    }
+
+    public void Embark(Unit embarkingUnit)
+    {
+
+    }
+
+    public void Disembark(Unit disembarkingUnit)
+    {
+
     }
 
     void Die()
