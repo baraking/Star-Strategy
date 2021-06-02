@@ -208,12 +208,20 @@ public class Unit : Purchasables, System.IComparable
 
     public void Embark(Unit embarkingUnit)
     {
-
+        print(embarkingUnit + " is embarking " + gameObject.name);
+        carriedUnits.Add(embarkingUnit);
+        carriedAmount += embarkingUnit.unitDetails.unitSize;
+        embarkingUnit.transform.SetParent(gameObject.transform);
+        embarkingUnit.gameObject.SetActive(false);
     }
 
     public void Disembark(Unit disembarkingUnit)
     {
-
+        print(disembarkingUnit + " is disembarking " + gameObject.name);
+        carriedUnits.Remove(disembarkingUnit);
+        carriedAmount -= disembarkingUnit.unitDetails.unitSize;
+        disembarkingUnit.transform.SetParent(GameManager.Instance.Units.transform);
+        disembarkingUnit.gameObject.SetActive(true);
     }
 
     void Die()

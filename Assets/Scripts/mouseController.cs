@@ -260,8 +260,9 @@ public class mouseController : MonoBehaviour
                     {
                         foreach (Unit unit in selectedUnits)
                         {
-                            if(objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
+                            if(unit.unitDetails.unitType==UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
                             {
+                                //if distance is small enough
                                 objectHit.GetComponentInParent<Unit>().Embark(unit);
                             }
                         }
