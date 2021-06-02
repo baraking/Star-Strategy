@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Mega Tank
   m_EditorClassIdentifier: 
   name: Basic APC
+  unitType: 1
+  unitSize: 20
+  carryingCapacity: 8
   max_hp: 300
   speed: 0.5
   rotation_speed: 0

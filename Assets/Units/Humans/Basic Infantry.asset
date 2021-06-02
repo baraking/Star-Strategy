@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Basic Infantry
   m_EditorClassIdentifier: 
   name: Basic Infantry
+  unitType: 0
+  unitSize: 1
+  carryingCapacity: 0
   max_hp: 15
   speed: 0.7
   rotation_speed: 0

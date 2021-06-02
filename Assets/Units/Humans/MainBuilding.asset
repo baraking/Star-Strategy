@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: MainBuilding
   m_EditorClassIdentifier: 
   name: MainBuilding
+  unitType: 4
+  unitSize: 0
+  carryingCapacity: 0
   max_hp: 1000
   speed: 0
   rotation_speed: 0
