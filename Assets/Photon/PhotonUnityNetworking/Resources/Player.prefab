@@ -80,6 +80,7 @@ MonoBehaviour:
   isUnitUIDisplaying: 0
   timeToFinishUpgrade: 0
   selectedUnits: []
+  isActionPointMovementByDefault: 0
 --- !u!114 &1251872124643505152
 MonoBehaviour:
   m_ObjectHideFlags: 0

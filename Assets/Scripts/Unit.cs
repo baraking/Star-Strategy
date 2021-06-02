@@ -74,8 +74,12 @@ public class Unit : Purchasables, System.IComparable
             myPlayer.SortUnits();
         }
 
-        gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
-
+        //gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
+        foreach(Renderer curRenderer in gameObject.GetComponentsInChildren<Renderer>())
+        {
+            curRenderer.material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
+        }
+        
         AddWeapons();
 
         isBuilding = false;
@@ -194,6 +198,7 @@ public class Unit : Purchasables, System.IComparable
         }
         foreach(WeaponHolder weaponHolder in GetComponentsInChildren<WeaponHolder>())
         {
+            print(gameObject.name);
             weaponHolder.UpdateIfHasAWeapon();
         }
     }

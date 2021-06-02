@@ -19,6 +19,8 @@ public class Weapon : Purchasables
     public bool isInCooldown;
     public Vector3 rangeCalculationPoint;
     public Unit weaponParent;
+    public int curMagazineAmmo;
+    public bool isReloading;
 
     public Unit targetUnit;
 
@@ -29,6 +31,8 @@ public class Weapon : Purchasables
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
         weaponParent = gameObject.GetComponentInParent<Unit>();
+        curMagazineAmmo = weaponDetails.magazineSize;
+        isReloading = false;
     }
 
     public List<Purchasables> GetPurchasables()
@@ -109,8 +113,21 @@ public class Weapon : Purchasables
         }
     }
 
-    public IEnumerator AfterFire()
+    public IEnumerator Reload()
     {
+        isReloading = true;
+        yield return new WaitForSeconds(weaponDetails.timeToShoot + weaponDetails.timeToReload);
+        curMagazineAmmo = weaponDetails.magazineSize;
+        isReloading = false;
+    }
+
+        public IEnumerator AfterFire()
+    {
+        if (isReloading)
+        {
+            yield return new WaitForSeconds(0);
+        }
+        curMagazineAmmo--;
         if (GetComponent<LaserWeapon>())
         {
             GetComponent<LaserWeapon>().FireLaser(targetUnit.transform.position);
@@ -124,7 +141,16 @@ public class Weapon : Purchasables
         {
             GetComponent<FlameWeapon>().Fire();
         }
-        yield return new WaitForSeconds(weaponDetails.fireRate);
+        if (curMagazineAmmo > 0)
+        {
+            yield return new WaitForSeconds(weaponDetails.timeToShoot);
+        }
+        //reload
+        else if (curMagazineAmmo == 0)
+        {
+            yield return new WaitForSeconds(weaponDetails.timeToShoot + weaponDetails.timeToReload);
+            curMagazineAmmo = weaponDetails.magazineSize;
+        }
         if (GetComponent<LaserWeapon>())
         {
             GetComponent<LaserWeapon>().StopFiringLaser();
