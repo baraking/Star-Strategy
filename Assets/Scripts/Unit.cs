@@ -7,11 +7,9 @@ using UnityEngine;
 //be able to group units under a number
 //change take damage, die etc to be events
 //set unitUI height as a paramter on each unit.
-//should set the active camera on script
-//after taking damage set healthBar as not active after a time threshold
 //taking damage should cause particle effect of damage
-//add weapons automatically
 //have a parameter for a unit for it's main cur action, such as - walking, attacking, building etc. to know its behaivior
+//have a delegateprobably for unit's action, such as embark, move, attack, harvest...
 //fix auto player pickup
 public class Unit : Purchasables, System.IComparable
 {

@@ -155,7 +155,7 @@ public class mouseController : MonoBehaviour
                             if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
                             {
                                 bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
-                                if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()))
+                                if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()) && objectHit.gameObject.active)
                                 {
                                     selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
                                     objectHit.GetComponentInParent<Unit>().isSelected = true;
@@ -180,7 +180,7 @@ public class mouseController : MonoBehaviour
                             print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
                             {
-                                if (!selectedUnits.Contains(hooveredUnit))
+                                if (!selectedUnits.Contains(hooveredUnit) && hooveredUnit.gameObject.active)
                                 {
                                     selectedUnits.Add(hooveredUnit);
                                     hooveredUnit.isSelected = true;
