@@ -17,7 +17,8 @@ public class Unit : Purchasables, System.IComparable
 
     public Player myPlayer;
     public int myPlayerNumber;
-    public bool isSelected;
+    [SerializeField]
+    private bool isSelected;
     public float buildTime;
 
     [SerializeField]
@@ -39,6 +40,11 @@ public class Unit : Purchasables, System.IComparable
         //photonView.RPC("InitUnit", RpcTarget.All);
         InitUnit();
 
+    }
+
+    public void SetIsSelected(bool newState)
+    {
+        isSelected = newState;
     }
 
     public List<Purchasables> GetPurchasables()
@@ -122,6 +128,10 @@ public class Unit : Purchasables, System.IComparable
             myPlayer.playerUnits.Add(this);
         }*/
 
+        if (GetComponent<GroupedUnits>())
+        {
+            return;
+        }
         AddWeapons();
 
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);

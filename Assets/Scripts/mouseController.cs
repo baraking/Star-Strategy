@@ -142,8 +142,16 @@ public class mouseController : MonoBehaviour
                         {
                             foreach (Unit unit in selectedUnits)
                             {
-                                unit.isSelected = false;
-                                unit.SetHealthBarActive(false);
+                                if (unit.GetComponent<GroupedUnits>())
+                                {
+                                    unit.GetComponent<GroupedUnits>().SetIsSelected(false);
+                                    unit.GetComponent<GroupedUnits>().SetHealthBarActive(false);
+                                }
+                                else
+                                {
+                                    unit.SetIsSelected(false);
+                                    unit.SetHealthBarActive(false);
+                                }   
                             }
                             selectedUnits.Clear();
                         }
@@ -157,9 +165,18 @@ public class mouseController : MonoBehaviour
                                 bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
                                 if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()) && objectHit.gameObject.active)
                                 {
-                                    selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
-                                    objectHit.GetComponentInParent<Unit>().isSelected = true;
-                                    objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                    if (objectHit.GetComponentInParent<GroupedUnits>())
+                                    {
+                                        selectedUnits.Add(objectHit.GetComponentInParent<GroupedUnits>());
+                                        objectHit.GetComponentInParent<GroupedUnits>().SetIsSelected(true);
+                                        objectHit.GetComponentInParent<GroupedUnits>().SetHealthBarActive(true);
+                                    }
+                                    else
+                                    {
+                                        selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
+                                        objectHit.GetComponentInParent<Unit>().SetIsSelected(true);
+                                        objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                    }
                                 }
                                 if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
                                 {
@@ -183,7 +200,7 @@ public class mouseController : MonoBehaviour
                                 if (!selectedUnits.Contains(hooveredUnit) && hooveredUnit.gameObject.active)
                                 {
                                     selectedUnits.Add(hooveredUnit);
-                                    hooveredUnit.isSelected = true;
+                                    hooveredUnit.SetIsSelected(true);
                                     hooveredUnit.SetHealthBarActive(true);
                                 }
                                 if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
