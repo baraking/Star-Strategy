@@ -22,4 +22,8 @@ public class PlayerButtons
 
     public static readonly KeyCode MULTI_SELECTION = KeyCode.LeftShift;
     #endregion
+
+    #region keyboardActions
+    public static readonly KeyCode DISEMBARK = KeyCode.Space;
+    #endregion
 }

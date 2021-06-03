@@ -18,6 +18,13 @@ public class Walkable : Unit
     void Update()
     {
         AttempotToWalk();
+        if (Input.GetKey(PlayerButtons.DISEMBARK))
+        {
+            foreach(Unit unit in carriedUnits)
+            {
+                Disembark(unit);
+            }
+        }
     }
 
     public void AttempotToWalk()

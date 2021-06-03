@@ -208,11 +208,18 @@ public class Unit : Purchasables, System.IComparable
 
     public void Embark(Unit embarkingUnit)
     {
-        print(embarkingUnit + " is embarking " + gameObject.name);
-        carriedUnits.Add(embarkingUnit);
-        carriedAmount += embarkingUnit.unitDetails.unitSize;
-        embarkingUnit.transform.SetParent(gameObject.transform);
-        embarkingUnit.gameObject.SetActive(false);
+        if (carriedUnits.Contains(embarkingUnit))
+        {
+            return;
+        }
+        if (Vector3.Distance(transform.position, embarkingUnit.transform.position) < 0.2f)
+        {
+            print(embarkingUnit + " is embarking " + gameObject.name);
+            carriedUnits.Add(embarkingUnit);
+            carriedAmount += embarkingUnit.unitDetails.unitSize;
+            embarkingUnit.transform.SetParent(gameObject.transform);
+            embarkingUnit.gameObject.SetActive(false);
+        }
     }
 
     public void Disembark(Unit disembarkingUnit)
@@ -221,6 +228,8 @@ public class Unit : Purchasables, System.IComparable
         carriedUnits.Remove(disembarkingUnit);
         carriedAmount -= disembarkingUnit.unitDetails.unitSize;
         disembarkingUnit.transform.SetParent(GameManager.Instance.Units.transform);
+        disembarkingUnit.GetComponent<Walkable>().hasTarget = false;
+        disembarkingUnit.GetComponent<Walkable>().targetPoint = transform.position;
         disembarkingUnit.gameObject.SetActive(true);
     }
 

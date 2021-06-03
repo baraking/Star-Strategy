@@ -262,7 +262,8 @@ public class mouseController : MonoBehaviour
                         {
                             if(unit.unitDetails.unitType==UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
                             {
-                                //if distance is small enough
+                                unit.GetComponent<Walkable>().hasTarget = true;
+                                unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
                                 objectHit.GetComponentInParent<Unit>().Embark(unit);
                             }
                         }
