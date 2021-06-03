@@ -62,4 +62,28 @@ public class GroupedUnits : Walkable
             unit.SetIsSelected(newState);
         }
     }
+
+    public new void Fire(Unit targetUnit)
+    {
+        foreach (Unit unit in groupedUnits)
+        {
+            unit.Fire(targetUnit);
+        }
+    }
+
+    public new void SetHasTarget(bool newState)
+    {
+        foreach (Walkable walkable in groupedUnits)
+        {
+            walkable.SetHasTarget(newState);
+        }
+    }
+
+    public new void SetTargetPoint(Vector3 newTargetPoint)
+    {
+        foreach (Walkable walkable in groupedUnits)
+        {
+            walkable.SetTargetPoint(newTargetPoint);
+        }
+    }
 }

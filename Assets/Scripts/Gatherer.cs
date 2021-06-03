@@ -59,19 +59,19 @@ public class Gatherer : Walkable
             {
                 if (gathererParent.GetComponent<Walkable>())
                 {
-                    if (gathererParent.GetComponent<Walkable>().targetPoint == Vector3.zero)
+                    if (gathererParent.GetComponent<Walkable>().GetTargetPoint() == Vector3.zero)
                     {
                         print("start moving!");
-                        gathererParent.GetComponent<Walkable>().targetPoint = transform.position - (target.transform.position.normalized * distanceToTarget);
+                        gathererParent.GetComponent<Walkable>().SetTargetPoint(transform.position - (target.transform.position.normalized * distanceToTarget));
                     }
                 }
             }
         }
         else if(targetResourceSilo != null)
         {
-            gathererParent.GetComponent<Walkable>().hasTarget = true;
+            gathererParent.GetComponent<Walkable>().SetHasTarget(true);
             float distanceToTarget = Vector3.Distance(transform.position, targetResourceSilo.transform.position);
-            gathererParent.GetComponent<Walkable>().targetPoint = targetResourceSilo.transform.position;
+            gathererParent.GetComponent<Walkable>().SetTargetPoint(targetResourceSilo.transform.position);
             if (distanceToTarget <= gathererParent.unitDetails.gatheringRange)
             {
                 isFull = false;
@@ -80,18 +80,18 @@ public class Gatherer : Walkable
                 targetResourceSilo = null;
                 if (targetResource != null)
                 {
-                    gathererParent.GetComponent<Walkable>().hasTarget = true;
-                    gathererParent.GetComponent<Walkable>().targetPoint = targetResource.transform.position;
+                    gathererParent.GetComponent<Walkable>().SetHasTarget(true);
+                    gathererParent.GetComponent<Walkable>().SetTargetPoint(targetResource.transform.position);
                 }
             }
             else
             {
                 if (gathererParent.GetComponent<Walkable>())
                 {
-                    if (gathererParent.GetComponent<Walkable>().targetPoint == Vector3.zero)
+                    if (gathererParent.GetComponent<Walkable>().GetTargetPoint() == Vector3.zero)
                     {
                         print("start moving!");
-                        gathererParent.GetComponent<Walkable>().targetPoint = transform.position - (targetResourceSilo.transform.position.normalized * distanceToTarget);
+                        gathererParent.GetComponent<Walkable>().SetTargetPoint(transform.position - (targetResourceSilo.transform.position.normalized * distanceToTarget));
                     }
                 }
             }

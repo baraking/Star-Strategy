@@ -234,7 +234,7 @@ public class Ant : Gatherer
             {
                 myPheromoneSpredRate = PheromoneSpredRate.Rapid;
                 targetResource = other.GetComponent<Resource>();
-                targetPoint = other.transform.position;
+                SetTargetPoint(other.transform.position);
                 isScouting = false;
                 DestroyAveragePheromones();
             }
@@ -245,7 +245,7 @@ public class Ant : Gatherer
             {
                 myPheromoneSpredRate = PheromoneSpredRate.Rapid;
                 targetResourceSilo = other.GetComponent<ResourceSilo>();
-                targetPoint = other.transform.position;
+                SetTargetPoint(other.transform.position);
                 isScouting = false;
                 DestroyAveragePheromones();
             }
@@ -324,7 +324,7 @@ public class Ant : Gatherer
             {
                 //find other resources in view
                 targetResource = null;
-                hasTarget = false;
+                SetHasTarget(false);
             }
         }
 
@@ -349,19 +349,19 @@ public class Ant : Gatherer
     {
         if (targetResource != null)
         {
-            targetPoint = targetResource.transform.position;
+            SetTargetPoint(targetResource.transform.position);
         }
         else if (targetResourceSilo != null)
         {
-            targetPoint = targetResourceSilo.transform.position;
+            SetTargetPoint(targetResourceSilo.transform.position);
         }
-        Vector3 targetDirection = targetPoint - transform.position;
+        Vector3 targetDirection = GetTargetPoint() - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, unitDetails.rotation_speed * Time.deltaTime, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);
-        transform.position = Vector3.MoveTowards(transform.position, targetPoint, unitDetails.speed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
+        transform.position = Vector3.MoveTowards(transform.position, GetTargetPoint(), unitDetails.speed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, GetTargetPoint()) < 0.1f)
         {
-            hasTarget = false;
+            SetHasTarget(false);
         }
     }
 }

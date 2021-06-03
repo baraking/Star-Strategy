@@ -262,7 +262,14 @@ public class mouseController : MonoBehaviour
                         foreach (Unit unit in selectedUnits)
                         {
                             //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
-                            unit.Fire(objectHit.GetComponentInParent<Unit>());
+                            if (unit.GetComponent<GroupedUnits>())
+                            {
+                                unit.GetComponent<GroupedUnits>().Fire(objectHit.GetComponentInParent<Unit>());
+                            }
+                            else
+                            {
+                                unit.Fire(objectHit.GetComponentInParent<Unit>());
+                            }
                         }
 
                         if (!isActionPointMovementByDefault)
@@ -279,9 +286,18 @@ public class mouseController : MonoBehaviour
                         {
                             if(unit.unitDetails.unitType==UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
                             {
-                                unit.GetComponent<Walkable>().hasTarget = true;
-                                unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
-                                objectHit.GetComponentInParent<Unit>().Embark(unit);
+                                if (unit.GetComponent<GroupedUnits>())
+                                {
+                                    unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                                    unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                    print("Handle Group Embarking!!!");
+                                }
+                                else
+                                {
+                                    unit.GetComponent<Walkable>().SetHasTarget(true);
+                                    unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                    objectHit.GetComponentInParent<Unit>().Embark(unit);
+                                }
                             }
                         }
 
@@ -297,8 +313,8 @@ public class mouseController : MonoBehaviour
                 {
                     foreach (Walkable unit in selectedUnits)
                     {
-                        unit.GetComponent<Walkable>().hasTarget = true;
-                        unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                        unit.GetComponent<Walkable>().SetHasTarget(true);
+                        unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                         if (unit.GetComponent<Gatherer>())
                         {
                             unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
@@ -319,8 +335,8 @@ public class mouseController : MonoBehaviour
                     {
                         foreach (Walkable unit in selectedUnits)
                         {
-                            unit.GetComponent<Walkable>().hasTarget = true;
-                            unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                            unit.GetComponent<Walkable>().SetHasTarget(true);
+                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                             if (unit.GetComponent<Gatherer>())
                             {
                                 unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
@@ -367,8 +383,16 @@ public class mouseController : MonoBehaviour
                 {
                     if (unit.GetComponent<Walkable>())
                     {
-                        unit.GetComponent<Walkable>().hasTarget = true;
-                        unit.GetComponent<Walkable>().targetPoint = new Vector3(formation[i].x, unit.transform.position.y, formation[i].z);
+                        if (unit.GetComponent<GroupedUnits>())
+                        {
+                            unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                            unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                        }
+                        else
+                        {
+                            unit.GetComponent<Walkable>().SetHasTarget(true);
+                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                        }
                     }
                     i++;
                 }

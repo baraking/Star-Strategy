@@ -6,8 +6,10 @@ using UnityEngine;
 //imporve the rotation of the walkable
 public class Walkable : Unit
 {
-    public bool hasTarget = false;
-    public Vector3 targetPoint;
+    [SerializeField]
+    private bool hasTarget = false;
+    [SerializeField]
+    private Vector3 targetPoint;
     public GameObject targetObject;
 
     private void Start()
@@ -25,6 +27,21 @@ public class Walkable : Unit
                 Disembark(unit);
             }
         }
+    }
+
+    public void SetHasTarget(bool newState)
+    {
+        hasTarget = newState;
+    }
+
+    public void SetTargetPoint(Vector3 newTargetPoint)
+    {
+        targetPoint = newTargetPoint;
+    }
+
+    public Vector3 GetTargetPoint()
+    {
+        return targetPoint;
     }
 
     public void AttempotToWalk()

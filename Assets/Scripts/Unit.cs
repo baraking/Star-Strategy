@@ -236,8 +236,8 @@ public class Unit : Purchasables, System.IComparable
         carriedUnits.Remove(disembarkingUnit);
         carriedAmount -= disembarkingUnit.unitDetails.unitSize;
         disembarkingUnit.transform.SetParent(GameManager.Instance.Units.transform);
-        disembarkingUnit.GetComponent<Walkable>().hasTarget = false;
-        disembarkingUnit.GetComponent<Walkable>().targetPoint = transform.position;
+        disembarkingUnit.GetComponent<Walkable>().SetHasTarget(false);
+        disembarkingUnit.GetComponent<Walkable>().SetTargetPoint(transform.position);
         disembarkingUnit.gameObject.SetActive(true);
     }
 
