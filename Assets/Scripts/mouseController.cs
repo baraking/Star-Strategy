@@ -226,7 +226,22 @@ public class mouseController : MonoBehaviour
             ///
 
             Vector3[] formation;
-
+            if (Input.GetKey(PlayerButtons.DEGROUP))
+            {
+                foreach(Unit unit in selectedUnits)
+                {
+                    if (unit.GetComponent<GroupedUnits>())
+                    {
+                        foreach(Unit groupedUnit in unit.GetComponent<GroupedUnits>().groupedUnits)
+                        {
+                            selectedUnits.Add(groupedUnit);
+                            groupedUnit.SetIsSelected(true);
+                            groupedUnit.SetHealthBarActive(true);
+                        }
+                        unit.GetComponent<GroupedUnits>().DeattachAllUnits();
+                    }
+                }
+            }
             if (Input.GetKey(PlayerButtons.RIGHT_CLICK))
             {
                 if (Vector3.Distance(curRightMousePoint, hit.point) > .1f)

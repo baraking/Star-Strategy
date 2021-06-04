@@ -52,7 +52,7 @@ public class GroupedUnits : Walkable
         }
     }
 
-    public void attachUnit(Unit unit)
+    public void AttachUnit(Unit unit)
     {
         if(groupedUnits.Count<numberOfUnitsAllowed && allowedUnitTypes.Contains(unit.unitDetails.unitType) && myPlayerNumber == unit.myPlayerNumber && !groupedUnits.Contains(unit))
         {
@@ -62,13 +62,21 @@ public class GroupedUnits : Walkable
         }
     }
 
-    public void deattachUnit(Unit unit)
+    public void DeattachUnit(Unit unit)
     {
         if (groupedUnits.Contains(unit))
         {
             groupedUnits.Remove(unit);
             unit.transform.SetParent(GameManager.Instance.Units.transform);
             groupUnitSize -= unit.unitDetails.unitSize;
+        }
+    }
+
+    public void DeattachAllUnits()
+    {
+        foreach (Unit unit in groupedUnits)
+        {
+            DeattachUnit(unit);
         }
     }
 
