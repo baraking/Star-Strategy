@@ -226,6 +226,44 @@ public class mouseController : MonoBehaviour
             ///
 
             Vector3[] formation;
+            if (Input.GetKey(PlayerButtons.GROUP))
+            {
+                List<GroupedUnits> listOfGroupedUnits = new List<GroupedUnits>();
+                List<Unit> listOfUnGroupedUnits = new List<Unit>();
+                foreach (Unit unit in selectedUnits)
+                {
+                    if (unit.GetComponent<GroupedUnits>())
+                    {
+                        if (unit.GetComponent<GroupedUnits>().groupUnitSize < unit.GetComponent<GroupedUnits>().numberOfUnitsAllowed)
+                        {
+                            listOfGroupedUnits.Add(unit.GetComponent<GroupedUnits>());
+                        }
+                    }
+                    else
+                    {
+                        listOfUnGroupedUnits.Add(unit);
+                    }
+                }
+                foreach(Unit unit in listOfUnGroupedUnits)
+                {
+                    listOfGroupedUnits[0].AttachUnit(unit);
+                    listOfUnGroupedUnits.Remove(unit);
+                    if(listOfGroupedUnits[0].carriedAmount== listOfGroupedUnits[0].numberOfUnitsAllowed)
+                    {
+                        listOfGroupedUnits.Remove(listOfGroupedUnits[0]);
+                    }
+                }
+                    /*if (unit.GetComponent<GroupedUnits>())
+                    {
+                        foreach (Unit groupedUnit in unit.GetComponent<GroupedUnits>().groupedUnits)
+                        {
+                            selectedUnits.Add(groupedUnit);
+                            groupedUnit.SetIsSelected(true);
+                            groupedUnit.SetHealthBarActive(true);
+                        }
+                        unit.GetComponent<GroupedUnits>().DeattachAllUnits();
+                    }*/
+            }
             if (Input.GetKey(PlayerButtons.DEGROUP))
             {
                 foreach(Unit unit in selectedUnits)
