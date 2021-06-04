@@ -81,9 +81,13 @@ public class GroupedUnits : Walkable
 
     public new void SetTargetPoint(Vector3 newTargetPoint)
     {
+        /*Vector3[] formation = GroupMovement.ArcDefensiveFormation(groupedUnits, newTargetPoint, GameManager.Instance.playersHolder.allPlayers[gameObject.GetComponentInParent<Unit>().myPlayer.playerNumber].playerCamera.transform.right, 1f);
+        int i = 0;
         foreach (Walkable walkable in groupedUnits)
         {
-            walkable.SetTargetPoint(newTargetPoint);
-        }
+            //walkable.SetTargetPoint(newTargetPoint);
+            walkable.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, walkable.transform.position.y, formation[i].z));
+            i++;
+        }*/
     }
 }
