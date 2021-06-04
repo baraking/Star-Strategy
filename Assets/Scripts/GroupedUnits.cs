@@ -4,7 +4,7 @@ using UnityEngine;
 
 //new to remove the new from the functions and design better
 //movement is based on all infantry being the same
-public class GroupedUnits : Walkable
+public class GroupedUnits : Walkable, System.IComparable
 {
 
     public List<Unit> groupedUnits = new List<Unit>();
@@ -59,6 +59,19 @@ public class GroupedUnits : Walkable
             groupedUnits.Add(unit);
             unit.transform.SetParent(gameObject.transform);
             groupUnitSize += unit.unitDetails.unitSize;
+        }
+    }
+
+    public void AttachAllUnits(GroupedUnits otherUnits)
+    {
+        if (groupedUnits.Count < numberOfUnitsAllowed && allowedUnitTypes.Contains(otherUnits.groupedUnits[0].unitDetails.unitType) && myPlayerNumber == otherUnits.groupedUnits[0].myPlayerNumber && !groupedUnits.Contains(otherUnits.groupedUnits[0]))
+        {
+            foreach(Unit unit in otherUnits.groupedUnits)
+            {
+                otherUnits.groupedUnits.Remove(unit);
+                groupedUnits.Add(otherUnits);
+            }
+            Destroy(otherUnits.gameObject);
         }
     }
 
@@ -122,5 +135,11 @@ public class GroupedUnits : Walkable
             walkable.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, walkable.transform.position.y, formation[i].z));
             i++;
         }
+    }
+
+    public new int CompareTo(object obj)
+    {
+        GroupedUnits other = obj as GroupedUnits;
+        return this.groupUnitSize.CompareTo(other.groupUnitSize);
     }
 }

@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject purchaseablePrefab;
 
+    public GameObject groupedUnitsPrefab;
+
     public static GameManager Instance { get { return _instance; } }
 
 

@@ -253,16 +253,39 @@ public class mouseController : MonoBehaviour
                         listOfGroupedUnits.Remove(listOfGroupedUnits[0]);
                     }
                 }
-                    /*if (unit.GetComponent<GroupedUnits>())
+                for(int i=0;i< listOfGroupedUnits.Count-1; i++)
+                {
+                    for(int j = 0; j > i; j--)
                     {
-                        foreach (Unit groupedUnit in unit.GetComponent<GroupedUnits>().groupedUnits)
+                        if (listOfGroupedUnits[j] != null)
                         {
-                            selectedUnits.Add(groupedUnit);
-                            groupedUnit.SetIsSelected(true);
-                            groupedUnit.SetHealthBarActive(true);
+                            if(listOfGroupedUnits[i].carriedAmount+ listOfGroupedUnits[j].carriedAmount<= listOfGroupedUnits[i].numberOfUnitsAllowed)
+                            {
+                                listOfGroupedUnits[i].AttachAllUnits(listOfGroupedUnits[j]);
+                            }
                         }
-                        unit.GetComponent<GroupedUnits>().DeattachAllUnits();
-                    }*/
+                    }
+                }
+                if (listOfUnGroupedUnits.Count > 1)
+                {
+                    int numberOfUnitsAllowed = GameManager.Instance.groupedUnitsPrefab.GetComponent<GroupedUnits>().numberOfUnitsAllowed;
+                    for (int i=0;i< listOfUnGroupedUnits.Count % numberOfUnitsAllowed; i++)
+                    {
+                        GameObject newUnit = Instantiate(GameManager.Instance.groupedUnitsPrefab);
+                        newUnit.GetComponent<Unit>().myPlayerNumber = listOfUnGroupedUnits[0].myPlayerNumber;
+                        newUnit.GetComponent<Unit>().myPlayer = myPlayer;
+                        newUnit.transform.position = transform.position;
+                        newUnit.GetComponent<Unit>().InitUnit();
+                        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+
+                        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+                        int max = (listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i > numberOfUnitsAllowed) ? numberOfUnitsAllowed : listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i;
+                        for (int j=0;j<max; j++)
+                        {
+                            newUnit.GetComponent<GroupedUnits>().AttachUnit(listOfUnGroupedUnits[j]);
+                        }
+                    }
+                }
             }
             if (Input.GetKey(PlayerButtons.DEGROUP))
             {
