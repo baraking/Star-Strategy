@@ -246,11 +246,14 @@ public class mouseController : MonoBehaviour
                 }
                 foreach(Unit unit in listOfUnGroupedUnits)
                 {
-                    listOfGroupedUnits[0].AttachUnit(unit);
-                    listOfUnGroupedUnits.Remove(unit);
-                    if(listOfGroupedUnits[0].carriedAmount== listOfGroupedUnits[0].numberOfUnitsAllowed)
+                    if (listOfGroupedUnits.Count > 0)
                     {
-                        listOfGroupedUnits.Remove(listOfGroupedUnits[0]);
+                        listOfGroupedUnits[0].AttachUnit(unit);
+                        listOfUnGroupedUnits.Remove(unit);
+                        if (listOfGroupedUnits[0].carriedAmount == listOfGroupedUnits[0].numberOfUnitsAllowed)
+                        {
+                            listOfGroupedUnits.Remove(listOfGroupedUnits[0]);
+                        }
                     }
                 }
                 for(int i=0;i< listOfGroupedUnits.Count-1; i++)
@@ -274,11 +277,11 @@ public class mouseController : MonoBehaviour
                         GameObject newUnit = Instantiate(GameManager.Instance.groupedUnitsPrefab);
                         newUnit.GetComponent<Unit>().myPlayerNumber = listOfUnGroupedUnits[0].myPlayerNumber;
                         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
-                        newUnit.transform.position = transform.position;
-                        newUnit.GetComponent<Unit>().InitUnit();
+                        //newUnit.transform.position = transform.position;
+                        //newUnit.GetComponent<Unit>().InitUnit();
                         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
 
-                        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+                        //newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
                         int max = (listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i > numberOfUnitsAllowed) ? numberOfUnitsAllowed : listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i;
                         for (int j=0;j<max; j++)
                         {
