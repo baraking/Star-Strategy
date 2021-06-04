@@ -173,6 +173,10 @@ public class Unit : Purchasables, System.IComparable
     [PunRPC]
     public void Fire(Unit targetUnit)
     {
+        if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
         foreach (Weapon weapon in unitWeapons)
         {
             if (weapon.IsEligableToFire(targetUnit))
@@ -216,21 +220,61 @@ public class Unit : Purchasables, System.IComparable
 
     public void Embark(Unit embarkingUnit)
     {
-        if (carriedUnits.Contains(embarkingUnit))
+        if (embarkingUnit.GetComponent<GroupedUnits>())
         {
-            return;
+            foreach(Unit unit in embarkingUnit.GetComponent<GroupedUnits>().groupedUnits)
+            {
+                if (carriedUnits.Contains(unit))
+                {
+                    return;
+                }
+            }
+            if (Vector3.Distance(transform.position, embarkingUnit.GetComponent<GroupedUnits>().GetAveragePostition()) < 0.2f)
+            {
+                foreach (Unit unit in embarkingUnit.GetComponent<GroupedUnits>().groupedUnits)
+                {
+                    EmbarkSingleUnit(embarkingUnit);
+                }
+            }
         }
-        if (Vector3.Distance(transform.position, embarkingUnit.transform.position) < 0.2f)
+        else
         {
-            print(embarkingUnit + " is embarking " + gameObject.name);
-            carriedUnits.Add(embarkingUnit);
-            carriedAmount += embarkingUnit.unitDetails.unitSize;
-            embarkingUnit.transform.SetParent(gameObject.transform);
-            embarkingUnit.gameObject.SetActive(false);
+            if (carriedUnits.Contains(embarkingUnit))
+            {
+                return;
+            }
+            if (Vector3.Distance(transform.position, embarkingUnit.transform.position) < 0.2f)
+            {
+                EmbarkSingleUnit(embarkingUnit);
+            }
         }
     }
 
+    private void EmbarkSingleUnit(Unit embarkingUnit)
+    {
+        print(embarkingUnit + " is embarking " + gameObject.name);
+        carriedUnits.Add(embarkingUnit);
+        carriedAmount += embarkingUnit.unitDetails.unitSize;
+        embarkingUnit.transform.SetParent(gameObject.transform);
+        embarkingUnit.gameObject.SetActive(false);
+    }
+
     public void Disembark(Unit disembarkingUnit)
+    {
+        if (disembarkingUnit.GetComponent<GroupedUnits>())
+        {
+            foreach (Unit unit in disembarkingUnit.GetComponent<GroupedUnits>().groupedUnits)
+            {
+                DisembarkGroupedUnit(disembarkingUnit);
+            }
+        }
+        else
+        {
+            DisembarkSingleUnit(disembarkingUnit);
+        }
+    }
+
+    public void DisembarkSingleUnit(Unit disembarkingUnit)
     {
         print(disembarkingUnit + " is disembarking " + gameObject.name);
         carriedUnits.Remove(disembarkingUnit);
@@ -239,6 +283,17 @@ public class Unit : Purchasables, System.IComparable
         disembarkingUnit.GetComponent<Walkable>().SetHasTarget(false);
         disembarkingUnit.GetComponent<Walkable>().SetTargetPoint(transform.position);
         disembarkingUnit.gameObject.SetActive(true);
+    }
+
+    public void DisembarkGroupedUnit(Unit disembarkingUnit)
+    {
+        disembarkingUnit.gameObject.SetActive(true);
+        print(disembarkingUnit + " is disembarking " + gameObject.name);
+        carriedUnits.Remove(disembarkingUnit);
+        carriedAmount -= disembarkingUnit.unitDetails.unitSize;
+        disembarkingUnit.transform.SetParent(GameManager.Instance.Units.transform);
+        disembarkingUnit.GetComponent<GroupedUnits>().SetHasTarget(false);
+        disembarkingUnit.GetComponent<GroupedUnits>().SetTargetPoint(transform.position);
     }
 
     void Die()

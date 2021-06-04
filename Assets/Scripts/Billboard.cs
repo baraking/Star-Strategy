@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//fix the direction for grouped units
 public class Billboard : MonoBehaviour {
 
     public Transform playerCamera;

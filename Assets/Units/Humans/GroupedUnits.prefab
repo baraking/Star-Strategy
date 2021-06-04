@@ -49,7 +49,7 @@ MonoBehaviour:
   purchasableDetails: {fileID: 0}
   timeStartedUpgrading: 0
   isBuilding: 0
-  unitDetails: {fileID: 0}
+  unitDetails: {fileID: 11400000, guid: 794881f6045e1a749914ceff27f3bbb3, type: 2}
   myPlayer: {fileID: 0}
   myPlayerNumber: 0
   isSelected: 0

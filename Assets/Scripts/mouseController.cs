@@ -288,9 +288,12 @@ public class mouseController : MonoBehaviour
                             {
                                 if (unit.GetComponent<GroupedUnits>())
                                 {
-                                    unit.GetComponent<GroupedUnits>().SetHasTarget(true);
-                                    unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
-                                    print("Handle Group Embarking!!!");
+                                    if (objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity - objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.GetComponent<GroupedUnits>().groupUnitSize)
+                                    {
+                                        unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                                        unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                        objectHit.GetComponentInParent<Unit>().Embark(unit);
+                                    }
                                 }
                                 else
                                 {
