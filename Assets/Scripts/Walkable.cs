@@ -53,8 +53,7 @@ public class Walkable : Unit
     }
 
     void WalkTowards()
-    {
-        print(gameObject + " is attempting to walk");
+    {   
         Vector3 targetDirection = targetPoint - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, unitDetails.speed * Time.deltaTime, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);

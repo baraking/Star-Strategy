@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -226,7 +227,7 @@ public class mouseController : MonoBehaviour
             ///
 
             Vector3[] formation;
-            if (Input.GetKey(PlayerButtons.GROUP))
+            if (Input.GetKeyDown(PlayerButtons.GROUP))
             {
                 List<GroupedUnits> listOfGroupedUnits = new List<GroupedUnits>();
                 List<Unit> listOfUnGroupedUnits = new List<Unit>();
@@ -283,7 +284,7 @@ public class mouseController : MonoBehaviour
                         newUnit.GetComponent<Unit>().myPlayerNumber = listOfUnGroupedUnits[0].myPlayerNumber;
                         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
                         //newUnit.transform.position = transform.position;
-                        //newUnit.GetComponent<Unit>().InitUnit();
+                        newUnit.GetComponent<GroupedUnits>().InitUnit();
                         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
 
                         //newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
@@ -295,7 +296,7 @@ public class mouseController : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetKey(PlayerButtons.DEGROUP))
+            if (Input.GetKeyDown(PlayerButtons.DEGROUP))
             {
                 foreach(Unit unit in selectedUnits)
                 {

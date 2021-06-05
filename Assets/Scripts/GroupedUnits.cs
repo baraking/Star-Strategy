@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 //new to remove the new from the functions and design better
 //movement is based on all infantry being the same
-public class GroupedUnits : Walkable, System.IComparable
+public class GroupedUnits : Walkable
 {
 
     public List<Unit> groupedUnits = new List<Unit>();
@@ -14,8 +15,7 @@ public class GroupedUnits : Walkable, System.IComparable
 
     void Start()
     {
-        base.InitUnit();
-        InitGroupSize();
+        InitUnit();
     }
 
     void Update()
@@ -23,6 +23,43 @@ public class GroupedUnits : Walkable, System.IComparable
         AttempotToWalk();
         //transform.rotation = Quaternion.LookRotation(newDirection);
         //transform.position = GetAveragePostition();
+    }
+
+    public void InitUnit()
+    {
+        //purchasableDetails = unitDetails;
+        /*if (healthBar == null)
+        {
+            healthBar = gameObject.GetComponentInChildren<HealthBar>();
+        }*/
+        //SetHealthBarActive(true);
+        //healthBar.SetMaxHealth(unitDetails.max_hp);
+        //curHP = unitDetails.max_hp;
+
+        if (gameObject.GetComponent<PhotonTransformView>() == null)
+        {
+            gameObject.AddComponent<PhotonTransformView>();
+        }
+
+        if (myPlayer != null)
+        {
+            myPlayerNumber = myPlayer.playerNumber;
+            myPlayer.playerUnits.Add(this);
+            myPlayer.SortUnits();
+        }
+
+        //gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
+        /*foreach (Renderer curRenderer in gameObject.GetComponentsInChildren<Renderer>())
+        {
+            curRenderer.material.SetColor("_Color", GameManager.Instance.basicColors1[myPlayerNumber]);
+        }*/
+
+        //AddWeapons();
+
+        isBuilding = false;
+        //SetHealthBarActive(false);
+
+        InitGroupSize();
     }
 
     public void InitGroupSize()
@@ -103,7 +140,6 @@ public class GroupedUnits : Walkable, System.IComparable
 
     public new void SetIsSelected(bool newState)
     {
-        print(gameObject + " attempting to set selection to " + newState);
         foreach (Unit unit in groupedUnits)
         {
             unit.SetIsSelected(newState);
@@ -137,9 +173,9 @@ public class GroupedUnits : Walkable, System.IComparable
         }
     }
 
-    public new int CompareTo(object obj)
+    /*public new int CompareTo(object obj)
     {
         GroupedUnits other = obj as GroupedUnits;
         return this.groupUnitSize.CompareTo(other.groupUnitSize);
-    }
+    }*/
 }
