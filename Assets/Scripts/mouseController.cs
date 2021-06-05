@@ -291,7 +291,11 @@ public class mouseController : MonoBehaviour
                         int max = (listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i > numberOfUnitsAllowed) ? numberOfUnitsAllowed : listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i;
                         for (int j=0;j<max; j++)
                         {
-                            newUnit.GetComponent<GroupedUnits>().AttachUnit(listOfUnGroupedUnits[j]);
+                            newUnit.GetComponent<GroupedUnits>().AttachUnit(listOfUnGroupedUnits[j + numberOfUnitsAllowed * i]);
+                        }
+                        if (newUnit.GetComponent<GroupedUnits>().groupUnitSize == 0)
+                        {
+                            Destroy(newUnit);
                         }
                     }
                 }
@@ -302,13 +306,15 @@ public class mouseController : MonoBehaviour
                 {
                     if (unit.GetComponent<GroupedUnits>())
                     {
-                        foreach(Unit groupedUnit in unit.GetComponent<GroupedUnits>().groupedUnits)
+                        selectedUnits.Remove(unit);
+                        foreach (Unit groupedUnit in unit.GetComponent<GroupedUnits>().groupedUnits)
                         {
                             selectedUnits.Add(groupedUnit);
                             groupedUnit.SetIsSelected(true);
                             groupedUnit.SetHealthBarActive(true);
                         }
                         unit.GetComponent<GroupedUnits>().DeattachAllUnits();
+                        Destroy(unit);
                     }
                 }
             }

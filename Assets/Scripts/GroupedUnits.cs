@@ -112,21 +112,28 @@ public class GroupedUnits : Walkable
         }
     }
 
-    public void DeattachUnit(Unit unit)
+    public Unit DeattachUnit(Unit unit)
     {
         if (groupedUnits.Contains(unit))
         {
             groupedUnits.Remove(unit);
             unit.transform.SetParent(GameManager.Instance.Units.transform);
             groupUnitSize -= unit.unitDetails.unitSize;
+            return unit;
         }
+        return null;
     }
 
     public void DeattachAllUnits()
     {
         foreach (Unit unit in groupedUnits)
         {
-            DeattachUnit(unit);
+            unit.transform.SetParent(GameManager.Instance.Units.transform);
+            groupUnitSize -= unit.unitDetails.unitSize;
+        }
+        while (groupedUnits.Count > 0)
+        {
+            groupedUnits.RemoveAt(0);
         }
     }
 
