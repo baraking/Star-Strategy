@@ -200,9 +200,37 @@ public class mouseController : MonoBehaviour
                             {
                                 if (!selectedUnits.Contains(hooveredUnit) && hooveredUnit.gameObject.active)
                                 {
-                                    selectedUnits.Add(hooveredUnit);
-                                    hooveredUnit.SetIsSelected(true);
-                                    hooveredUnit.SetHealthBarActive(true);
+                                    if (hooveredUnit.GetComponent<GroupedUnits>()|| hooveredUnit.GetComponentInParent<GroupedUnits>())
+                                    {
+                                        GroupedUnits grouped;
+                                        if (hooveredUnit.GetComponent<GroupedUnits>())
+                                        {
+                                            grouped = hooveredUnit.GetComponent<GroupedUnits>();
+                                        }
+                                        else
+                                        {
+                                            grouped = hooveredUnit.GetComponentInParent<GroupedUnits>();
+                                        }
+                                        foreach(Unit unit in grouped.groupedUnits)
+                                        {
+                                            if (selectedUnits.Contains(unit))
+                                            {
+                                                selectedUnits.Remove(unit);
+                                            }
+                                        }
+                                        if (!selectedUnits.Contains(grouped))
+                                        {
+                                            selectedUnits.Add(grouped);
+                                            grouped.SetIsSelected(true);
+                                            grouped.SetHealthBarActive(true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        selectedUnits.Add(hooveredUnit);
+                                        hooveredUnit.SetIsSelected(true);
+                                        hooveredUnit.SetHealthBarActive(true);
+                                    }
                                 }
                                 if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
                                 {
@@ -222,7 +250,6 @@ public class mouseController : MonoBehaviour
                 //print(hit.point);
                 curPosition = hit.point;
             }
-
             ///*
             ///
 
@@ -254,6 +281,7 @@ public class mouseController : MonoBehaviour
                     {
                         listOfGroupedUnits[0].AttachUnit(unit);
                         listOfUnGroupedUnits.Remove(unit);
+                        selectedUnits.Remove(unit);
                         if (listOfGroupedUnits[0].carriedAmount == listOfGroupedUnits[0].numberOfUnitsAllowed)
                         {
                             listOfGroupedUnits.Remove(listOfGroupedUnits[0]);
@@ -292,11 +320,13 @@ public class mouseController : MonoBehaviour
                         for (int j=0;j<max; j++)
                         {
                             newUnit.GetComponent<GroupedUnits>().AttachUnit(listOfUnGroupedUnits[j + numberOfUnitsAllowed * i]);
+                            selectedUnits.Remove(listOfUnGroupedUnits[j + numberOfUnitsAllowed * i]);
                         }
                         if (newUnit.GetComponent<GroupedUnits>().groupUnitSize == 0)
                         {
                             Destroy(newUnit);
                         }
+                        selectedUnits.Add(newUnit.GetComponent<Unit>());
                     }
                 }
             }
