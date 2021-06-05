@@ -241,7 +241,10 @@ public class mouseController : MonoBehaviour
                     }
                     else
                     {
-                        listOfUnGroupedUnits.Add(unit);
+                        if(unit.unitDetails.unitType == UnitDetails.UnitType.Infantry)
+                        {
+                            listOfUnGroupedUnits.Add(unit);
+                        }
                     }
                 }
                 foreach(Unit unit in listOfUnGroupedUnits)
@@ -258,11 +261,11 @@ public class mouseController : MonoBehaviour
                 }
                 for(int i=0;i< listOfGroupedUnits.Count-1; i++)
                 {
-                    for(int j = 0; j > i; j--)
+                    for(int j = listOfGroupedUnits.Count - 1; j > i; j--)
                     {
                         if (listOfGroupedUnits[j] != null)
                         {
-                            if(listOfGroupedUnits[i].carriedAmount+ listOfGroupedUnits[j].carriedAmount<= listOfGroupedUnits[i].numberOfUnitsAllowed)
+                            if(listOfGroupedUnits[i].carriedAmount + listOfGroupedUnits[j].carriedAmount<= listOfGroupedUnits[i].numberOfUnitsAllowed)
                             {
                                 listOfGroupedUnits[i].AttachAllUnits(listOfGroupedUnits[j]);
                             }
@@ -272,7 +275,9 @@ public class mouseController : MonoBehaviour
                 if (listOfUnGroupedUnits.Count > 1)
                 {
                     int numberOfUnitsAllowed = GameManager.Instance.groupedUnitsPrefab.GetComponent<GroupedUnits>().numberOfUnitsAllowed;
-                    for (int i=0;i< listOfUnGroupedUnits.Count % numberOfUnitsAllowed; i++)
+                    print(listOfUnGroupedUnits.Count);
+                    print(numberOfUnitsAllowed);
+                    for (int i=0;i< listOfUnGroupedUnits.Count / numberOfUnitsAllowed + 1; i++)
                     {
                         GameObject newUnit = Instantiate(GameManager.Instance.groupedUnitsPrefab);
                         newUnit.GetComponent<Unit>().myPlayerNumber = listOfUnGroupedUnits[0].myPlayerNumber;
