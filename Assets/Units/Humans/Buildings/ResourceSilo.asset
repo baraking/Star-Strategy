@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
-  m_Name: Builder
+  m_Name: ResourceSilo
   m_EditorClassIdentifier: 
-  name: Builder
-  unitType: 1
-  unitSize: 8
+  name: ResourceSilo
+  unitType: 4
+  unitSize: 0
   carryingCapacity: 0
-  max_hp: 200
-  speed: 0.5
+  max_hp: 1200
+  speed: 0
   rotation_speed: 0
-  buildTime: 10
-  costToBuild: 0
-  gatherAmount: 10
-  gatheringCapacity: 75
-  gatheringRange: 0.25
-  gatheringCooldown: 1
-  purchasables:
-  - {fileID: 1589385821079909538, guid: caccf9dc6e35f354593fcb2f38cb392a, type: 3}
-  icon: {fileID: 21300000, guid: 8cdab3c2f96aebf49887be470239fe49, type: 3}
+  buildTime: 30
+  costToBuild: 800
+  gatherAmount: 0
+  gatheringCapacity: 0
+  gatheringRange: 0
+  gatheringCooldown: 0
+  purchasables: []
+  icon: {fileID: 21300000, guid: dc253fe0928d7dc4a891cbb6b6ca8b86, type: 3}

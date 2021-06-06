@@ -10,9 +10,11 @@ using UnityEngine;
 //give resources a set value
 public class Player : MonoBehaviourPunCallbacks
 {
+    public enum Race { Humans, Parasites, Bugs }
     public PhotonView photonView;
 
     public int playerNumber;
+    public Race playingRace;
     public List<Unit> playerUnits;
     public GameObject cameraHolder;
     public Camera playerCamera;
@@ -23,6 +25,14 @@ public class Player : MonoBehaviourPunCallbacks
 
     public void Awake()
     {
+        //Default Setting!
+        playingRace = Race.Humans;
+
+        if (playingRace == Race.Humans)
+        {
+            gameObject.AddComponent<HumansPlayerData>();
+        }
+
         photonView = GetComponent<PhotonView>();
 
         playerUnits = new List<Unit>();
