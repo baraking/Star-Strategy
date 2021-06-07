@@ -137,15 +137,20 @@ public class Unit : Purchasables, System.IComparable
         {
             myPlayer.PlayerRaceData.landmarks[unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.requirements[i]] = true;
         }
+        UpdateSelectedUnitsGUI();
+    }
+
+    public void UpdateSelectedUnitsGUI()
+    {
+        if (myPlayer.GetComponent<mouseController>().isUnitUIDisplaying)
+        {
+            myPlayer.GetComponent<mouseController>().ResetDisplayedUnitPurchasableUnits();
+            myPlayer.GetComponent<mouseController>().DisplayUnitPurchasables(myPlayer.GetComponent<mouseController>().selectedUnits[0]);
+        }
     }
 
     public void UpdateLandmarksOnSelfSpawn()
     {
-        /*if (name.Contains("Factory"))
-        {
-            print("Tank Factory made it!==========");
-        }*/
-
         //if another exists
         /*foreach (Unit unit in myPlayer.playerUnits)
         {
@@ -154,12 +159,11 @@ public class Unit : Purchasables, System.IComparable
                 return;
             }
         }*/
-        print(name);
         for (int i = 0; i < unitDetails.requirements.Length; i++)
         {
-            print(i + " , " + +GetRequirements()[i]);
             myPlayer.PlayerRaceData.landmarks[GetRequirements()[i]] = true;
         }
+        //UpdateSelectedUnitsGUI();
     }
 
     public void UpdateLandmarksOnSelfDeath()
@@ -176,6 +180,7 @@ public class Unit : Purchasables, System.IComparable
         {
             myPlayer.PlayerRaceData.landmarks[GetPrerequisites()[i]] = false;
         }
+        UpdateSelectedUnitsGUI();
     }
 
     public void OnMyPlayerJoined()
