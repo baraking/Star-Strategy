@@ -54,6 +54,7 @@ MonoBehaviour:
   playerCamera: {fileID: 688672781880643210}
   debugMode: 0
   resources: 0
+  PlayerRaceData: {fileID: 0}
 --- !u!114 &8761641264708706018
 MonoBehaviour:
   m_ObjectHideFlags: 0

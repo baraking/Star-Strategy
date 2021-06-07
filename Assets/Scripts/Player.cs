@@ -23,6 +23,8 @@ public class Player : MonoBehaviourPunCallbacks
 
     public int resources;
 
+    public HumansPlayerData PlayerRaceData;
+
     public void Awake()
     {
         //Default Setting!
@@ -30,7 +32,7 @@ public class Player : MonoBehaviourPunCallbacks
 
         if (playingRace == Race.Humans)
         {
-            gameObject.AddComponent<HumansPlayerData>();
+            PlayerRaceData = gameObject.AddComponent<HumansPlayerData>();
         }
 
         photonView = GetComponent<PhotonView>();
@@ -55,6 +57,11 @@ public class Player : MonoBehaviourPunCallbacks
     public void Start()
     {
         resources = 1000;
+
+        foreach(Unit unit in playerUnits)
+        {
+            unit.OnUnitSpawnEnd();
+        }
     }
 
     public void SortUnits()

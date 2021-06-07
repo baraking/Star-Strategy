@@ -28,4 +28,6 @@ MonoBehaviour:
   purchasables:
   - {fileID: 3231060419954714136, guid: 3ce97692faaac194cb946de3354dd10c, type: 3}
   - {fileID: 6194072957137350217, guid: 33de378a9a3cc6945b40d65cde375c7b, type: 3}
+  prerequisites: 
+  requirements: 00000000
   icon: {fileID: 21300000, guid: a9b5e133b77f1b54584014458b9c5cf3, type: 3}

@@ -26,4 +26,6 @@ MonoBehaviour:
   gatheringRange: 0
   gatheringCooldown: 0
   purchasables: []
+  prerequisites: 00000000
+  requirements: 
   icon: {fileID: 21300000, guid: 1184508e9d07dbc478a3a36cb97232bb, type: 3}

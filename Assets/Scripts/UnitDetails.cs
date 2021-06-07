@@ -32,5 +32,8 @@ public class UnitDetails : PurchasableDetails
 
     public List<Purchasables> purchasables;
 
+    public List<int> prerequisites;
+    public List<int> requirements;
+
     public Sprite icon;
 }

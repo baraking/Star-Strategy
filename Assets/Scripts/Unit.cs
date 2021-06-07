@@ -116,7 +116,16 @@ public class Unit : Purchasables, System.IComparable
 
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         Debug.Log("Finished building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+
         isBuilding = false;
+    }
+
+    public void OnUnitSpawnEnd()
+    {
+        foreach(int i in unitDetails.requirements)
+        {
+            myPlayer.PlayerRaceData.landmarks[i] = true;
+        }
     }
 
     public void OnMyPlayerJoined()
