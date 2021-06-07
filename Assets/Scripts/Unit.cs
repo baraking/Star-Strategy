@@ -139,6 +139,45 @@ public class Unit : Purchasables, System.IComparable
         }
     }
 
+    public void UpdateLandmarksOnSelfSpawn()
+    {
+        /*if (name.Contains("Factory"))
+        {
+            print("Tank Factory made it!==========");
+        }*/
+
+        //if another exists
+        /*foreach (Unit unit in myPlayer.playerUnits)
+        {
+            if (unit.name == this.name && unit != this)
+            {
+                return;
+            }
+        }*/
+        print(name);
+        for (int i = 0; i < unitDetails.requirements.Length; i++)
+        {
+            print(i + " , " + +GetRequirements()[i]);
+            myPlayer.PlayerRaceData.landmarks[GetRequirements()[i]] = true;
+        }
+    }
+
+    public void UpdateLandmarksOnSelfDeath()
+    {
+        //if another exists
+        foreach(Unit unit in myPlayer.playerUnits)
+        {
+            if(unit.name==this.name && unit != this)
+            {
+                return;
+            }
+        }
+        for(int i = 0; i < unitDetails.requirements.Length; i++)
+        {
+            myPlayer.PlayerRaceData.landmarks[GetPrerequisites()[i]] = false;
+        }
+    }
+
     public void OnMyPlayerJoined()
     {
         myPlayer = GameManager.Instance.playersHolder.getPlayer(myPlayerNumber);
@@ -156,7 +195,9 @@ public class Unit : Purchasables, System.IComparable
 
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);
 
-        Debug.Log(gameObject.name + " is ready!");
+        UpdateLandmarksOnSelfSpawn();
+
+        //Debug.Log(gameObject.name + " is ready!");
     }
 
     public void SetHealthBarActive(bool setTo)
@@ -233,7 +274,7 @@ public class Unit : Purchasables, System.IComparable
         }
         foreach(WeaponHolder weaponHolder in GetComponentsInChildren<WeaponHolder>())
         {
-            print(gameObject.name);
+            //print(gameObject.name);
             weaponHolder.UpdateIfHasAWeapon();
         }
     }
@@ -319,6 +360,7 @@ public class Unit : Purchasables, System.IComparable
     void Die()
     {
         print("I am dead :(");
+        UpdateLandmarksOnSelfDeath();
         Destroy(gameObject);
     }
 
