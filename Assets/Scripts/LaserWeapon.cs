@@ -32,6 +32,5 @@ public class LaserWeapon : MonoBehaviour
         //GetComponent<LineRenderer>().gameObject.SetActive(false);
         GetComponent<LineRenderer>().SetPosition(1, this.transform.position);
         GetComponent<LineRenderer>().SetPosition(0, this.transform.position);
-        print(Time.time);
     }
 }
