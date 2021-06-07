@@ -6,8 +6,10 @@ using UnityEngine;
 //imporve the rotation of the walkable
 public class Walkable : Unit
 {
-    public bool hasTarget = false;
-    public Vector3 targetPoint;
+    [SerializeField]
+    private bool hasTarget = false;
+    [SerializeField]
+    private Vector3 targetPoint;
     public GameObject targetObject;
 
     private void Start()
@@ -18,6 +20,28 @@ public class Walkable : Unit
     void Update()
     {
         AttempotToWalk();
+        if (Input.GetKey(PlayerButtons.DISEMBARK))
+        {
+            foreach(Unit unit in carriedUnits)
+            {
+                Disembark(unit);
+            }
+        }
+    }
+
+    public void SetHasTarget(bool newState)
+    {
+        hasTarget = newState;
+    }
+
+    public void SetTargetPoint(Vector3 newTargetPoint)
+    {
+        targetPoint = newTargetPoint;
+    }
+
+    public Vector3 GetTargetPoint()
+    {
+        return targetPoint;
     }
 
     public void AttempotToWalk()
@@ -29,7 +53,7 @@ public class Walkable : Unit
     }
 
     void WalkTowards()
-    {
+    {   
         Vector3 targetDirection = targetPoint - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, unitDetails.speed * Time.deltaTime, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);

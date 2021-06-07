@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
-  m_Name: Builder
+  m_Name: Infantry Group
   m_EditorClassIdentifier: 
-  name: Builder
-  unitType: 1
-  unitSize: 8
+  name: Infantry Group
+  unitType: 0
+  unitSize: 1
   carryingCapacity: 0
-  max_hp: 200
-  speed: 0.5
+  max_hp: 0
+  speed: 0
   rotation_speed: 0
-  buildTime: 10
+  buildTime: 0
   costToBuild: 0
-  gatherAmount: 10
-  gatheringCapacity: 75
-  gatheringRange: 0.25
-  gatheringCooldown: 1
-  purchasables:
-  - {fileID: 1589385821079909538, guid: caccf9dc6e35f354593fcb2f38cb392a, type: 3}
-  icon: {fileID: 21300000, guid: 8cdab3c2f96aebf49887be470239fe49, type: 3}
+  gatherAmount: 0
+  gatheringCapacity: 0
+  gatheringRange: 0
+  gatheringCooldown: 0
+  purchasables: []
+  icon: {fileID: 21300000, guid: 19a42ed3f4fe5bd46ae8a1256d238190, type: 3}

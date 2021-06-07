@@ -65,6 +65,18 @@ public class mouseController : MonoBehaviour
             newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
 
             newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
+
+            if (curPurchasable.GetPrerequisites().Length > 0)
+            {
+                foreach(int i in curPurchasable.GetPrerequisites())
+                {
+                    if (!myPlayer.PlayerRaceData.landmarks[i])
+                    {
+                        newPurchasableUI.GetComponentInChildren<Button>().interactable = false;
+                    }
+                }
+            }
+
             newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
         } 
     }
@@ -142,8 +154,16 @@ public class mouseController : MonoBehaviour
                         {
                             foreach (Unit unit in selectedUnits)
                             {
-                                unit.isSelected = false;
-                                unit.SetHealthBarActive(false);
+                                if (unit.GetComponent<GroupedUnits>())
+                                {
+                                    unit.GetComponent<GroupedUnits>().SetIsSelected(false);
+                                    unit.GetComponent<GroupedUnits>().SetHealthBarActive(false);
+                                }
+                                else
+                                {
+                                    unit.SetIsSelected(false);
+                                    unit.SetHealthBarActive(false);
+                                }   
                             }
                             selectedUnits.Clear();
                         }
@@ -155,11 +175,20 @@ public class mouseController : MonoBehaviour
                             if (myPlayer.IsUnitSelectable(objectHit.GetComponentInParent<Unit>()))
                             {
                                 bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
-                                if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()))
+                                if (!selectedUnits.Contains(objectHit.GetComponentInParent<Unit>()) && objectHit.gameObject.active)
                                 {
-                                    selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
-                                    objectHit.GetComponentInParent<Unit>().isSelected = true;
-                                    objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                    if (objectHit.GetComponentInParent<GroupedUnits>())
+                                    {
+                                        selectedUnits.Add(objectHit.GetComponentInParent<GroupedUnits>());
+                                        objectHit.GetComponentInParent<GroupedUnits>().SetIsSelected(true);
+                                        objectHit.GetComponentInParent<GroupedUnits>().SetHealthBarActive(true);
+                                    }
+                                    else
+                                    {
+                                        selectedUnits.Add(objectHit.GetComponentInParent<Unit>());
+                                        objectHit.GetComponentInParent<Unit>().SetIsSelected(true);
+                                        objectHit.GetComponentInParent<Unit>().SetHealthBarActive(true);
+                                    }
                                 }
                                 if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
                                 {
@@ -180,11 +209,39 @@ public class mouseController : MonoBehaviour
                             print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
                             {
-                                if (!selectedUnits.Contains(hooveredUnit))
+                                if (!selectedUnits.Contains(hooveredUnit) && hooveredUnit.gameObject.active)
                                 {
-                                    selectedUnits.Add(hooveredUnit);
-                                    hooveredUnit.isSelected = true;
-                                    hooveredUnit.SetHealthBarActive(true);
+                                    if (hooveredUnit.GetComponent<GroupedUnits>()|| hooveredUnit.GetComponentInParent<GroupedUnits>())
+                                    {
+                                        GroupedUnits grouped;
+                                        if (hooveredUnit.GetComponent<GroupedUnits>())
+                                        {
+                                            grouped = hooveredUnit.GetComponent<GroupedUnits>();
+                                        }
+                                        else
+                                        {
+                                            grouped = hooveredUnit.GetComponentInParent<GroupedUnits>();
+                                        }
+                                        foreach(Unit unit in grouped.groupedUnits)
+                                        {
+                                            if (selectedUnits.Contains(unit))
+                                            {
+                                                selectedUnits.Remove(unit);
+                                            }
+                                        }
+                                        if (!selectedUnits.Contains(grouped))
+                                        {
+                                            selectedUnits.Add(grouped);
+                                            grouped.SetIsSelected(true);
+                                            grouped.SetHealthBarActive(true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        selectedUnits.Add(hooveredUnit);
+                                        hooveredUnit.SetIsSelected(true);
+                                        hooveredUnit.SetHealthBarActive(true);
+                                    }
                                 }
                                 if (selectedUnits.Count == 1 && isSelectedUnitsAmountNotOne)
                                 {
@@ -204,12 +261,104 @@ public class mouseController : MonoBehaviour
                 //print(hit.point);
                 curPosition = hit.point;
             }
-
             ///*
             ///
 
             Vector3[] formation;
+            if (Input.GetKeyDown(PlayerButtons.GROUP))
+            {
+                List<GroupedUnits> listOfGroupedUnits = new List<GroupedUnits>();
+                List<Unit> listOfUnGroupedUnits = new List<Unit>();
+                foreach (Unit unit in selectedUnits)
+                {
+                    if (unit.GetComponent<GroupedUnits>())
+                    {
+                        if (unit.GetComponent<GroupedUnits>().groupUnitSize < unit.GetComponent<GroupedUnits>().numberOfUnitsAllowed)
+                        {
+                            listOfGroupedUnits.Add(unit.GetComponent<GroupedUnits>());
+                        }
+                    }
+                    else
+                    {
+                        if(unit.unitDetails.unitType == UnitDetails.UnitType.Infantry)
+                        {
+                            listOfUnGroupedUnits.Add(unit);
+                        }
+                    }
+                }
+                foreach(Unit unit in listOfUnGroupedUnits)
+                {
+                    if (listOfGroupedUnits.Count > 0)
+                    {
+                        listOfGroupedUnits[0].AttachUnit(unit);
+                        listOfUnGroupedUnits.Remove(unit);
+                        selectedUnits.Remove(unit);
+                        if (listOfGroupedUnits[0].carriedAmount == listOfGroupedUnits[0].numberOfUnitsAllowed)
+                        {
+                            listOfGroupedUnits.Remove(listOfGroupedUnits[0]);
+                        }
+                    }
+                }
+                for(int i=0;i< listOfGroupedUnits.Count-1; i++)
+                {
+                    for(int j = listOfGroupedUnits.Count - 1; j > i; j--)
+                    {
+                        if (listOfGroupedUnits[j] != null)
+                        {
+                            if(listOfGroupedUnits[i].carriedAmount + listOfGroupedUnits[j].carriedAmount<= listOfGroupedUnits[i].numberOfUnitsAllowed)
+                            {
+                                listOfGroupedUnits[i].AttachAllUnits(listOfGroupedUnits[j]);
+                            }
+                        }
+                    }
+                }
+                if (listOfUnGroupedUnits.Count > 1)
+                {
+                    int numberOfUnitsAllowed = GameManager.Instance.groupedUnitsPrefab.GetComponent<GroupedUnits>().numberOfUnitsAllowed;
+                    print(listOfUnGroupedUnits.Count);
+                    print(numberOfUnitsAllowed);
+                    for (int i=0;i< listOfUnGroupedUnits.Count / numberOfUnitsAllowed + 1; i++)
+                    {
+                        GameObject newUnit = Instantiate(GameManager.Instance.groupedUnitsPrefab);
+                        newUnit.GetComponent<Unit>().myPlayerNumber = listOfUnGroupedUnits[0].myPlayerNumber;
+                        newUnit.GetComponent<Unit>().myPlayer = myPlayer;
+                        //newUnit.transform.position = transform.position;
+                        newUnit.GetComponent<GroupedUnits>().InitUnit();
+                        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
 
+                        //newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+                        int max = (listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i > numberOfUnitsAllowed) ? numberOfUnitsAllowed : listOfUnGroupedUnits.Count - numberOfUnitsAllowed * i;
+                        for (int j=0;j<max; j++)
+                        {
+                            newUnit.GetComponent<GroupedUnits>().AttachUnit(listOfUnGroupedUnits[j + numberOfUnitsAllowed * i]);
+                            selectedUnits.Remove(listOfUnGroupedUnits[j + numberOfUnitsAllowed * i]);
+                        }
+                        if (newUnit.GetComponent<GroupedUnits>().groupUnitSize == 0)
+                        {
+                            Destroy(newUnit);
+                        }
+                        selectedUnits.Add(newUnit.GetComponent<Unit>());
+                    }
+                }
+            }
+            if (Input.GetKeyDown(PlayerButtons.DEGROUP))
+            {
+                foreach(Unit unit in selectedUnits)
+                {
+                    if (unit.GetComponent<GroupedUnits>())
+                    {
+                        selectedUnits.Remove(unit);
+                        foreach (Unit groupedUnit in unit.GetComponent<GroupedUnits>().groupedUnits)
+                        {
+                            selectedUnits.Add(groupedUnit);
+                            groupedUnit.SetIsSelected(true);
+                            groupedUnit.SetHealthBarActive(true);
+                        }
+                        unit.GetComponent<GroupedUnits>().DeattachAllUnits();
+                        Destroy(unit);
+                    }
+                }
+            }
             if (Input.GetKey(PlayerButtons.RIGHT_CLICK))
             {
                 if (Vector3.Distance(curRightMousePoint, hit.point) > .1f)
@@ -245,7 +394,14 @@ public class mouseController : MonoBehaviour
                         foreach (Unit unit in selectedUnits)
                         {
                             //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
-                            unit.Fire(objectHit.GetComponentInParent<Unit>());
+                            if (unit.GetComponent<GroupedUnits>())
+                            {
+                                unit.GetComponent<GroupedUnits>().Fire(objectHit.GetComponentInParent<Unit>());
+                            }
+                            else
+                            {
+                                unit.Fire(objectHit.GetComponentInParent<Unit>());
+                            }
                         }
 
                         if (!isActionPointMovementByDefault)
@@ -256,13 +412,44 @@ public class mouseController : MonoBehaviour
                         }
 
                     }
+                    else if(objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                    {
+                        foreach (Unit unit in selectedUnits)
+                        {
+                            if(unit.unitDetails.unitType==UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
+                            {
+                                if (unit.GetComponent<GroupedUnits>())
+                                {
+                                    if (objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity - objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.GetComponent<GroupedUnits>().groupUnitSize)
+                                    {
+                                        unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                                        unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                        objectHit.GetComponentInParent<Unit>().Embark(unit);
+                                    }
+                                }
+                                else
+                                {
+                                    unit.GetComponent<Walkable>().SetHasTarget(true);
+                                    unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                    objectHit.GetComponentInParent<Unit>().Embark(unit);
+                                }
+                            }
+                        }
+
+                        if (!isActionPointMovementByDefault)
+                        {
+                            isActionPointMovementByDefault = true;
+                            previouslySelectedGroupMovement = selectedGroupMovement;
+                            selectedGroupMovement = GroupMovement.PointFormation;
+                        }
+                    }
                 }
                 else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
                 {
                     foreach (Walkable unit in selectedUnits)
                     {
-                        unit.GetComponent<Walkable>().hasTarget = true;
-                        unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                        unit.GetComponent<Walkable>().SetHasTarget(true);
+                        unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                         if (unit.GetComponent<Gatherer>())
                         {
                             unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
@@ -283,8 +470,8 @@ public class mouseController : MonoBehaviour
                     {
                         foreach (Walkable unit in selectedUnits)
                         {
-                            unit.GetComponent<Walkable>().hasTarget = true;
-                            unit.GetComponent<Walkable>().targetPoint = new Vector3(hit.point.x, unit.transform.position.y, hit.point.z);
+                            unit.GetComponent<Walkable>().SetHasTarget(true);
+                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                             if (unit.GetComponent<Gatherer>())
                             {
                                 unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
@@ -331,8 +518,16 @@ public class mouseController : MonoBehaviour
                 {
                     if (unit.GetComponent<Walkable>())
                     {
-                        unit.GetComponent<Walkable>().hasTarget = true;
-                        unit.GetComponent<Walkable>().targetPoint = new Vector3(formation[i].x, unit.transform.position.y, formation[i].z);
+                        if (unit.GetComponent<GroupedUnits>())
+                        {
+                            unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                            unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                        }
+                        else
+                        {
+                            unit.GetComponent<Walkable>().SetHasTarget(true);
+                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                        }
                     }
                     i++;
                 }

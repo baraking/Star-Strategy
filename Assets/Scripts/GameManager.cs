@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject purchaseablePrefab;
 
+    public GameObject groupedUnitsPrefab;
+
     public static GameManager Instance { get { return _instance; } }
 
 
@@ -120,9 +122,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (Units.transform.GetChild(i).GetComponent<Unit>().myPlayerNumber == index)
             {
-                print(newPlayer.GetComponent<Player>().playerUnits);
+                //print(newPlayer.GetComponent<Player>().playerUnits);
                 newPlayer.GetComponent<Player>().playerUnits.Add(Units.transform.GetChild(i).GetComponent<Unit>());
-                print(newPlayer.GetComponent<Player>().playerUnits);
+                //print(newPlayer.GetComponent<Player>().playerUnits);
             }
             newPlayer.GetComponent<Player>().SortUnits();
             Units.transform.GetChild(i).gameObject.SetActive(true);
