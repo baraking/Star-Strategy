@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,6 +65,18 @@ public class mouseController : MonoBehaviour
             newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
 
             newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
+
+            if (curPurchasable.GetPrerequisites().Length > 0)
+            {
+                foreach(int i in curPurchasable.GetPrerequisites())
+                {
+                    if (!myPlayer.PlayerRaceData.landmarks[i])
+                    {
+                        newPurchasableUI.GetComponentInChildren<Button>().interactable = false;
+                    }
+                }
+            }
+
             newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
         } 
     }

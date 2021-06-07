@@ -52,6 +52,16 @@ public class Unit : Purchasables, System.IComparable
         return unitDetails.purchasables;
     }
 
+    public override int[] GetPrerequisites()
+    {
+        return unitDetails.prerequisites;
+    }
+
+    public override int[] GetRequirements()
+    {
+        return unitDetails.requirements;
+    }
+
     public override Sprite GetIcon()
     {
         return unitDetails.icon;
@@ -115,16 +125,17 @@ public class Unit : Purchasables, System.IComparable
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
 
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        OnUnitSpawnEnd(unitIndex);
         Debug.Log("Finished building a " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
 
         isBuilding = false;
     }
 
-    public void OnUnitSpawnEnd()
+    public void OnUnitSpawnEnd(int unitIndex)
     {
-        foreach(int i in unitDetails.requirements)
+        for(int i=0;i< unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.requirements.Length; i++)
         {
-            myPlayer.PlayerRaceData.landmarks[i] = true;
+            myPlayer.PlayerRaceData.landmarks[unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.requirements[i]] = true;
         }
     }
 

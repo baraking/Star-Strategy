@@ -25,6 +25,16 @@ public class Purchasables : MonoBehaviour
         return null;
     }
 
+    public virtual int[] GetPrerequisites()
+    {
+        return null;
+    }
+
+    public virtual int[] GetRequirements()
+    {
+        return null;
+    }
+
     public void Purchase(GameObject purchasingParent)
     {
         //print("Purchase " + gameObject.name + " for " + purchasingParent.gameObject.name);

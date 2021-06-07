@@ -58,10 +58,13 @@ public class Player : MonoBehaviourPunCallbacks
     {
         resources = 1000;
 
-        foreach(Unit unit in playerUnits)
+        /*foreach(Unit unit in playerUnits)
         {
-            unit.OnUnitSpawnEnd();
-        }
+            for(int i = 0; i < unit.GetPurchasables().Count; i++)
+            {
+                unit.OnUnitSpawnEnd(i);
+            }
+        }*/
     }
 
     public void SortUnits()

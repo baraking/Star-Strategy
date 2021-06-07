@@ -45,6 +45,16 @@ public class Weapon : Purchasables
         return weaponDetails.icon;
     }
 
+    public override int[] GetPrerequisites()
+    {
+        return weaponDetails.prerequisites;
+    }
+
+    public override int[] GetRequirements()
+    {
+        return weaponDetails.requirements;
+    }
+
     // Update is called once per frame
     void Update()
     {
