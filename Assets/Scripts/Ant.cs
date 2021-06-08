@@ -57,7 +57,6 @@ public class Ant : Gatherer
         RandomizeDirection();
         isInGatheringCooldown = false;
         //rangeCalculationPoint = transform.position;
-        gathererParent = gameObject.GetComponentInParent<Unit>();
     }
 
     public IEnumerator SpreadPheromone()
