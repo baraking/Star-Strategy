@@ -533,6 +533,10 @@ public class mouseController : MonoBehaviour
                 }
             }
         }
+        else//if not viewer hovering over UI Element
+        {
+            isSelecting = false;
+        }
         if (Input.GetKeyUp(PlayerButtons.LEFT_CLICK) || !Input.GetKey(PlayerButtons.LEFT_CLICK))
         {
             isSelecting = false;
