@@ -15,6 +15,7 @@ public class Gatherer : Walkable
 
     void Start()
     {
+        base.InitUnit();
         isInGatheringCooldown = false;
         //rangeCalculationPoint = transform.position;
     }
