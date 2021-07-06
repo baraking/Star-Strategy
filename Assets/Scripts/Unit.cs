@@ -169,18 +169,22 @@ public class Unit : Purchasables, System.IComparable
     public void UpdateLandmarksOnSelfDeath()
     {
         //if another exists
-        foreach(Unit unit in myPlayer.playerUnits)
+        if (myPlayer != null)
         {
-            if(unit.name==this.name && unit != this)
+            foreach (Unit unit in myPlayer.playerUnits)
             {
-                return;
+                if (unit.name == this.name && unit != this)
+                {
+                    print(unit.name);
+                    return;
+                }
             }
+            for (int i = 0; i < unitDetails.requirements.Length; i++)
+            {
+                myPlayer.PlayerRaceData.landmarks[GetPrerequisites()[i]] = false;
+            }
+            UpdateSelectedUnitsGUI();
         }
-        for(int i = 0; i < unitDetails.requirements.Length; i++)
-        {
-            myPlayer.PlayerRaceData.landmarks[GetPrerequisites()[i]] = false;
-        }
-        UpdateSelectedUnitsGUI();
     }
 
     public void OnMyPlayerJoined()

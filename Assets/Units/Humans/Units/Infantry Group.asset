@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: Infantry Group
   m_EditorClassIdentifier: 
+  prerequisites: 
+  requirements: 
   name: Infantry Group
   unitType: 0
   unitSize: 1
@@ -19,11 +21,11 @@ MonoBehaviour:
   max_hp: 0
   speed: 0
   rotation_speed: 0
-  buildTime: 0
+  buildTime: 10
   costToBuild: 0
   gatherAmount: 0
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
   purchasables: []
-  icon: {fileID: 21300000, guid: 19a42ed3f4fe5bd46ae8a1256d238190, type: 3}
+  icon: {fileID: 21300000, guid: 09af11e1be794a24c8d114777d18cb0b, type: 3}

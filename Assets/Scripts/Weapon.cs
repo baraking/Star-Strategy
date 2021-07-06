@@ -131,7 +131,7 @@ public class Weapon : Purchasables
         isReloading = false;
     }
 
-        public IEnumerator AfterFire()
+    public IEnumerator AfterFire()
     {
         if (isReloading)
         {
