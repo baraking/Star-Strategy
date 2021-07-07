@@ -8,7 +8,7 @@ public class UnitActions : MonoBehaviour
 {
     public static float ROTATION_THRESHOLD = 15f;
 
-    public static void Rotate(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void Rotate(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
         Vector3 targetDir = targetsLocation[0] - actingUnit.transform.position;
         targetDir = targetDir.normalized;
@@ -22,7 +22,7 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void Move(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void Move(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
         if (targetsLocation.Count < 1)
         {
@@ -85,7 +85,7 @@ public class UnitActions : MonoBehaviour
         return Quaternion.Euler(rot);
     }
 
-    public static void Patrol(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void Patrol(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
         if (targetsLocation.Count < 1)
         {
@@ -110,39 +110,51 @@ public class UnitActions : MonoBehaviour
         MoveLogic(actingUnit, targetsLocation, endQuaternion);
     }
 
-    public static void Advance(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)//move and attack when in range
+    public static void Advance(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)//move and attack when in range
     {
         if (actingUnit.GetShortestRangeOfWeapons() < Vector3.Distance(actingUnit.transform.position, targetsLocation[0]))
         {
-            Move(actingUnit, targetsLocation, endQuaternion);
+            Move(actingUnit, targetsLocation, endQuaternion,target);
         }
-        else
+        /*else
         {
             actingUnit.unitAction = Attack;
+        }*/
+        Attack(actingUnit, targetsLocation, endQuaternion, target);
+    }
+
+    public static void Attack(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    {
+        if (target == null || actingUnit.unitWeapons.Count<1)
+        {
+            return;
+        }
+
+        foreach(Weapon weapon in actingUnit.unitWeapons)
+        {
+            if(Vector3.Distance(weapon.transform.position, target.transform.position) <= weapon.weaponDetails.range)
+            {
+                //attack with that weapon
+            }
         }
     }
 
-    public static void Attack(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void Harvest(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
 
     }
 
-    public static void Harvest(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void RetrieveResources(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
 
     }
 
-    public static void RetrieveResources(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void Ram(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
 
     }
 
-    public static void Ram(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
-    {
-
-    }
-
-    public static void Idle(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    public static void Idle(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
 
     }

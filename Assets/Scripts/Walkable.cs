@@ -20,7 +20,7 @@ public class Walkable : Unit
     void Update()
     {
         //UnitActions.Move(this, new List<Vector3>() { targetPoint },new Quaternion());
-        unitAction(this, targetsLocation, endQuaternion);
+        unitAction(this, targetsLocation, endQuaternion,targetObject);
 
         //AttempotToWalk();
         if (Input.GetKey(PlayerButtons.DISEMBARK))

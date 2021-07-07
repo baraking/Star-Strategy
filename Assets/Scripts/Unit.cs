@@ -35,7 +35,7 @@ public class Unit : Purchasables, System.IComparable
 
     public PhotonView photonView;
 
-    public delegate void UnitAction(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion);
+    public delegate void UnitAction(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target);
     [SerializeField]
     public UnitAction unitAction;
 
