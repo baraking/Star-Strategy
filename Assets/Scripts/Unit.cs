@@ -35,6 +35,13 @@ public class Unit : Purchasables, System.IComparable
 
     public PhotonView photonView;
 
+    public delegate void UnitAction(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion);
+    [SerializeField]
+    public UnitAction unitAction;
+
+    public List<Vector3> targetsLocation;
+    public Quaternion endQuaternion;
+
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
@@ -45,6 +52,11 @@ public class Unit : Purchasables, System.IComparable
     public void SetIsSelected(bool newState)
     {
         isSelected = newState;
+    }
+
+    public bool GetIsSelected()
+    {
+        return isSelected;
     }
 
     public List<Purchasables> GetPurchasables()
@@ -101,6 +113,8 @@ public class Unit : Purchasables, System.IComparable
 
         isBuilding = false;
         //SetHealthBarActive(false);
+
+        unitAction = UnitActions.Idle;
     }
 
     public void StartSpawningUnit(int unitIndex)
