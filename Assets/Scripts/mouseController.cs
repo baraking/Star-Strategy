@@ -522,6 +522,8 @@ public class mouseController : MonoBehaviour
                         {
                             unit.GetComponent<GroupedUnits>().SetHasTarget(true);
                             unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+
+                            //if(!Input.GetKey(PlayerButtons.MULTI_SELECTION))
                         }
                         else
                         {
@@ -529,8 +531,16 @@ public class mouseController : MonoBehaviour
                             unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
 
                             unit.unitAction = UnitActions.Move;
-                            unit.targetsLocation = new List<Vector3> { new Vector3(formation[i].x, unit.transform.position.y, formation[i].z) };
-                            unit.endQuaternion = new Quaternion();
+                            if(!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                            {
+                                unit.targetsLocation = new List<Vector3> { new Vector3(formation[i].x, unit.transform.position.y, formation[i].z) };
+                                unit.endQuaternion = new Quaternion();
+                            }
+                            else
+                            {
+                                unit.targetsLocation.Add(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                                unit.endQuaternion = new Quaternion();
+                            }
                         }
                     }
                     i++;
