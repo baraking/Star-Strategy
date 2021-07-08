@@ -41,6 +41,7 @@ public class Unit : Purchasables, System.IComparable
 
     public List<Vector3> targetsLocation;
     public Quaternion endQuaternion;
+    public GameObject actionTarget;
 
     void Start()
     {
@@ -268,6 +269,19 @@ public class Unit : Purchasables, System.IComparable
                 print(unitDetails.name + " is ordered to Fire!");
                 weapon.Fire(targetUnit);
             }
+        }
+    }
+
+    public void Fire(Unit targetUnit, Weapon weapon)
+    {
+        if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
+        if (weapon.IsEligableToFire(targetUnit))
+        {
+            print(unitDetails.name + " is ordered to Fire!");
+            weapon.Fire(targetUnit);
         }
     }
 

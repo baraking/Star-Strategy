@@ -400,7 +400,14 @@ public class mouseController : MonoBehaviour
                             }
                             else
                             {
-                                unit.Fire(objectHit.GetComponentInParent<Unit>());
+                                //unit.Fire(objectHit.GetComponentInParent<Unit>());
+
+                                unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                unit.endQuaternion = new Quaternion();
+                                unit.actionTarget = objectHit.GetComponentInParent<Unit>().gameObject;
+                                //unit.actionTarget = objectHit.gameObject;
+
+                                unit.unitAction = UnitActions.Advance;
                             }
                         }
 
@@ -412,11 +419,11 @@ public class mouseController : MonoBehaviour
                         }
 
                     }
-                    else if(objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                    else if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
                     {
                         foreach (Unit unit in selectedUnits)
                         {
-                            if(unit.unitDetails.unitType==UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
+                            if (unit.unitDetails.unitType == UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity - objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
                             {
                                 if (unit.GetComponent<GroupedUnits>())
                                 {
@@ -495,55 +502,56 @@ public class mouseController : MonoBehaviour
                         isActionPointMovementByDefault = false;
                         selectedGroupMovement = previouslySelectedGroupMovement;
                     }
-                }           
+                    //}           
 
-                foreach (GameObject tmpObject in showingFormaitionLocation)
-                {
-                    Destroy(tmpObject);
-                }
-
-                if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
-                {
-                    formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
-                }
-                else
-                {
-                    Vector3 newdir = (hit.point - curRightMousePoint);
-                    formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
-                }
-
-                int i = 0;
-                //if target point is walkable
-                foreach (Unit unit in selectedUnits)
-                {
-                    if (unit.GetComponent<Walkable>())
+                    foreach (GameObject tmpObject in showingFormaitionLocation)
                     {
-                        if (unit.GetComponent<GroupedUnits>())
-                        {
-                            unit.GetComponent<GroupedUnits>().SetHasTarget(true);
-                            unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                        Destroy(tmpObject);
+                    }
 
-                            //if(!Input.GetKey(PlayerButtons.MULTI_SELECTION))
-                        }
-                        else
-                        {
-                            unit.GetComponent<Walkable>().SetHasTarget(true);
-                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                    if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
+                    {
+                        formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
+                    }
+                    else
+                    {
+                        Vector3 newdir = (hit.point - curRightMousePoint);
+                        formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+                    }
 
-                            unit.unitAction = UnitActions.Move;
-                            if(!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                    int i = 0;
+                    //if target point is walkable
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        if (unit.GetComponent<Walkable>())
+                        {
+                            if (unit.GetComponent<GroupedUnits>())
                             {
-                                unit.targetsLocation = new List<Vector3> { new Vector3(formation[i].x, unit.transform.position.y, formation[i].z) };
-                                unit.endQuaternion = new Quaternion();
+                                unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                                unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+
+                                //if(!Input.GetKey(PlayerButtons.MULTI_SELECTION))
                             }
                             else
                             {
-                                unit.targetsLocation.Add(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
-                                unit.endQuaternion = new Quaternion();
+                                unit.GetComponent<Walkable>().SetHasTarget(true);
+                                unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+
+                                unit.unitAction = UnitActions.Move;
+                                if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                                {
+                                    unit.targetsLocation = new List<Vector3> { new Vector3(formation[i].x, unit.transform.position.y, formation[i].z) };
+                                    unit.endQuaternion = new Quaternion();
+                                }
+                                else
+                                {
+                                    unit.targetsLocation.Add(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                                    unit.endQuaternion = new Quaternion();
+                                }
                             }
                         }
+                        i++;
                     }
-                    i++;
                 }
             }
         }
