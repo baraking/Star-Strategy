@@ -22,11 +22,13 @@ public class Gatherer : Walkable
 
     private void Update()
     {
-        base.AttempotToWalk();
+        /*base.AttempotToWalk();
         if (targetResource != null)
         {
             Gather(targetResource);
-        }
+        }*/
+
+        unitAction(this, targetsLocation, endQuaternion, actionTarget);
     }
 
     public void Gather(Resource target)

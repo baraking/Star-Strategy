@@ -459,7 +459,14 @@ public class mouseController : MonoBehaviour
                         unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                         if (unit.GetComponent<Gatherer>())
                         {
-                            unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
+                            //unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
+
+                            unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                            unit.endQuaternion = new Quaternion();
+                            unit.actionTarget = objectHit.GetComponentInParent<Resource>().gameObject;
+
+                            unit.unitAction = UnitActions.Gather;
+
                         }
                     }
 
@@ -481,7 +488,13 @@ public class mouseController : MonoBehaviour
                             unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                             if (unit.GetComponent<Gatherer>())
                             {
-                                unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
+                                //unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
+
+                                unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                unit.endQuaternion = new Quaternion();
+                                unit.actionTarget = objectHit.GetComponentInParent<ResourceSilo>().gameObject;
+
+                                unit.unitAction = UnitActions.RetrieveResources;
                             }
                         }
 

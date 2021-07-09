@@ -140,14 +140,36 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void Harvest(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Gather(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
+        if (!target.GetComponent<Resource>())
+        {
+            return;
+        }
+        if (Vector3.Distance(actingUnit.transform.position, target.transform.position) > actingUnit.unitDetails.gatheringRange)
+        {
+            Move(actingUnit, targetsLocation, endQuaternion, target);
+        }
+        else
+        {
 
+        }
     }
 
     public static void RetrieveResources(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
+        if (!target.GetComponent<ResourceSilo>())
+        {
+            return;
+        }
+        if (Vector3.Distance(actingUnit.transform.position, target.transform.position) > actingUnit.unitDetails.gatheringRange)
+        {
+            Move(actingUnit, targetsLocation, endQuaternion, target);
+        }
+        else
+        {
 
+        }
     }
 
     public static void Ram(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
