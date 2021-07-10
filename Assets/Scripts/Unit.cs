@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class Unit : Purchasables, System.IComparable
     [SerializeField]
     private bool isSelected;
     public float buildTime;
+    public bool isWaiting;
 
     [SerializeField]
     public int curHP;
@@ -116,6 +118,7 @@ public class Unit : Purchasables, System.IComparable
         //SetHealthBarActive(false);
 
         unitAction = UnitActions.Idle;
+        isWaiting = false;
     }
 
     public void StartSpawningUnit(int unitIndex)
@@ -378,8 +381,8 @@ public class Unit : Purchasables, System.IComparable
         carriedUnits.Remove(disembarkingUnit);
         carriedAmount -= disembarkingUnit.unitDetails.unitSize;
         disembarkingUnit.transform.SetParent(GameManager.Instance.Units.transform);
-        disembarkingUnit.GetComponent<Walkable>().SetHasTarget(false);
-        disembarkingUnit.GetComponent<Walkable>().SetTargetPoint(transform.position);
+        //disembarkingUnit.GetComponent<Walkable>().SetHasTarget(false);
+        //disembarkingUnit.GetComponent<Walkable>().SetTargetPoint(transform.position);
         disembarkingUnit.gameObject.SetActive(true);
     }
 
@@ -399,6 +402,23 @@ public class Unit : Purchasables, System.IComparable
         print("I am dead :(");
         UpdateLandmarksOnSelfDeath();
         Destroy(gameObject);
+    }
+
+    public void Wait(UnitAction previousAction, float time)
+    {
+        if (!isWaiting)
+        {
+            StartCoroutine(UnitWaitOnIdle(previousAction, time));
+        }
+    }
+
+    public IEnumerator UnitWaitOnIdle(UnitAction previousAction, float time)
+    {
+        isWaiting = true;
+        unitAction = UnitActions.Idle;
+        yield return new WaitForSeconds(time);
+        isWaiting = false;
+        unitAction = previousAction;
     }
 
     public int CompareTo(object obj)

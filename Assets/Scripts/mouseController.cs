@@ -436,8 +436,8 @@ public class mouseController : MonoBehaviour
                                 }
                                 else
                                 {
-                                    unit.GetComponent<Walkable>().SetHasTarget(true);
-                                    unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                    //unit.GetComponent<Walkable>().SetHasTarget(true);
+                                    //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                                     objectHit.GetComponentInParent<Unit>().Embark(unit);
                                 }
                             }
@@ -455,11 +455,11 @@ public class mouseController : MonoBehaviour
                 {
                     foreach (Walkable unit in selectedUnits)
                     {
-                        unit.GetComponent<Walkable>().SetHasTarget(true);
-                        unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                        //unit.GetComponent<Walkable>().SetHasTarget(true);
+                        //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                         if (unit.GetComponent<Gatherer>())
                         {
-                            //unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
+                            unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
 
                             unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
                             unit.endQuaternion = new Quaternion();
@@ -484,11 +484,11 @@ public class mouseController : MonoBehaviour
                     {
                         foreach (Walkable unit in selectedUnits)
                         {
-                            unit.GetComponent<Walkable>().SetHasTarget(true);
-                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                            //unit.GetComponent<Walkable>().SetHasTarget(true);
+                            //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                             if (unit.GetComponent<Gatherer>())
                             {
-                                //unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
+                                unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
 
                                 unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
                                 unit.endQuaternion = new Quaternion();
@@ -547,8 +547,8 @@ public class mouseController : MonoBehaviour
                             }
                             else
                             {
-                                unit.GetComponent<Walkable>().SetHasTarget(true);
-                                unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                                //unit.GetComponent<Walkable>().SetHasTarget(true);
+                                //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
 
                                 unit.unitAction = UnitActions.Move;
                                 if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))

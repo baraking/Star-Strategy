@@ -114,11 +114,11 @@ public class Weapon : Purchasables
         {
             if (weaponParent.GetComponent<Walkable>())
             {
-                if (weaponParent.GetComponent<Walkable>().GetTargetPoint() == Vector3.zero)
+                /*if (weaponParent.GetComponent<Walkable>().GetTargetPoint() == Vector3.zero)
                 {
                     print("start moving!");
                     weaponParent.GetComponent<Walkable>().SetTargetPoint(transform.position - (targetUnit.transform.position.normalized * distanceToTarget));
-                }
+                }*/
             }
         }
     }

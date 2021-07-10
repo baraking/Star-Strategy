@@ -28,6 +28,11 @@ public class Gatherer : Walkable
             Gather(targetResource);
         }*/
 
+        if (GetIsSelected())
+        {
+            //print(Time.time + " - " + unitAction.Method.Name);
+        }
+
         unitAction(this, targetsLocation, endQuaternion, actionTarget);
     }
 

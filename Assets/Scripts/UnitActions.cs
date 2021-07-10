@@ -146,13 +146,39 @@ public class UnitActions : MonoBehaviour
         {
             return;
         }
+        //print(Vector3.Distance(actingUnit.transform.position, target.transform.position) + " , " + actingUnit.unitDetails.gatheringRange);
         if (Vector3.Distance(actingUnit.transform.position, target.transform.position) > actingUnit.unitDetails.gatheringRange)
         {
             Move(actingUnit, targetsLocation, endQuaternion, target);
         }
         else
         {
+            if (!actingUnit.GetComponent<Gatherer>().isInGatheringCooldown)
+            {
+                if (actingUnit.unitDetails.gatheringCapacity - actingUnit.GetComponent<Gatherer>().carryingAmount - actingUnit.unitDetails.gatherAmount < 0)
+                {
+                    actingUnit.GetComponent<Gatherer>().carryingAmount += target.GetComponent<Resource>().GiveResources(actingUnit.unitDetails.gatheringCapacity - actingUnit.GetComponent<Gatherer>().carryingAmount);
+                    actingUnit.GetComponent<Gatherer>().isFull = true;
+                    actingUnit.GetComponent<Gatherer>().GetClosestResourceSilo();
 
+                    actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResourceSilo.gameObject;
+                    actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResourceSilo.transform.position };
+                    actingUnit.unitAction = RetrieveResources;
+                }
+                else
+                {
+                    actingUnit.GetComponent<Gatherer>().carryingAmount += target.GetComponent<Resource>().GiveResources(actingUnit.unitDetails.gatherAmount);
+                    actingUnit.GetComponent<Gatherer>().isInGatheringCooldown = true;
+                    actingUnit.Wait(Gather, actingUnit.unitDetails.gatheringCooldown);
+                }
+            }
+            else
+            {
+                if (!actingUnit.isWaiting)
+                {
+                    actingUnit.GetComponent<Gatherer>().isInGatheringCooldown = false;
+                }
+            }
         }
     }
 
@@ -168,7 +194,17 @@ public class UnitActions : MonoBehaviour
         }
         else
         {
-
+            actingUnit.Wait(Gather, actingUnit.unitDetails.gatheringCooldown);
+            actingUnit.GetComponent<Gatherer>().isFull = false;
+            actingUnit.myPlayer.resources += actingUnit.GetComponent<Gatherer>().carryingAmount;
+            actingUnit.GetComponent<Gatherer>().carryingAmount = 0;
+            actingUnit.GetComponent<Gatherer>().targetResourceSilo = null;
+            if (actingUnit.GetComponent<Gatherer>().targetResource != null)
+            {
+                actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResource.gameObject;
+                actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResource.transform.position };
+                actingUnit.unitAction = Gather;
+            }
         }
     }
 
