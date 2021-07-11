@@ -113,7 +113,7 @@ public class Gatherer : Walkable
                 }
             }
         }
-        print(targetResourceSilo.name);
+        //print(targetResourceSilo.name);
     }
 
     public IEnumerator AfterGather()

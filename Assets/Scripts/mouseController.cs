@@ -387,10 +387,12 @@ public class mouseController : MonoBehaviour
             if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
             {
                 Transform objectHit = hit.transform;
+
                 if (objectHit.GetComponentInParent<Unit>() && selectedUnits.Count > 0)
                 {
                     if (objectHit.GetComponentInParent<Unit>().myPlayerNumber != myPlayer.playerNumber)
                     {
+                        print("Enemy!");
                         foreach (Unit unit in selectedUnits)
                         {
                             //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
@@ -419,8 +421,9 @@ public class mouseController : MonoBehaviour
                         }
 
                     }
-                    else if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                    else if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber && !objectHit.GetComponentInParent<ResourceSilo>()) 
                     {
+                        print("Ally!");
                         foreach (Unit unit in selectedUnits)
                         {
                             if (unit.unitDetails.unitType == UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity - objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
@@ -450,9 +453,41 @@ public class mouseController : MonoBehaviour
                             selectedGroupMovement = GroupMovement.PointFormation;
                         }
                     }
+                    else if (objectHit.GetComponentInParent<ResourceSilo>() && selectedUnits.Count > 0)
+                    {
+                        print("ResourceSilo!");
+                        if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                        {
+                            foreach (Walkable unit in selectedUnits)
+                            {
+                                //unit.GetComponent<Walkable>().SetHasTarget(true);
+                                //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                if (unit.GetComponent<Gatherer>())
+                                {
+                                    unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
+
+                                    unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                    unit.endQuaternion = new Quaternion();
+                                    unit.actionTarget = objectHit.GetComponentInParent<ResourceSilo>().gameObject;
+
+                                    unit.unitAction = UnitActions.RetrieveResources;
+                                }
+                            }
+
+                            if (!isActionPointMovementByDefault)
+                            {
+                                isActionPointMovementByDefault = true;
+                                previouslySelectedGroupMovement = selectedGroupMovement;
+                                selectedGroupMovement = GroupMovement.PointFormation;
+                            }
+
+                        }
+
+                    }
                 }
                 else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
                 {
+                    print("Resource!");
                     foreach (Walkable unit in selectedUnits)
                     {
                         //unit.GetComponent<Walkable>().SetHasTarget(true);
@@ -478,38 +513,9 @@ public class mouseController : MonoBehaviour
                     }
 
                 }
-                else if (objectHit.GetComponentInParent<ResourceSilo>() && selectedUnits.Count > 0)
-                {
-                    if (objectHit.GetComponentInParent<Unit>().myPlayerNumber != myPlayer.playerNumber)
-                    {
-                        foreach (Walkable unit in selectedUnits)
-                        {
-                            //unit.GetComponent<Walkable>().SetHasTarget(true);
-                            //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
-                            if (unit.GetComponent<Gatherer>())
-                            {
-                                unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
-
-                                unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
-                                unit.endQuaternion = new Quaternion();
-                                unit.actionTarget = objectHit.GetComponentInParent<ResourceSilo>().gameObject;
-
-                                unit.unitAction = UnitActions.RetrieveResources;
-                            }
-                        }
-
-                        if (!isActionPointMovementByDefault)
-                        {
-                            isActionPointMovementByDefault = true;
-                            previouslySelectedGroupMovement = selectedGroupMovement;
-                            selectedGroupMovement = GroupMovement.PointFormation;
-                        }
-
-                    }
-
-                }
                 else
                 {
+                    print("None!");
                     if (isActionPointMovementByDefault)
                     {
                         isActionPointMovementByDefault = false;
