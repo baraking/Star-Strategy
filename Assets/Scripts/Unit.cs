@@ -126,13 +126,18 @@ public class Unit : Purchasables, System.IComparable
         {
             sphereCollider = gameObject.AddComponent<SphereCollider>();
             sphereCollider.isTrigger = true;
-            sphereCollider.radius = 1f;
+            sphereCollider.radius = .01f;
         }
 
         GetComponent<Collider>().enabled = false;
         GetComponent<Collider>().enabled = true;
-        gameObject.AddComponent<Rigidbody>();
-        GetComponent<Rigidbody>().isKinematic = false;
+
+        if (!GetComponent<Rigidbody>())
+        {
+            gameObject.AddComponent<Rigidbody>();
+            //GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 
     public void StartSpawningUnit(int unitIndex)
