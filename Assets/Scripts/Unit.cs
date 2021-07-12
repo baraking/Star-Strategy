@@ -54,6 +54,11 @@ public class Unit : Purchasables, System.IComparable
 
     }
 
+    private void Update()
+    {
+        unitAction(this, targetsLocation, endQuaternion, actionTarget);
+    }
+
     public void SetIsSelected(bool newState)
     {
         isSelected = newState;

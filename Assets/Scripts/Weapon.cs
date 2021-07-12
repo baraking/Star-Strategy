@@ -26,6 +26,10 @@ public class Weapon : Purchasables
     public List<Unit> enemiesAtRange;
     public SphereCollider sphereCollider;
 
+    public delegate void WeaponAction(Weapon actingWeapon, GameObject target);
+    [SerializeField]
+    public WeaponAction weaponAction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +47,8 @@ public class Weapon : Purchasables
             sphereCollider.isTrigger = true;
             sphereCollider.radius = weaponDetails.range;
         }
+
+        weaponAction = WeaponActions.Idle;
     }
 
     private void OnTriggerEnter(Collider other)
