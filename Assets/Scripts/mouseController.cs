@@ -33,6 +33,7 @@ public class mouseController : MonoBehaviour
     public float timeToFinishUpgrade;
 
     public List<Unit> selectedUnits = new List<Unit>();
+    public LayerMask layerMask;
 
     public delegate Vector3[] SelectedGroupMovement(List<Unit> selectedUnits, Vector3 targetLocation, Vector3 rightDirection, float radius);
     public SelectedGroupMovement selectedGroupMovement;
@@ -144,7 +145,12 @@ public class mouseController : MonoBehaviour
             RaycastHit hit;
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))//could add collider
+            //int layerMask = 1 << 8;
+            //layerMask = ~layerMask;
+            //if (Physics.Raycast(ray, out hit, layerMask))//could add collider
+            //if (Physics.Raycast(ray, out hit, 100, layerMask, QueryTriggerInteraction.Ignore))//could add collider
+            //if (Physics.Raycast(ray, out hit))//could add collider
+            if (Physics.Raycast(ray, out hit, 100, ~0, QueryTriggerInteraction.Ignore))//could add collider
             {
                 if (isSelecting)
                 {

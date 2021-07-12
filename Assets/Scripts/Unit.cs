@@ -45,6 +45,8 @@ public class Unit : Purchasables, System.IComparable
     public Quaternion endQuaternion;
     public GameObject actionTarget;
 
+    public SphereCollider sphereCollider;
+
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
@@ -119,6 +121,18 @@ public class Unit : Purchasables, System.IComparable
 
         unitAction = UnitActions.Idle;
         isWaiting = false;
+
+        if (sphereCollider == null || !GetComponent<SphereCollider>())
+        {
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider.isTrigger = true;
+            sphereCollider.radius = 1f;
+        }
+
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Collider>().enabled = true;
+        gameObject.AddComponent<Rigidbody>();
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 
     public void StartSpawningUnit(int unitIndex)

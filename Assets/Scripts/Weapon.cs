@@ -23,6 +23,8 @@ public class Weapon : Purchasables
     public bool isReloading;
 
     public Unit targetUnit;
+    public List<Unit> enemiesAtRange;
+    public SphereCollider sphereCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,31 @@ public class Weapon : Purchasables
         weaponParent = gameObject.GetComponentInParent<Unit>();
         curMagazineAmmo = weaponDetails.magazineSize;
         isReloading = false;
+        enemiesAtRange = new List<Unit>();
+
+        if (sphereCollider == null || !GetComponent<SphereCollider>())
+        {
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider.isTrigger = true;
+            sphereCollider.radius = weaponDetails.range;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        print(other);
+        if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && !enemiesAtRange.Contains(other.GetComponent<Unit>()))
+        {
+            enemiesAtRange.Add(other.GetComponent<Unit>());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && enemiesAtRange.Contains(other.GetComponent<Unit>()))
+        {
+            enemiesAtRange.Remove(other.GetComponent<Unit>());
+        }
     }
 
     public List<Purchasables> GetPurchasables()
