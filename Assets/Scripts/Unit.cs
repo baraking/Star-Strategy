@@ -285,7 +285,7 @@ public class Unit : Purchasables, System.IComparable
     [PunRPC]
     public void Fire(Unit targetUnit)
     {
-        if (targetUnit.GetComponent<GroupedUnits>())
+        /*if (targetUnit.GetComponent<GroupedUnits>())
         {
             targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
         }
@@ -296,12 +296,26 @@ public class Unit : Purchasables, System.IComparable
                 print(unitDetails.name + " is ordered to Fire!");
                 weapon.Fire(targetUnit);
             }
+        }*/
+
+        if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
+        foreach (Weapon weapon in unitWeapons)
+        {
+            if (weapon.IsEligableToFire(targetUnit))
+            {
+                print(unitDetails.name + " is ordered to Fire!");
+                weapon.targetUnit = targetUnit;
+                weapon.weaponAction = WeaponActions.Fire;
+            }
         }
     }
 
     public void Fire(Unit targetUnit, Weapon weapon)
     {
-        if (targetUnit.GetComponent<GroupedUnits>())
+        /*if (targetUnit.GetComponent<GroupedUnits>())
         {
             targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
         }
@@ -309,6 +323,17 @@ public class Unit : Purchasables, System.IComparable
         {
             print(unitDetails.name + " is ordered to Fire!");
             weapon.Fire(targetUnit);
+        }*/
+
+        if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
+        if (weapon.IsEligableToFire(targetUnit))
+        {
+            print(unitDetails.name + " is ordered to Fire!");
+            weapon.targetUnit = targetUnit;
+            weapon.weaponAction = WeaponActions.Fire;
         }
     }
 

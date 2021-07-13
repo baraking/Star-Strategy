@@ -20,11 +20,16 @@ public class WeaponActions : MonoBehaviour
 
     public static void Fire(Weapon actingWeapon, GameObject target)
     {
+        //delete this!
+        RotateWeapon(actingWeapon, target);
         /*if()//rotation is not good enough
         {
             RotateWeapon(actingWeapon, target);
             return;
         }*/
+        Vector3 targetDirection = actingWeapon.targetUnit.transform.position - actingWeapon.transform.position;
+        print(actingWeapon.transform.forward + " , " + targetDirection +" : "+ (actingWeapon.transform.forward-targetDirection));
+
         float distanceToTarget = Vector3.Distance(actingWeapon.transform.position, target.transform.position);
         if (distanceToTarget <= actingWeapon.weaponDetails.range)
         {
@@ -32,6 +37,8 @@ public class WeaponActions : MonoBehaviour
             {
                 target.GetComponent<Unit>().TakeDamage(actingWeapon.weaponDetails.damage);
                 actingWeapon.isInCooldown = true;
+
+                actingWeapon.Wait(Fire, actingWeapon.weaponDetails.timeToShoot);
                 //StartCoroutine(AfterFire());
             }
         }

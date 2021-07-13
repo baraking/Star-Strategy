@@ -21,6 +21,7 @@ public class Weapon : Purchasables
     public Unit weaponParent;
     public int curMagazineAmmo;
     public bool isReloading;
+    public bool isWaiting;
 
     public Unit targetUnit;
     public List<Unit> enemiesAtRange;
@@ -91,7 +92,7 @@ public class Weapon : Purchasables
     // Update is called once per frame
     void Update()
     {
-        if (targetUnit != null)
+        /*if (targetUnit != null)
         {
             Fire(targetUnit);
             Vector3 targetDirection = targetUnit.transform.position - transform.position;
@@ -117,7 +118,9 @@ public class Weapon : Purchasables
             {
                 weaponParent.transform.rotation = Quaternion.LookRotation(newDirection);
             }
-        }
+        }*/
+
+        weaponAction(this, targetUnit.gameObject);
     }
 
     public void Fire(Vector3 targetPosition)
@@ -154,6 +157,54 @@ public class Weapon : Purchasables
                 }*/
             }
         }
+    }
+
+    public void Wait(WeaponAction previousAction, float time)
+    {
+        if (!isWaiting)
+        {
+            StartCoroutine(WeaponWaitOnIdle(previousAction, time));
+        }
+    }
+
+    public IEnumerator WeaponWaitOnIdle(WeaponAction previousAction, float time)
+    {
+        isWaiting = true;
+        weaponAction = WeaponActions.Idle;
+        curMagazineAmmo--;
+        if (GetComponent<LaserWeapon>())
+        {
+            GetComponent<LaserWeapon>().FireLaser(targetUnit.transform.position);
+        }
+        if (GetComponent<ExplosiveWeapon>())
+        {
+            GetComponent<ExplosiveWeapon>().location = targetUnit.transform.position;
+            GetComponent<ExplosiveWeapon>().Explode();
+        }
+        if (GetComponent<FlameWeapon>())
+        {
+            GetComponent<FlameWeapon>().Fire();
+        }
+        if (curMagazineAmmo > 0)
+        {
+            yield return new WaitForSeconds(time);
+        }
+        else if (curMagazineAmmo == 0)
+        {
+            yield return new WaitForSeconds(time + weaponDetails.timeToReload);
+            curMagazineAmmo = weaponDetails.magazineSize;
+        }
+        if (GetComponent<LaserWeapon>())
+        {
+            GetComponent<LaserWeapon>().StopFiringLaser();
+        }
+        if (GetComponent<FlameWeapon>())
+        {
+            GetComponent<FlameWeapon>().StopFiring();
+        }
+        isInCooldown = false;
+        isWaiting = false;
+        weaponAction = previousAction;
     }
 
     public IEnumerator Reload()
