@@ -45,8 +45,9 @@ public class Weapon : Purchasables
         if (sphereCollider == null || !GetComponent<SphereCollider>())
         {
             sphereCollider = gameObject.AddComponent<SphereCollider>();
-            sphereCollider.isTrigger = true;
             sphereCollider.radius = weaponDetails.range;
+            sphereCollider.center = new Vector3(0, 0, 0);
+            sphereCollider.isTrigger = true;
         }
 
         weaponAction = WeaponActions.Idle;
@@ -58,6 +59,10 @@ public class Weapon : Purchasables
         if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && !enemiesAtRange.Contains(other.GetComponent<Unit>()))
         {
             enemiesAtRange.Add(other.GetComponent<Unit>());
+            if (targetUnit == null ||!enemiesAtRange.Contains(targetUnit))
+            {
+                weaponAction = WeaponActions.Scan;
+            }
         }
     }
 
@@ -66,6 +71,10 @@ public class Weapon : Purchasables
         if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && enemiesAtRange.Contains(other.GetComponent<Unit>()))
         {
             enemiesAtRange.Remove(other.GetComponent<Unit>());
+            if (targetUnit == null && enemiesAtRange.Count<0)
+            {
+                weaponAction = WeaponActions.SteadyWeapon;
+            }
         }
     }
 
@@ -121,6 +130,12 @@ public class Weapon : Purchasables
         }*/
 
         weaponAction(this, targetUnit.gameObject);
+
+        if (enemiesAtRange.Contains(null))
+        {
+            print("Spotted null!!");
+            enemiesAtRange.RemoveAll(null);
+        }
     }
 
     public void Fire(Vector3 targetPosition)
