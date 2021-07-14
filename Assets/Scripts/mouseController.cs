@@ -33,6 +33,7 @@ public class mouseController : MonoBehaviour
     public float timeToFinishUpgrade;
 
     public List<Unit> selectedUnits = new List<Unit>();
+    public LayerMask layerMask;
 
     public delegate Vector3[] SelectedGroupMovement(List<Unit> selectedUnits, Vector3 targetLocation, Vector3 rightDirection, float radius);
     public SelectedGroupMovement selectedGroupMovement;
@@ -144,7 +145,12 @@ public class mouseController : MonoBehaviour
             RaycastHit hit;
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))//could add collider
+            //int layerMask = 1 << 8;
+            //layerMask = ~layerMask;
+            //if (Physics.Raycast(ray, out hit, layerMask))//could add collider
+            //if (Physics.Raycast(ray, out hit, 100, layerMask, QueryTriggerInteraction.Ignore))//could add collider
+            //if (Physics.Raycast(ray, out hit))//could add collider
+            if (Physics.Raycast(ray, out hit, 100, ~0, QueryTriggerInteraction.Ignore))//could add collider
             {
                 if (isSelecting)
                 {
@@ -387,10 +393,14 @@ public class mouseController : MonoBehaviour
             if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
             {
                 Transform objectHit = hit.transform;
+                //print(objectHit.GetComponentInParent<Resource>());
+                //print(objectHit.name);
+
                 if (objectHit.GetComponentInParent<Unit>() && selectedUnits.Count > 0)
                 {
                     if (objectHit.GetComponentInParent<Unit>().myPlayerNumber != myPlayer.playerNumber)
                     {
+                        print("Enemy!");
                         foreach (Unit unit in selectedUnits)
                         {
                             //Debug.Log(unit.name + " is firing on " + objectHit.GetComponentInParent<Unit>().name);
@@ -400,7 +410,14 @@ public class mouseController : MonoBehaviour
                             }
                             else
                             {
-                                unit.Fire(objectHit.GetComponentInParent<Unit>());
+                                //unit.Fire(objectHit.GetComponentInParent<Unit>());
+
+                                unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                unit.endQuaternion = new Quaternion();
+                                unit.actionTarget = objectHit.GetComponentInParent<Unit>().gameObject;
+                                //unit.actionTarget = objectHit.gameObject;
+
+                                unit.unitAction = UnitActions.Advance;
                             }
                         }
 
@@ -412,11 +429,12 @@ public class mouseController : MonoBehaviour
                         }
 
                     }
-                    else if(objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                    else if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber && !objectHit.GetComponentInParent<ResourceSilo>()) 
                     {
+                        print("Ally!");
                         foreach (Unit unit in selectedUnits)
                         {
-                            if(unit.unitDetails.unitType==UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity- objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
+                            if (unit.unitDetails.unitType == UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity - objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
                             {
                                 if (unit.GetComponent<GroupedUnits>())
                                 {
@@ -429,8 +447,8 @@ public class mouseController : MonoBehaviour
                                 }
                                 else
                                 {
-                                    unit.GetComponent<Walkable>().SetHasTarget(true);
-                                    unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                    //unit.GetComponent<Walkable>().SetHasTarget(true);
+                                    //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                                     objectHit.GetComponentInParent<Unit>().Embark(unit);
                                 }
                             }
@@ -443,16 +461,55 @@ public class mouseController : MonoBehaviour
                             selectedGroupMovement = GroupMovement.PointFormation;
                         }
                     }
+                    else if (objectHit.GetComponentInParent<ResourceSilo>() && selectedUnits.Count > 0)
+                    {
+                        print("ResourceSilo!");
+                        if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber)
+                        {
+                            foreach (Walkable unit in selectedUnits)
+                            {
+                                //unit.GetComponent<Walkable>().SetHasTarget(true);
+                                //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                                if (unit.GetComponent<Gatherer>())
+                                {
+                                    unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
+
+                                    unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                    unit.endQuaternion = new Quaternion();
+                                    unit.actionTarget = objectHit.GetComponentInParent<ResourceSilo>().gameObject;
+
+                                    unit.unitAction = UnitActions.RetrieveResources;
+                                }
+                            }
+
+                            if (!isActionPointMovementByDefault)
+                            {
+                                isActionPointMovementByDefault = true;
+                                previouslySelectedGroupMovement = selectedGroupMovement;
+                                selectedGroupMovement = GroupMovement.PointFormation;
+                            }
+
+                        }
+
+                    }
                 }
                 else if (objectHit.GetComponentInParent<Resource>() && selectedUnits.Count > 0)
                 {
+                    print("Resource!");
                     foreach (Walkable unit in selectedUnits)
                     {
-                        unit.GetComponent<Walkable>().SetHasTarget(true);
-                        unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
+                        //unit.GetComponent<Walkable>().SetHasTarget(true);
+                        //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
                         if (unit.GetComponent<Gatherer>())
                         {
                             unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
+
+                            unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                            unit.endQuaternion = new Quaternion();
+                            unit.actionTarget = objectHit.GetComponentInParent<Resource>().gameObject;
+
+                            unit.unitAction = UnitActions.Gather;
+
                         }
                     }
 
@@ -464,72 +521,64 @@ public class mouseController : MonoBehaviour
                     }
 
                 }
-                else if (objectHit.GetComponentInParent<ResourceSilo>() && selectedUnits.Count > 0)
-                {
-                    if (objectHit.GetComponentInParent<Unit>().myPlayerNumber != myPlayer.playerNumber)
-                    {
-                        foreach (Walkable unit in selectedUnits)
-                        {
-                            unit.GetComponent<Walkable>().SetHasTarget(true);
-                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(hit.point.x, unit.transform.position.y, hit.point.z));
-                            if (unit.GetComponent<Gatherer>())
-                            {
-                                unit.GetComponent<Gatherer>().targetResourceSilo = objectHit.GetComponentInParent<ResourceSilo>();
-                            }
-                        }
-
-                        if (!isActionPointMovementByDefault)
-                        {
-                            isActionPointMovementByDefault = true;
-                            previouslySelectedGroupMovement = selectedGroupMovement;
-                            selectedGroupMovement = GroupMovement.PointFormation;
-                        }
-
-                    }
-
-                }
                 else
                 {
+                    print("None!");
                     if (isActionPointMovementByDefault)
                     {
                         isActionPointMovementByDefault = false;
                         selectedGroupMovement = previouslySelectedGroupMovement;
                     }
-                }           
+                    //}           
 
-                foreach (GameObject tmpObject in showingFormaitionLocation)
-                {
-                    Destroy(tmpObject);
-                }
-
-                if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
-                {
-                    formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
-                }
-                else
-                {
-                    Vector3 newdir = (hit.point - curRightMousePoint);
-                    formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
-                }
-
-                int i = 0;
-                //if target point is walkable
-                foreach (Unit unit in selectedUnits)
-                {
-                    if (unit.GetComponent<Walkable>())
+                    foreach (GameObject tmpObject in showingFormaitionLocation)
                     {
-                        if (unit.GetComponent<GroupedUnits>())
-                        {
-                            unit.GetComponent<GroupedUnits>().SetHasTarget(true);
-                            unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
-                        }
-                        else
-                        {
-                            unit.GetComponent<Walkable>().SetHasTarget(true);
-                            unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
-                        }
+                        Destroy(tmpObject);
                     }
-                    i++;
+
+                    if (Vector3.Distance(curRightMousePoint, hit.point) < .1f)
+                    {
+                        formation = selectedGroupMovement(selectedUnits, hit.point, playerCamera.transform.right, 1f);
+                    }
+                    else
+                    {
+                        Vector3 newdir = (hit.point - curRightMousePoint);
+                        formation = selectedGroupMovement(selectedUnits, hit.point, Quaternion.AngleAxis(90, Vector3.up) * newdir, Vector3.Distance(hit.point, curRightMousePoint));
+                    }
+
+                    int i = 0;
+                    //if target point is walkable
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        if (unit.GetComponent<Walkable>())
+                        {
+                            if (unit.GetComponent<GroupedUnits>())
+                            {
+                                unit.GetComponent<GroupedUnits>().SetHasTarget(true);
+                                unit.GetComponent<GroupedUnits>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+
+                                //if(!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                            }
+                            else
+                            {
+                                //unit.GetComponent<Walkable>().SetHasTarget(true);
+                                //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+
+                                unit.unitAction = UnitActions.Move;
+                                if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                                {
+                                    unit.targetsLocation = new List<Vector3> { new Vector3(formation[i].x, unit.transform.position.y, formation[i].z) };
+                                    unit.endQuaternion = new Quaternion();
+                                }
+                                else
+                                {
+                                    unit.targetsLocation.Add(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
+                                    unit.endQuaternion = new Quaternion();
+                                }
+                            }
+                        }
+                        i++;
+                    }
                 }
             }
         }

@@ -19,7 +19,15 @@ public class Walkable : Unit
 
     void Update()
     {
-        AttempotToWalk();
+        //UnitActions.Move(this, new List<Vector3>() { targetPoint },new Quaternion());
+        if (GetIsSelected())
+        {
+            print(unitAction.Method.Name);
+        }
+
+        unitAction(this, targetsLocation, endQuaternion,actionTarget);
+
+        //AttempotToWalk();
         if (Input.GetKey(PlayerButtons.DISEMBARK))
         {
             foreach(Unit unit in carriedUnits)

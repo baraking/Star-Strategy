@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class Unit : Purchasables, System.IComparable
     [SerializeField]
     private bool isSelected;
     public float buildTime;
+    public bool isWaiting;
 
     [SerializeField]
     public int curHP;
@@ -35,6 +37,16 @@ public class Unit : Purchasables, System.IComparable
 
     public PhotonView photonView;
 
+    public delegate void UnitAction(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target);
+    [SerializeField]
+    public UnitAction unitAction;
+
+    public List<Vector3> targetsLocation;
+    public Quaternion endQuaternion;
+    public GameObject actionTarget;
+
+    public SphereCollider sphereCollider;
+
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
@@ -42,9 +54,19 @@ public class Unit : Purchasables, System.IComparable
 
     }
 
+    private void Update()
+    {
+        unitAction(this, targetsLocation, endQuaternion, actionTarget);
+    }
+
     public void SetIsSelected(bool newState)
     {
         isSelected = newState;
+    }
+
+    public bool GetIsSelected()
+    {
+        return isSelected;
     }
 
     public List<Purchasables> GetPurchasables()
@@ -101,6 +123,26 @@ public class Unit : Purchasables, System.IComparable
 
         isBuilding = false;
         //SetHealthBarActive(false);
+
+        unitAction = UnitActions.Idle;
+        isWaiting = false;
+
+        if (sphereCollider == null || !GetComponent<SphereCollider>())
+        {
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider.isTrigger = true;
+            sphereCollider.radius = .01f;
+        }
+
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Collider>().enabled = true;
+
+        if (!GetComponent<Rigidbody>())
+        {
+            gameObject.AddComponent<Rigidbody>();
+            //GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }
     }
 
     public void StartSpawningUnit(int unitIndex)
@@ -243,7 +285,7 @@ public class Unit : Purchasables, System.IComparable
     [PunRPC]
     public void Fire(Unit targetUnit)
     {
-        if (targetUnit.GetComponent<GroupedUnits>())
+        /*if (targetUnit.GetComponent<GroupedUnits>())
         {
             targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
         }
@@ -254,6 +296,44 @@ public class Unit : Purchasables, System.IComparable
                 print(unitDetails.name + " is ordered to Fire!");
                 weapon.Fire(targetUnit);
             }
+        }*/
+
+        if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
+        foreach (Weapon weapon in unitWeapons)
+        {
+            if (weapon.IsEligableToFire(targetUnit))
+            {
+                print(unitDetails.name + " is ordered to Fire!");
+                weapon.targetUnit = targetUnit;
+                weapon.weaponAction = WeaponActions.Fire;
+            }
+        }
+    }
+
+    public void Fire(Unit targetUnit, Weapon weapon)
+    {
+        /*if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
+        if (weapon.IsEligableToFire(targetUnit))
+        {
+            print(unitDetails.name + " is ordered to Fire!");
+            weapon.Fire(targetUnit);
+        }*/
+
+        if (targetUnit.GetComponent<GroupedUnits>())
+        {
+            targetUnit = targetUnit.GetComponent<GroupedUnits>().groupedUnits[0];
+        }
+        if (weapon.IsEligableToFire(targetUnit))
+        {
+            print(unitDetails.name + " is ordered to Fire!");
+            weapon.targetUnit = targetUnit;
+            weapon.weaponAction = WeaponActions.Fire;
         }
     }
 
@@ -350,8 +430,8 @@ public class Unit : Purchasables, System.IComparable
         carriedUnits.Remove(disembarkingUnit);
         carriedAmount -= disembarkingUnit.unitDetails.unitSize;
         disembarkingUnit.transform.SetParent(GameManager.Instance.Units.transform);
-        disembarkingUnit.GetComponent<Walkable>().SetHasTarget(false);
-        disembarkingUnit.GetComponent<Walkable>().SetTargetPoint(transform.position);
+        //disembarkingUnit.GetComponent<Walkable>().SetHasTarget(false);
+        //disembarkingUnit.GetComponent<Walkable>().SetTargetPoint(transform.position);
         disembarkingUnit.gameObject.SetActive(true);
     }
 
@@ -371,6 +451,23 @@ public class Unit : Purchasables, System.IComparable
         print("I am dead :(");
         UpdateLandmarksOnSelfDeath();
         Destroy(gameObject);
+    }
+
+    public void Wait(UnitAction previousAction, float time)
+    {
+        if (!isWaiting)
+        {
+            StartCoroutine(UnitWaitOnIdle(previousAction, time));
+        }
+    }
+
+    public IEnumerator UnitWaitOnIdle(UnitAction previousAction, float time)
+    {
+        isWaiting = true;
+        unitAction = UnitActions.Idle;
+        yield return new WaitForSeconds(time);
+        isWaiting = false;
+        unitAction = previousAction;
     }
 
     public int CompareTo(object obj)

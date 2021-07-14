@@ -21,8 +21,15 @@ public class Weapon : Purchasables
     public Unit weaponParent;
     public int curMagazineAmmo;
     public bool isReloading;
+    public bool isWaiting;
 
     public Unit targetUnit;
+    public List<Unit> enemiesAtRange;
+    public SphereCollider sphereCollider;
+
+    public delegate void WeaponAction(Weapon actingWeapon, GameObject target);
+    [SerializeField]
+    public WeaponAction weaponAction;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +40,58 @@ public class Weapon : Purchasables
         weaponParent = gameObject.GetComponentInParent<Unit>();
         curMagazineAmmo = weaponDetails.magazineSize;
         isReloading = false;
+        enemiesAtRange = new List<Unit>();
+
+        /*if (sphereCollider == null || !GetComponent<SphereCollider>())
+        {
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider.radius = weaponDetails.range;
+            sphereCollider.center = new Vector3(0, 0, 0);
+            sphereCollider.isTrigger = true;
+        }*/
+
+        weaponAction = WeaponActions.Idle;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (weaponParent.GetIsSelected())
+        {
+            print("Already Contains: " + !enemiesAtRange.Contains(other.GetComponent<Unit>()) + ", Is Enemy: " + (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber));
+            print(other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && !enemiesAtRange.Contains(other.GetComponent<Unit>()));
+        }
+        
+        if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && !enemiesAtRange.Contains(other.GetComponent<Unit>()))
+        {
+            print("About to Add");
+
+            enemiesAtRange.Add(other.GetComponent<Unit>());
+
+            print("Added!");
+            print(weaponAction);
+
+            if (targetUnit == null ||!enemiesAtRange.Contains(targetUnit))
+            {
+                weaponAction = WeaponActions.Scan;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        /*if (weaponParent.GetIsSelected())
+        {
+            print(other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber);
+        }*/
+        
+        if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && enemiesAtRange.Contains(other.GetComponent<Unit>()))
+        {
+            enemiesAtRange.Remove(other.GetComponent<Unit>());
+            if (targetUnit == null && enemiesAtRange.Count<0)
+            {
+                weaponAction = WeaponActions.SteadyWeapon;
+            }
+        }
     }
 
     public List<Purchasables> GetPurchasables()
@@ -58,7 +117,7 @@ public class Weapon : Purchasables
     // Update is called once per frame
     void Update()
     {
-        if (targetUnit != null)
+        /*if (targetUnit != null)
         {
             Fire(targetUnit);
             Vector3 targetDirection = targetUnit.transform.position - transform.position;
@@ -84,6 +143,14 @@ public class Weapon : Purchasables
             {
                 weaponParent.transform.rotation = Quaternion.LookRotation(newDirection);
             }
+        }*/
+
+        weaponAction(this, targetUnit.gameObject);
+
+        if (enemiesAtRange.Contains(null))
+        {
+            print("Spotted null!!");
+            enemiesAtRange.RemoveAll(null);
         }
     }
 
@@ -114,13 +181,61 @@ public class Weapon : Purchasables
         {
             if (weaponParent.GetComponent<Walkable>())
             {
-                if (weaponParent.GetComponent<Walkable>().GetTargetPoint() == Vector3.zero)
+                /*if (weaponParent.GetComponent<Walkable>().GetTargetPoint() == Vector3.zero)
                 {
                     print("start moving!");
                     weaponParent.GetComponent<Walkable>().SetTargetPoint(transform.position - (targetUnit.transform.position.normalized * distanceToTarget));
-                }
+                }*/
             }
         }
+    }
+
+    public void Wait(WeaponAction previousAction, float time)
+    {
+        if (!isWaiting)
+        {
+            StartCoroutine(WeaponWaitOnIdle(previousAction, time));
+        }
+    }
+
+    public IEnumerator WeaponWaitOnIdle(WeaponAction previousAction, float time)
+    {
+        isWaiting = true;
+        weaponAction = WeaponActions.Idle;
+        curMagazineAmmo--;
+        if (GetComponent<LaserWeapon>())
+        {
+            GetComponent<LaserWeapon>().FireLaser(targetUnit.transform.position);
+        }
+        if (GetComponent<ExplosiveWeapon>())
+        {
+            GetComponent<ExplosiveWeapon>().location = targetUnit.transform.position;
+            GetComponent<ExplosiveWeapon>().Explode();
+        }
+        if (GetComponent<FlameWeapon>())
+        {
+            GetComponent<FlameWeapon>().Fire();
+        }
+        if (curMagazineAmmo > 0)
+        {
+            yield return new WaitForSeconds(time);
+        }
+        else if (curMagazineAmmo == 0)
+        {
+            yield return new WaitForSeconds(time + weaponDetails.timeToReload);
+            curMagazineAmmo = weaponDetails.magazineSize;
+        }
+        if (GetComponent<LaserWeapon>())
+        {
+            GetComponent<LaserWeapon>().StopFiringLaser();
+        }
+        if (GetComponent<FlameWeapon>())
+        {
+            GetComponent<FlameWeapon>().StopFiring();
+        }
+        isInCooldown = false;
+        isWaiting = false;
+        weaponAction = previousAction;
     }
 
     public IEnumerator Reload()

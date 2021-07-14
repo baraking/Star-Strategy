@@ -82,6 +82,9 @@ MonoBehaviour:
   isUnitUIDisplaying: 0
   timeToFinishUpgrade: 0
   selectedUnits: []
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
   isActionPointMovementByDefault: 0
 --- !u!114 &1251872124643505152
 MonoBehaviour:

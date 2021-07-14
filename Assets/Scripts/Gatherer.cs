@@ -22,11 +22,18 @@ public class Gatherer : Walkable
 
     private void Update()
     {
-        base.AttempotToWalk();
+        /*base.AttempotToWalk();
         if (targetResource != null)
         {
             Gather(targetResource);
+        }*/
+
+        if (GetIsSelected())
+        {
+            //print(Time.time + " - " + unitAction.Method.Name);
         }
+
+        unitAction(this, targetsLocation, endQuaternion, actionTarget);
     }
 
     public void Gather(Resource target)
@@ -106,7 +113,7 @@ public class Gatherer : Walkable
                 }
             }
         }
-        print(targetResourceSilo.name);
+        //print(targetResourceSilo.name);
     }
 
     public IEnumerator AfterGather()
