@@ -149,7 +149,11 @@ public class Unit : Purchasables, System.IComparable
     {
         if (isSelected && !isBuilding)
         {
-            StartCoroutine(SpawnUnit(unitIndex));
+            //StartCoroutine(SpawnUnit(unitIndex));
+
+            actionTarget = unitDetails.purchasables[unitIndex].gameObject;
+
+            unitAction = UnitActions.Build;
         }
     }
 

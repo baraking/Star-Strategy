@@ -223,7 +223,10 @@ public class UnitActions : MonoBehaviour
 
     }
 
-    //build
+    public static void Build(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    {
+        //update - PurchaseUnit()
+    }
 
     //embark
 
