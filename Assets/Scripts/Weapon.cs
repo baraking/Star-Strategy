@@ -42,23 +42,34 @@ public class Weapon : Purchasables
         isReloading = false;
         enemiesAtRange = new List<Unit>();
 
-        if (sphereCollider == null || !GetComponent<SphereCollider>())
+        /*if (sphereCollider == null || !GetComponent<SphereCollider>())
         {
             sphereCollider = gameObject.AddComponent<SphereCollider>();
             sphereCollider.radius = weaponDetails.range;
             sphereCollider.center = new Vector3(0, 0, 0);
             sphereCollider.isTrigger = true;
-        }
+        }*/
 
         weaponAction = WeaponActions.Idle;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other);
+        if (weaponParent.GetIsSelected())
+        {
+            print("Already Contains: " + !enemiesAtRange.Contains(other.GetComponent<Unit>()) + ", Is Enemy: " + (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber));
+            print(other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && !enemiesAtRange.Contains(other.GetComponent<Unit>()));
+        }
+        
         if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && !enemiesAtRange.Contains(other.GetComponent<Unit>()))
         {
+            print("About to Add");
+
             enemiesAtRange.Add(other.GetComponent<Unit>());
+
+            print("Added!");
+            print(weaponAction);
+
             if (targetUnit == null ||!enemiesAtRange.Contains(targetUnit))
             {
                 weaponAction = WeaponActions.Scan;
@@ -68,6 +79,11 @@ public class Weapon : Purchasables
 
     private void OnTriggerExit(Collider other)
     {
+        /*if (weaponParent.GetIsSelected())
+        {
+            print(other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber);
+        }*/
+        
         if (other.GetComponent<Unit>().myPlayerNumber != weaponParent.myPlayerNumber && enemiesAtRange.Contains(other.GetComponent<Unit>()))
         {
             enemiesAtRange.Remove(other.GetComponent<Unit>());

@@ -46,6 +46,7 @@ public class WeaponActions : MonoBehaviour
 
     public static void Scan(Weapon actingWeapon, GameObject target)
     {
+        print(actingWeapon + " is scanning from " + actingWeapon.enemiesAtRange.Count);
         if (actingWeapon.enemiesAtRange.Count > 0)
         {
             Fire(actingWeapon, actingWeapon.enemiesAtRange[0].gameObject);

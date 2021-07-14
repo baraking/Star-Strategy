@@ -116,11 +116,16 @@ public class UnitActions : MonoBehaviour
         if (actingUnit.GetShortestRangeOfWeapons() < Vector3.Distance(actingUnit.transform.position, target.transform.position))
         {
             Move(actingUnit, targetsLocation, endQuaternion,target);
+
+            foreach (Weapon weapon in actingUnit.unitWeapons)
+            {
+                if (Vector3.Distance(weapon.transform.position, target.transform.position) > weapon.weaponDetails.range)
+                {
+                    weapon.targetUnit = target.GetComponent<Unit>();
+                    weapon.weaponAction = WeaponActions.RotateWeapon;
+                }
+            }
         }
-        /*else
-        {
-            actingUnit.unitAction = Attack;
-        }*/
         Attack(actingUnit, targetsLocation, endQuaternion, target);
     }
 

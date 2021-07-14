@@ -393,6 +393,8 @@ public class mouseController : MonoBehaviour
             if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
             {
                 Transform objectHit = hit.transform;
+                //print(objectHit.GetComponentInParent<Resource>());
+                //print(objectHit.name);
 
                 if (objectHit.GetComponentInParent<Unit>() && selectedUnits.Count > 0)
                 {
