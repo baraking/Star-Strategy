@@ -223,9 +223,17 @@ public class UnitActions : MonoBehaviour
 
     }
 
+    //build should build an unbuilt building. the mouse should spawn an unbuilt building on the location.
     public static void Build(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
-        //update - PurchaseUnit()
+        if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
+        {
+            Move(actingUnit, targetsLocation, endQuaternion, target);
+        }
+        else
+        {
+            actingUnit.StartSpawningUnit();
+        }
     }
 
     //embark
