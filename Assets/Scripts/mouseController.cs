@@ -31,6 +31,7 @@ public class mouseController : MonoBehaviour
     public Unit displayingUnit;
     public bool isUnitUIDisplaying;
     public float timeToFinishUpgrade;
+    public bool playerIsTryingToBuild;
 
     public List<Unit> selectedUnits = new List<Unit>();
     public LayerMask layerMask;
@@ -95,6 +96,12 @@ public class mouseController : MonoBehaviour
     {
         if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
         {
+
+            if (playerIsTryingToBuild)
+            {
+                //show building on pointer
+                print("Show Building Location and Shape!");
+            }
             //print("selectedUnits.Count: " + selectedUnits.Count);
 
             if (selectedUnits.Count == 0)
@@ -365,7 +372,7 @@ public class mouseController : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetKey(PlayerButtons.RIGHT_CLICK))
+            else if (Input.GetKey(PlayerButtons.RIGHT_CLICK))
             {
                 if (Vector3.Distance(curRightMousePoint, hit.point) > .1f)
                 {
@@ -520,6 +527,23 @@ public class mouseController : MonoBehaviour
                         selectedGroupMovement = GroupMovement.PointFormation;
                     }
 
+                }
+                else if (playerIsTryingToBuild && selectedUnits.Count > 0)//&& objectHit is valid for building
+                {
+                    print("We will soon build!");
+                    Vector3 buildLocation = hit.point;
+                    selectedUnits[0].targetsLocation = new List<Vector3>() { buildLocation };
+                    selectedUnits[0].unitAction = UnitActions.Build;
+                    print(buildLocation);
+                    playerIsTryingToBuild = false;
+                    /*if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
+                    {
+                        print("We will soon build2!");
+                        Vector3 buildLocation = hit.transform.position;
+                        selectedUnits[0].targetsLocation = new List<Vector3>() { hit.transform.position };
+                        selectedUnits[0].unitAction = UnitActions.Build;
+                        print(buildLocation);
+                    }*/
                 }
                 else
                 {

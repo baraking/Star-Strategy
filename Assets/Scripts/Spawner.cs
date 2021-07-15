@@ -5,11 +5,14 @@ using UnityEngine;
 //shouold add spawn point
 //fix the whole spawning command. wrote a basic one for testing only
 //should change the Instantiate into photonInstantiate...
+
+
+//This class is probably not needed anymore
 public class Spawner : Unit
 {
     void Update()
     {
-        if (isBuilding && Time.time - timeStartedUpgrading < buildTime)
+        /*if (isBuilding && Time.time - timeStartedUpgrading < buildTime)
         {
             //print(Time.time-timeStartedUpgrading);
         }
@@ -29,6 +32,6 @@ public class Spawner : Unit
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             StartSpawningUnit(3);
-        }
+        }*/
     }
 }

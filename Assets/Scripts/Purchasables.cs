@@ -62,7 +62,7 @@ public class Purchasables : MonoBehaviour
         {
             if (purchasable.name == this.gameObject.name)
             {
-                purchasingParent.GetComponentInChildren<Unit>().StartSpawningUnit(i);
+                purchasingParent.GetComponentInChildren<Unit>().AttemptToSpawnUnit(i);
                 return;
             }
             i++;
