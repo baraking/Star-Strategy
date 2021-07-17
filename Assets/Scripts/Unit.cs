@@ -159,8 +159,9 @@ public class Unit : Purchasables, System.IComparable
             actionTarget = unitDetails.purchasables[unitIndex].gameObject;
             if (unitDetails.unitType == UnitDetails.UnitType.Building)
             {
+                //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
                 targetsLocation = new List<Vector3>() { transform.position + Unit.DEFAULT_SPAWN_LOCATION };
-                unitAction = UnitActions.Build;
+                unitAction = UnitActions.Spawn;
             }
             else
             {
@@ -246,7 +247,7 @@ public class Unit : Purchasables, System.IComparable
     public void Build()
     {
         actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
-        print(actionTarget.GetComponent<Unit>().buildProgress + "/" + actionTarget.GetComponent<Unit>().unitDetails.buildTime);
+        print(actionTarget.GetComponent<Unit>().unitDetails.name + ": " + actionTarget.GetComponent<Unit>().buildProgress + "/" + actionTarget.GetComponent<Unit>().unitDetails.buildTime);
 
         if(actionTarget.GetComponent<Unit>().buildProgress>= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
         {

@@ -225,7 +225,11 @@ public class UnitActions : MonoBehaviour
 
     public static void Spawn(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
-        if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
+        if (actingUnit.unitDetails.unitType == UnitDetails.UnitType.Building)
+        {
+            actingUnit.StartSpawningUnit();
+        }
+        else if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
             Move(actingUnit, targetsLocation, endQuaternion, target);
         }
