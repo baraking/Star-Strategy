@@ -225,11 +225,7 @@ public class UnitActions : MonoBehaviour
 
     public static void Spawn(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
-        if (actingUnit.unitDetails.unitType == UnitDetails.UnitType.Building)
-        {
-            actingUnit.StartSpawningUnit();
-        }
-        else if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
+        if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
             Move(actingUnit, targetsLocation, endQuaternion, target);
         }
@@ -239,20 +235,28 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    //build should build an unbuilt building. the mouse should spawn an unbuilt building on the location.
-    public static void Build(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void StartBuilding(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
     {
-        if (actingUnit.unitDetails.unitType == UnitDetails.UnitType.Building)
-        {
-            actingUnit.StartSpawningUnit();
-        }
-        else if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
+        if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
             Move(actingUnit, targetsLocation, endQuaternion, target);
         }
         else
         {
-            actingUnit.StartSpawningUnit();
+            actingUnit.StartSpawningBuilding();
+            actingUnit.unitAction = Build;
+        }
+    }
+
+    public static void Build(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    {
+        if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
+        {
+            Move(actingUnit, targetsLocation, endQuaternion, target);
+        }
+        else
+        {
+            actingUnit.Build();
         }
     }
 

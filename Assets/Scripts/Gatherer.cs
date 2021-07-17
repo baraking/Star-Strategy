@@ -85,7 +85,7 @@ public class Gatherer : Walkable
     {
         foreach (Unit resourceSilo in myPlayer.playerUnits)
         {
-            if (resourceSilo.GetComponent<ResourceSilo>())
+            if (resourceSilo.GetComponent<ResourceSilo>() && resourceSilo.GetComponent<Unit>().isComplete)
             {
                 if (targetResourceSilo == null)
                 {

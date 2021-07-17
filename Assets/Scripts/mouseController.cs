@@ -446,6 +446,27 @@ public class mouseController : MonoBehaviour
                     else if (objectHit.GetComponentInParent<Unit>().myPlayerNumber == myPlayer.playerNumber && !objectHit.GetComponentInParent<ResourceSilo>()) 
                     {
                         print("Ally!");
+
+                        if (!objectHit.GetComponentInParent<Unit>().isComplete)
+                        {
+                            print("Continue Building!");
+                            foreach (Unit unit in selectedUnits)
+                            {
+                                //if can build
+                                unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                unit.endQuaternion = new Quaternion();
+                                unit.actionTarget = objectHit.GetComponentInParent<Unit>().gameObject;
+
+                                unit.unitAction = UnitActions.Build;
+                                //else
+                                /*unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
+                                unit.endQuaternion = new Quaternion();
+
+                                unit.unitAction = UnitActions.Move;*/
+                                //
+                            }
+                        }
+
                         foreach (Unit unit in selectedUnits)
                         {
                             if (unit.unitDetails.unitType == UnitDetails.UnitType.Infantry && objectHit.GetComponentInParent<Unit>().unitDetails.carryingCapacity - objectHit.GetComponentInParent<Unit>().carriedAmount >= unit.unitDetails.unitSize)
@@ -540,8 +561,15 @@ public class mouseController : MonoBehaviour
                     print("We will soon build!");
                     Vector3 buildLocation = hit.point;
                     selectedUnits[0].targetsLocation = new List<Vector3>() { buildLocation };
-                    selectedUnits[0].unitAction = UnitActions.Build;
-                    print(buildLocation);
+                    if (selectedUnits[0].actionTarget.GetComponent<Unit>().unitDetails.unitType == UnitDetails.UnitType.Building)
+                    {
+                        selectedUnits[0].unitAction = UnitActions.StartBuilding;
+                    }
+                    else
+                    {
+                        selectedUnits[0].unitAction = UnitActions.Spawn;
+                    }
+                    //print(buildLocation);
                     playerIsTryingToBuild = false;
                     /*if (Input.GetKeyUp(PlayerButtons.RIGHT_CLICK))
                     {

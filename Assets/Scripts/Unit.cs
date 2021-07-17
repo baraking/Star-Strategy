@@ -195,7 +195,7 @@ public class Unit : Purchasables, System.IComparable
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         newUnit.GetComponent<Unit>().InitUnit();
-        newUnit.GetComponent<Unit>().isComplete = false;
+        //newUnit.GetComponent<Unit>().isComplete = false;
 
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
@@ -204,6 +204,57 @@ public class Unit : Purchasables, System.IComparable
         Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
         isBuilding = false;
         unitAction = UnitActions.Idle;
+    }
+
+    public void StartSpawningBuilding()
+    {
+        if (!isBuilding)
+        {
+            StartCoroutine(SpawnBuilding(targetsLocation[0], actionTarget));
+        }
+    }
+
+    public IEnumerator SpawnBuilding(Vector3 location, GameObject purchasable)
+    {
+        isBuilding = true;
+        buildTime = purchasable.GetComponent<Unit>().unitDetails.buildTime;
+        Debug.Log("Started building a " + purchasable.GetComponent<Unit>().unitDetails.name);
+
+        //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+
+        GameObject newUnit = Instantiate(purchasable);
+        newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
+        newUnit.GetComponent<Unit>().myPlayer = myPlayer;
+        //newUnit.transform.position = location + DEFAULT_SPAWN_LOCATION;
+        newUnit.transform.position = location;
+        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        newUnit.GetComponent<Unit>().InitUnit();
+        newUnit.GetComponent<Unit>().isComplete = false;
+
+        actionTarget = newUnit;
+
+        yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+
+        //OnUnitSpawnEnd(purchasable);
+        //newUnit.GetComponent<Unit>().isComplete = true;
+        //Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
+        isBuilding = false;
+        //unitAction = UnitActions.Idle;
+    }
+
+    public void Build()
+    {
+        actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
+        print(actionTarget.GetComponent<Unit>().buildProgress + "/" + actionTarget.GetComponent<Unit>().unitDetails.buildTime);
+
+        if(actionTarget.GetComponent<Unit>().buildProgress>= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
+        {
+            actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
+            OnUnitSpawnEnd(actionTarget);
+            actionTarget.GetComponent<Unit>().isComplete = true;
+            unitAction = UnitActions.Idle;
+        }
     }
 
     public void OnUnitSpawnEnd(GameObject purchasable)
