@@ -424,7 +424,14 @@ public class mouseController : MonoBehaviour
                                 unit.actionTarget = objectHit.GetComponentInParent<Unit>().gameObject;
                                 //unit.actionTarget = objectHit.gameObject;
 
-                                unit.unitAction = UnitActions.Advance;
+                                if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
+                                {
+                                    unit.unitAction = UnitActions.Advance;
+                                }
+                                else
+                                {
+                                    unit.unitAction = UnitActions.Attack;
+                                } 
                             }
                         }
 

@@ -29,6 +29,7 @@ public class Unit : Purchasables, System.IComparable
     public List<Weapon> unitWeapons = new List<Weapon>();
 
     public bool isComplete;
+    public float buildProgress;
 
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
@@ -183,6 +184,9 @@ public class Unit : Purchasables, System.IComparable
         isBuilding = true;
         buildTime = purchasable.GetComponent<Unit>().unitDetails.buildTime;
         Debug.Log("Started building a " + purchasable.GetComponent<Unit>().unitDetails.name);
+
+        yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+
         GameObject newUnit = Instantiate(purchasable);
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
@@ -193,7 +197,7 @@ public class Unit : Purchasables, System.IComparable
         newUnit.GetComponent<Unit>().InitUnit();
         newUnit.GetComponent<Unit>().isComplete = false;
 
-        yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+        //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
         OnUnitSpawnEnd(purchasable);
         newUnit.GetComponent<Unit>().isComplete = true;
