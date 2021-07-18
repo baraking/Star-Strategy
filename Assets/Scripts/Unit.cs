@@ -24,7 +24,7 @@ public class Unit : Purchasables, System.IComparable
     public bool isWaiting;
 
     [SerializeField]
-    public int curHP;
+    public float curHP;
 
     public List<Weapon> unitWeapons = new List<Weapon>();
 
@@ -34,6 +34,7 @@ public class Unit : Purchasables, System.IComparable
     public HealthBar healthBar;
     public static readonly int HEALTH_BAR_LIMITED_TIME_DURATION = 3;
     public static readonly Vector3 DEFAULT_SPAWN_LOCATION = new Vector3(0, 0, 0.55f);
+    public static float INITIAL_HP_FOR_BUILDINGS = 0.2f;
 
     public List<Unit> carriedUnits = new List<Unit>();
     public int carriedAmount;
@@ -104,7 +105,9 @@ public class Unit : Purchasables, System.IComparable
         }
         SetHealthBarActive(true);
         healthBar.SetMaxHealth(unitDetails.max_hp);
+
         curHP = unitDetails.max_hp;
+        healthBar.setHealth(curHP);
 
         if (gameObject.GetComponent<PhotonTransformView>() == null)
         {
@@ -195,13 +198,14 @@ public class Unit : Purchasables, System.IComparable
         newUnit.transform.position = location;
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        newUnit.GetComponent<Unit>().isComplete = true;
         newUnit.GetComponent<Unit>().InitUnit();
         //newUnit.GetComponent<Unit>().isComplete = false;
 
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
         OnUnitSpawnEnd(purchasable);
-        newUnit.GetComponent<Unit>().isComplete = true;
+        
         Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
         isBuilding = false;
         unitAction = UnitActions.Idle;
@@ -235,18 +239,36 @@ public class Unit : Purchasables, System.IComparable
 
         actionTarget = newUnit;
 
-        yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+        //is this needed?
+        //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+        yield return new WaitForSeconds(0);
 
         //OnUnitSpawnEnd(purchasable);
         //newUnit.GetComponent<Unit>().isComplete = true;
         //Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
         isBuilding = false;
+
+        newUnit.GetComponent<Unit>().curHP = newUnit.GetComponent<Unit>().unitDetails.max_hp * INITIAL_HP_FOR_BUILDINGS;
+        newUnit.GetComponent<Unit>().healthBar.setHealth(newUnit.GetComponent<Unit>().unitDetails.max_hp * INITIAL_HP_FOR_BUILDINGS);
+
         //unitAction = UnitActions.Idle;
     }
 
     public void Build()
     {
         actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
+        print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
+        if (actionTarget.GetComponent<Unit>().curHP < actionTarget.GetComponent<Unit>().unitDetails.max_hp)
+        {
+            actionTarget.GetComponent<Unit>().curHP += ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp )/ actionTarget.GetComponent<Unit>().unitDetails.buildTime);
+            actionTarget.GetComponent<Unit>().healthBar.setHealth(actionTarget.GetComponent<Unit>().curHP);
+        }
+        if(actionTarget.GetComponent<Unit>().curHP > actionTarget.GetComponent<Unit>().unitDetails.max_hp)
+        {
+            actionTarget.GetComponent<Unit>().curHP = actionTarget.GetComponent<Unit>().unitDetails.max_hp;
+            actionTarget.GetComponent<Unit>().healthBar.setHealth(actionTarget.GetComponent<Unit>().curHP);
+        }
+
         print(actionTarget.GetComponent<Unit>().unitDetails.name + ": " + actionTarget.GetComponent<Unit>().buildProgress + "/" + actionTarget.GetComponent<Unit>().unitDetails.buildTime);
 
         if(actionTarget.GetComponent<Unit>().buildProgress>= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
@@ -361,7 +383,7 @@ public class Unit : Purchasables, System.IComparable
         {
             curHP -= damage;
             DisplayeHealthForLimitedTime();
-         healthBar.setHealth(curHP);
+            healthBar.setHealth(curHP);
         }
         if (curHP <= 0)
         {

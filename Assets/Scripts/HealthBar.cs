@@ -22,7 +22,7 @@ public class HealthBar : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void SetMaxHealth(int maxHealth)
+    public void SetMaxHealth(float maxHealth)
     {
         healthSlider.maxValue = maxHealth;
         healthSlider.value = maxHealth;
@@ -33,7 +33,7 @@ public class HealthBar : MonoBehaviour
         return gameObject.active;
     }
 
-    public void setHealth(int health)
+    public void setHealth(float health)
     {
         healthSlider.value = health;
     }
