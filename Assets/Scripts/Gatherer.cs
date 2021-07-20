@@ -20,22 +20,6 @@ public class Gatherer : Walkable
         //rangeCalculationPoint = transform.position;
     }
 
-    private void Update()
-    {
-        /*base.AttempotToWalk();
-        if (targetResource != null)
-        {
-            Gather(targetResource);
-        }*/
-
-        if (GetIsSelected())
-        {
-            //print(Time.time + " - " + unitAction.Method.Name);
-        }
-
-        unitAction(this, targetsLocation, endQuaternion, actionTarget);
-    }
-
     public void Gather(Resource target)
     {
         if (targetResourceSilo == null)
@@ -101,7 +85,7 @@ public class Gatherer : Walkable
     {
         foreach (Unit resourceSilo in myPlayer.playerUnits)
         {
-            if (resourceSilo.GetComponent<ResourceSilo>())
+            if (resourceSilo.GetComponent<ResourceSilo>() && resourceSilo.GetComponent<Unit>().isComplete)
             {
                 if (targetResourceSilo == null)
                 {

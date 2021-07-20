@@ -17,25 +17,17 @@ public class Walkable : Unit
         base.InitUnit();
     }
 
-    void Update()
+    /*void Update()
     {
-        //UnitActions.Move(this, new List<Vector3>() { targetPoint },new Quaternion());
-        if (GetIsSelected())
-        {
-            print(unitAction.Method.Name);
-        }
-
-        unitAction(this, targetsLocation, endQuaternion,actionTarget);
-
         //AttempotToWalk();
-        if (Input.GetKey(PlayerButtons.DISEMBARK))
+        /*if (Input.GetKey(PlayerButtons.DISEMBARK))
         {
             foreach(Unit unit in carriedUnits)
             {
                 Disembark(unit);
             }
         }
-    }
+    }*/
 
     public void SetHasTarget(bool newState)
     {
