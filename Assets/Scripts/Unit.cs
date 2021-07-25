@@ -109,10 +109,10 @@ public class Unit : Purchasables, System.IComparable
         curHP = unitDetails.max_hp;
         healthBar.setHealth(curHP);
 
-        if (gameObject.GetComponent<PhotonTransformView>() == null)
+        /*if (gameObject.GetComponent<PhotonTransformView>() == null)
         {
             gameObject.AddComponent<PhotonTransformView>();
-        }
+        }*/
 
         if (myPlayer != null)
         {
@@ -191,7 +191,10 @@ public class Unit : Purchasables, System.IComparable
 
         yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
-        GameObject newUnit = Instantiate(purchasable);
+        //GameObject newUnit = Instantiate(purchasable);
+        object[] instantiationData = new object[] { myPlayerNumber };
+        GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
+
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
         //newUnit.transform.position = location + DEFAULT_SPAWN_LOCATION;
@@ -227,7 +230,10 @@ public class Unit : Purchasables, System.IComparable
 
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
-        GameObject newUnit = Instantiate(purchasable);
+        //GameObject newUnit = Instantiate(purchasable);
+        object[] instantiationData = new object[] { myPlayerNumber };
+        GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
+
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
         newUnit.GetComponent<Unit>().myPlayer = myPlayer;
         //newUnit.transform.position = location + DEFAULT_SPAWN_LOCATION;

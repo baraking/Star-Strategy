@@ -81,6 +81,7 @@ MonoBehaviour:
   displayingUnit: {fileID: 0}
   isUnitUIDisplaying: 0
   timeToFinishUpgrade: 0
+  playerIsTryingToBuild: 0
   selectedUnits: []
   layerMask:
     serializedVersion: 2

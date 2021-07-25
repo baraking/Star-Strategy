@@ -235,6 +235,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3719488233502879941}
   - component: {fileID: 7577451267206726350}
+  - component: {fileID: -1190549311130155004}
+  - component: {fileID: -3149825465259375373}
   m_Layer: 0
   m_Name: TanksFactory
   m_TagString: Untagged
@@ -278,12 +280,58 @@ MonoBehaviour:
   myPlayerNumber: 0
   isSelected: 0
   buildTime: 0
+  isWaiting: 0
   curHP: 0
   unitWeapons: []
+  isComplete: 0
+  buildProgress: 0
   healthBar: {fileID: 5084307687126282768}
   carriedUnits: []
   carriedAmount: 0
   photonView: {fileID: 0}
+  targetsLocation: []
+  endQuaternion: {x: 0, y: 0, z: 0, w: 0}
+  actionTarget: {fileID: 0}
+  sphereCollider: {fileID: 0}
+--- !u!114 &-1190549311130155004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136548429647546829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: -3149825465259375373}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-3149825465259375373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136548429647546829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!1 &3430823952645475392
 GameObject:
   m_ObjectHideFlags: 0

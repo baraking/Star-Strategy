@@ -219,7 +219,7 @@ public class mouseController : MonoBehaviour
                         bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
                         foreach (Unit hooveredUnit in myPlayer.playerUnits)
                         {
-                            print(hooveredUnit);
+                            //print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
                             {
                                 if (!selectedUnits.Contains(hooveredUnit) && hooveredUnit.gameObject.active)
