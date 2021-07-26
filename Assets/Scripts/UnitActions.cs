@@ -8,7 +8,7 @@ public class UnitActions : MonoBehaviour
 {
     public static float ROTATION_THRESHOLD = 15f;
 
-    public static void Rotate(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Rotate(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         Vector3 targetDir = targetsLocation[0] - actingUnit.transform.position;
         targetDir = targetDir.normalized;
@@ -22,7 +22,7 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void Move(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Move(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (targetsLocation.Count < 1)
         {
@@ -42,10 +42,10 @@ public class UnitActions : MonoBehaviour
             }
         }
 
-        MoveLogic(actingUnit, targetsLocation, endQuaternion);
+        MoveLogic(actingUnit, endQuaternion, targetsLocation);
     }
 
-    private static void MoveLogic(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion)
+    private static void MoveLogic(Unit actingUnit, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         Vector3 targetDir = targetsLocation[0] - actingUnit.transform.position;
         targetDir = targetDir.normalized;
@@ -85,7 +85,7 @@ public class UnitActions : MonoBehaviour
         return Quaternion.Euler(rot);
     }
 
-    public static void Patrol(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Patrol(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (targetsLocation.Count < 1)
         {
@@ -107,15 +107,15 @@ public class UnitActions : MonoBehaviour
             }
         }
 
-        MoveLogic(actingUnit, targetsLocation, endQuaternion);
+        MoveLogic(actingUnit, endQuaternion, targetsLocation);
     }
 
-    public static void Advance(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)//move and attack when in range
+    public static void Advance(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)//move and attack when in range
     {
         //print(actingUnit.GetShortestRangeOfWeapons() + " , " + Vector3.Distance(actingUnit.transform.position, target.transform.position));
         if (actingUnit.GetShortestRangeOfWeapons() < Vector3.Distance(actingUnit.transform.position, target.transform.position))
         {
-            Move(actingUnit, targetsLocation, endQuaternion,target);
+            Move(actingUnit, target, endQuaternion, targetsLocation);
 
             foreach (Weapon weapon in actingUnit.unitWeapons)
             {
@@ -126,10 +126,10 @@ public class UnitActions : MonoBehaviour
                 }
             }
         }
-        Attack(actingUnit, targetsLocation, endQuaternion, target);
+        Move(actingUnit, target, endQuaternion, targetsLocation);
     }
 
-    public static void Attack(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Attack(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (target == null || actingUnit.unitWeapons.Count<1)
         {
@@ -145,7 +145,7 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void Gather(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Gather(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (!target.GetComponent<Resource>())
         {
@@ -154,7 +154,7 @@ public class UnitActions : MonoBehaviour
         //print(Vector3.Distance(actingUnit.transform.position, target.transform.position) + " , " + actingUnit.unitDetails.gatheringRange);
         if (Vector3.Distance(actingUnit.transform.position, target.transform.position) > actingUnit.unitDetails.gatheringRange)
         {
-            Move(actingUnit, targetsLocation, endQuaternion, target);
+            Move(actingUnit, target, endQuaternion, targetsLocation);
         }
         else
         {
@@ -187,7 +187,7 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void RetrieveResources(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void RetrieveResources(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (!target.GetComponent<ResourceSilo>())
         {
@@ -195,7 +195,7 @@ public class UnitActions : MonoBehaviour
         }
         if (Vector3.Distance(actingUnit.transform.position, target.transform.position) > actingUnit.unitDetails.gatheringRange)
         {
-            Move(actingUnit, targetsLocation, endQuaternion, target);
+            Move(actingUnit, target, endQuaternion, targetsLocation);
         }
         else
         {
@@ -213,17 +213,17 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void Ram(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Ram(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
 
     }
 
-    public static void Idle(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Idle(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
 
     }
 
-    public static void Spawn(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Spawn(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (actingUnit.unitDetails.unitType == UnitDetails.UnitType.Building)
         {
@@ -231,7 +231,7 @@ public class UnitActions : MonoBehaviour
         }
         else if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
-            Move(actingUnit, targetsLocation, endQuaternion, target);
+            Move(actingUnit, target, endQuaternion, targetsLocation);
         }
         else
         {
@@ -239,11 +239,11 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void StartBuilding(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void StartBuilding(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
-            Move(actingUnit, targetsLocation, endQuaternion, target);
+            Move(actingUnit, target, endQuaternion, targetsLocation);
         }
         else
         {
@@ -252,11 +252,11 @@ public class UnitActions : MonoBehaviour
         }
     }
 
-    public static void Build(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target)
+    public static void Build(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
     {
         if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
-            Move(actingUnit, targetsLocation, endQuaternion, target);
+            Move(actingUnit, target, endQuaternion, targetsLocation);
         }
         else
         {

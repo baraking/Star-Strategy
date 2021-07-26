@@ -40,8 +40,9 @@ public class Unit : Purchasables, System.IComparable
     public int carriedAmount;
 
     public PhotonView photonView;
+    public int photonID;
 
-    public delegate void UnitAction(Unit actingUnit, List<Vector3> targetsLocation, Quaternion endQuaternion, GameObject target);
+    public delegate void UnitAction(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation);
     [SerializeField]
     public UnitAction unitAction;
 
@@ -57,6 +58,8 @@ public class Unit : Purchasables, System.IComparable
         if (photonView.InstantiationData != null)
         {
             myPlayerNumber = (int)photonView.InstantiationData[0];
+            //print(photonView.ViewID);
+            photonID=photonView.ViewID;
         }
     }
 
@@ -70,7 +73,48 @@ public class Unit : Purchasables, System.IComparable
     {
         if (isComplete)
         {
-            unitAction(this, targetsLocation, endQuaternion, actionTarget);
+            unitAction(this, actionTarget, endQuaternion, targetsLocation);
+        }
+    }
+
+    public object[] SendCurrentAction()
+    {
+        object[] ans = new object[4];
+        ans[0] = photonID;
+        if (actionTarget != null)
+        {
+            if (actionTarget.GetComponent<Unit>())
+            {
+                ans[1] = actionTarget.GetComponent<Unit>().photonID;
+            }
+            else if (actionTarget.GetComponent<Resource>())
+            {
+                ans[1] = actionTarget.GetComponent<Resource>().photonID;
+            }
+            else
+            {
+                ans[1] = -1;
+            }
+        }
+        ans[2] = new object[] { endQuaternion.x, endQuaternion.y, endQuaternion.z, endQuaternion.w };
+        object[] locations = new object[targetsLocation.Count];
+        for(int i = 0; i < targetsLocation.Count; i++)
+        {
+            locations[i]= new object[] { targetsLocation[i].x, targetsLocation[i].y, targetsLocation[i].z};
+        }
+        ans[3] = locations;
+        return ans;
+    }
+
+    public void RecieveCurrentAction(object[] message)
+    {
+        Unit actingUnit = PhotonView.Find((int)message[0]).GetComponent<Unit>();
+        actionTarget = PhotonView.Find((int)message[1]).gameObject;
+        endQuaternion = new Quaternion((int)((object[])message[2])[0], (int)((object[])message[2])[1], (int)((object[])message[2])[2], (int)((object[])message[2])[3]);
+        targetsLocation = new List<Vector3>();
+        for (int i = 0; i < ((object[])message[3]).Length; i++)
+        {
+            targetsLocation.Add(new Vector3((int)((object[])message[3])[0], (int)((object[])message[3])[1], (int)((object[])message[3])[2]));
         }
     }
 
@@ -272,7 +316,7 @@ public class Unit : Purchasables, System.IComparable
     public void Build()
     {
         actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
-        print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
+        //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         if (actionTarget.GetComponent<Unit>().curHP < actionTarget.GetComponent<Unit>().unitDetails.max_hp)
         {
             actionTarget.GetComponent<Unit>().curHP += ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp )/ actionTarget.GetComponent<Unit>().unitDetails.buildTime);
