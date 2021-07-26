@@ -51,6 +51,15 @@ public class Unit : Purchasables, System.IComparable
 
     public SphereCollider sphereCollider;
 
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+        if (photonView.InstantiationData != null)
+        {
+            myPlayerNumber = (int)photonView.InstantiationData[0];
+        }
+    }
+
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
