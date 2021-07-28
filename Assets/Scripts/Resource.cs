@@ -8,7 +8,7 @@ public class Resource : MonoBehaviour
 
     public int curValue;
     public PhotonView photonView;
-    public int photonID;
+        public int photonID;
 
     private void Awake()
     {
@@ -44,6 +44,7 @@ public class Resource : MonoBehaviour
         if (curValue <= 0)
         {
             print("Resource depleted :(");
+            //PhotonNetwork.Destroy(gameObject);
             Destroy(gameObject);
         }
     }

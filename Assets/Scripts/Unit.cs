@@ -73,6 +73,13 @@ public class Unit : Purchasables, System.IComparable
     {
         if (isComplete)
         {
+            if (isSelected)
+            {
+                if (Input.GetKey(KeyCode.P))
+                {
+                    Die();
+                }
+            }
             unitAction(this, actionTarget, endQuaternion, targetsLocation);
         }
     }
@@ -212,6 +219,8 @@ public class Unit : Purchasables, System.IComparable
         {
             //StartCoroutine(SpawnUnit(unitIndex));
 
+            print(unitDetails.unitType == UnitDetails.UnitType.Building);
+
             actionTarget = unitDetails.purchasables[unitIndex].gameObject;
             if (unitDetails.unitType == UnitDetails.UnitType.Building)
             {
@@ -221,6 +230,7 @@ public class Unit : Purchasables, System.IComparable
             }
             else
             {
+                //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
                 myPlayer.GetComponent<mouseController>().playerIsTryingToBuild = true;
             }
 
@@ -618,7 +628,7 @@ public class Unit : Purchasables, System.IComparable
     {
         print("I am dead :(");
         UpdateLandmarksOnSelfDeath();
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     public void Wait(UnitAction previousAction, float time)
