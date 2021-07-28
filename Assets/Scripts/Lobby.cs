@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,9 @@ using UnityEngine.UI;
 public class Lobby : MonoBehaviourPunCallbacks
 {
     //[SerializeField] private string VersionName = "0.1";
-    [SerializeField] private GameObject ConnectPanel;
+    [SerializeField] private GameObject MainMenuPanel;
+    [SerializeField] private GameObject MultiPlayerPanel;
+
 
     [SerializeField] private TMP_InputField CreateGameInput;
     [SerializeField] private TMP_InputField JoinGameInput;
@@ -72,5 +75,33 @@ public class Lobby : MonoBehaviourPunCallbacks
         Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
-    
+
+    public void QuitGame()
+    {
+        //EditorApplication.isPlaying = false;
+        Application.Quit();
+    }
+
+    public void ClickedOnMultiPlayerPanel()
+    {
+        MultiPlayerPanel.SetActive(true);
+        MainMenuPanel.SetActive(false);
+    }
+
+    public void ClickedOnBackFromMultiPlayerPanel()
+    {
+        MainMenuPanel.SetActive(true);
+        MultiPlayerPanel.SetActive(false);
+    }
+
+    public void ClickedOnJoinRoom()
+    {
+
+    }
+
+    public void ClickedOnCreateRoom()
+    {
+
+    }
+
 }
