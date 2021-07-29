@@ -102,9 +102,16 @@ public class Lobby : MonoBehaviourPunCallbacks
         CreateRoomPanel.SetActive(false);
     }
 
+    public void ClickedOnBackFromJoinRoom()
+    {
+        MultiPlayerPanel.SetActive(true);
+        JoinRoomPanel.SetActive(false);
+    }
+
     public void ClickedOnJoinRoom()
     {
-
+        JoinRoomPanel.SetActive(true);
+        MultiPlayerPanel.SetActive(false);
     }
 
     public void ClickedOnCreateRoom()
