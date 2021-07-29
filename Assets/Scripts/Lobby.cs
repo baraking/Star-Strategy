@@ -14,6 +14,8 @@ public class Lobby : MonoBehaviourPunCallbacks
     //[SerializeField] private string VersionName = "0.1";
     [SerializeField] private GameObject MainMenuPanel;
     [SerializeField] private GameObject MultiPlayerPanel;
+    [SerializeField] private GameObject CreateRoomPanel;
+    [SerializeField] private GameObject JoinRoomPanel;
 
 
     [SerializeField] private TMP_InputField CreateGameInput;
@@ -94,6 +96,12 @@ public class Lobby : MonoBehaviourPunCallbacks
         MultiPlayerPanel.SetActive(false);
     }
 
+    public void ClickedOnBackFromCreateRoom()
+    {
+        MultiPlayerPanel.SetActive(true);
+        CreateRoomPanel.SetActive(false);
+    }
+
     public void ClickedOnJoinRoom()
     {
 
@@ -101,7 +109,8 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void ClickedOnCreateRoom()
     {
-
+        CreateRoomPanel.SetActive(true);
+        MultiPlayerPanel.SetActive(false);
     }
 
 }
