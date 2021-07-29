@@ -16,6 +16,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject MultiPlayerPanel;
     [SerializeField] private GameObject CreateRoomPanel;
     [SerializeField] private GameObject JoinRoomPanel;
+    [SerializeField] private GameObject RoomPanel;
 
 
     [SerializeField] private TMP_InputField CreateGameInput;
@@ -73,9 +74,23 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         print(LevelSelection.options[LevelSelection.value]);
-        PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
+        //PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
         Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
+
+        RoomPanel.SetActive(true);
+        JoinRoomPanel.SetActive(false);
+    }
+
+    public override void OnCreatedRoom()
+    {
+        print(LevelSelection.options[LevelSelection.value]);
+        //PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
+        Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
+
+        RoomPanel.SetActive(true);
+        CreateRoomPanel.SetActive(false);
     }
 
     public void QuitGame()
@@ -119,5 +134,21 @@ public class Lobby : MonoBehaviourPunCallbacks
         CreateRoomPanel.SetActive(true);
         MultiPlayerPanel.SetActive(false);
     }
+
+    public void ClickedOnBackFromRoomPanel()
+    {
+        MultiPlayerPanel.SetActive(true);
+        RoomPanel.SetActive(false);
+    }
+
+    public void ClickedOnStartGame()
+    {
+        PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
+    }
+
+    /*public override void OnPlayerEnteredRoom(Player player)
+    {
+
+    }*/
 
 }
