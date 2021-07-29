@@ -5,11 +5,11 @@ using UnityEngine;
 //need to automatically add and handle all players.
 public class PlayersHolder : MonoBehaviour
 {
-    public List<Player> allPlayers;
+    public List<PlayerController> allPlayers;
 
-    public Player getPlayer(int playerNumber)
+    public PlayerController getPlayer(int playerNumber)
     {
-        foreach (Player player in allPlayers)
+        foreach (PlayerController player in allPlayers)
         {
             if (player.playerNumber == playerNumber)
             {

@@ -8,7 +8,7 @@ using UnityEngine;
 //cameraHolder
 //awake is written pretty bad
 //give resources a set value
-public class Player : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     public enum Race { Humans, Parasites, Bugs }
     public PhotonView photonView;

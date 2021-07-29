@@ -146,9 +146,43 @@ public class Lobby : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
     }
 
-    /*public override void OnPlayerEnteredRoom(Player player)
+    public override void OnPlayerEnteredRoom(Player player)
     {
 
-    }*/
+    }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+
+    }
+
+    public override void OnLeftRoom()
+    {
+
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+
+    }
+
+    public override void OnLeftLobby()
+    {
+
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+
+    }
 }

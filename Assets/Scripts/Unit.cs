@@ -16,7 +16,7 @@ public class Unit : Purchasables, System.IComparable
 {
     public UnitDetails unitDetails;
 
-    public Player myPlayer;
+    public PlayerController myPlayer;
     public int myPlayerNumber;
     [SerializeField]
     private bool isSelected;
