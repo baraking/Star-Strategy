@@ -25,6 +25,12 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     [SerializeField] private TMP_Dropdown LevelSelection;
 
+    private Dictionary<string, RoomInfo> cachedRoomList;
+    private Dictionary<string, GameObject> roomListEntries;
+    private Dictionary<int, GameObject> playerListEntries;
+
+    public GameObject playerRoomDataPrefab;
+
 
     private void Awake()
     {
@@ -82,7 +88,31 @@ public class Lobby : MonoBehaviourPunCallbacks
 
         RoomPanel.SetActive(true);
         JoinRoomPanel.SetActive(false);
-        StartGameButton.gameObject.SetActive(CheckPlayersReady());
+        //StartGameButton.gameObject.SetActive(CheckPlayersReady());
+        StartGameButton.interactable = CheckPlayersReady();
+
+        //--------------------------------------------
+        if (playerListEntries == null)
+        {
+            playerListEntries = new Dictionary<int, GameObject>();
+        }
+
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            GameObject entry = Instantiate(playerRoomDataPrefab);
+            entry.transform.SetParent(RoomPanel.transform);
+            entry.transform.localScale = Vector3.one;
+            //entry.GetComponent<PlayerRoomData>().Initialize(p.ActorNumber, p.NickName);
+            entry.GetComponent<PlayerRoomData>().Initialize(p.ActorNumber);
+
+            object isPlayerReady;
+            if (p.CustomProperties.TryGetValue(PlayerRoomData.IS_PLAYER_READY, out isPlayerReady))
+            {
+                entry.GetComponent<PlayerRoomData>().SetPlayerReady((bool)isPlayerReady);
+            }
+
+            playerListEntries.Add(p.ActorNumber, entry);
+        }
     }
 
     public override void OnCreatedRoom()
@@ -113,6 +143,8 @@ public class Lobby : MonoBehaviourPunCallbacks
 
         RoomPanel.SetActive(true);
         CreateRoomPanel.SetActive(false);
+
+        StartGameButton.interactable = CheckPlayersReady();
     }
 
     public void QuitGame()
@@ -165,18 +197,36 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void ClickedOnStartGame()
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
         PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
     }
 
     public override void OnPlayerEnteredRoom(Player player)
     {
         print(player.NickName + " entered the room");
-        StartGameButton.gameObject.SetActive(CheckPlayersReady());
+        //StartGameButton.gameObject.SetActive(CheckPlayersReady());
+
+        //--------------------------------------------
+        GameObject entry = Instantiate(playerRoomDataPrefab);
+        entry.transform.SetParent(RoomPanel.transform);
+        entry.transform.localScale = Vector3.one;
+        entry.GetComponent<PlayerRoomData>().Initialize(player.ActorNumber);
+
+        playerListEntries.Add(player.ActorNumber, entry);
+        //--------------------------------------------
+
+        StartGameButton.interactable = CheckPlayersReady();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        //--------------------------------------------
+        Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
+        playerListEntries.Remove(otherPlayer.ActorNumber);
+        //--------------------------------------------
 
+        StartGameButton.interactable = CheckPlayersReady();
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -186,7 +236,16 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        ClickedOnBackFromRoomPanel();
 
+        //--------------------------------------------
+        foreach (GameObject entry in playerListEntries.Values)
+        {
+            Destroy(entry.gameObject);
+        }
+
+        playerListEntries.Clear();
+        playerListEntries = null;
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -211,6 +270,23 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
+        //--------------------------------------------
+        if (playerListEntries == null)
+        {
+            playerListEntries = new Dictionary<int, GameObject>();
+        }
+
+        GameObject entry;
+        if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))
+        {
+            object isPlayerReady;
+            if (changedProps.TryGetValue(PlayerRoomData.IS_PLAYER_READY, out isPlayerReady))
+            {
+                entry.GetComponent<PlayerRoomData>().SetPlayerReady((bool)isPlayerReady);
+            }
+        }
+        //--------------------------------------------
+
         //StartGameButton.gameObject.SetActive(CheckPlayersReady());
         StartGameButton.interactable = CheckPlayersReady();
     }
@@ -225,7 +301,7 @@ public class Lobby : MonoBehaviourPunCallbacks
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             object isPlayerReady;
-            if (p.CustomProperties.TryGetValue("isPlayerReady", out isPlayerReady))
+            if (p.CustomProperties.TryGetValue(PlayerRoomData.IS_PLAYER_READY, out isPlayerReady))
             {
                 if (!(bool)isPlayerReady)
                 {

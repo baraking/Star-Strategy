@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class PlayerRoomData : MonoBehaviour
 {
@@ -13,13 +14,19 @@ public class PlayerRoomData : MonoBehaviour
     [SerializeField] private TMP_Dropdown PlayerTeam;
     [SerializeField] private bool isPlayerReady;
 
+    private int ownerId;
+    public Image readyIcon;
+
+    public static readonly string IS_PLAYER_READY = "isPlayerReady";
+
 
     //newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
 
     // Start is called before the first frame update
     void Start()
     {
-        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        //int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        int index = PhotonNetwork.CurrentRoom.PlayerCount;
         playerName.text = "Player" + "_" + index;
     }
 
@@ -27,6 +34,19 @@ public class PlayerRoomData : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Initialize(int playerId)
+    {
+        ownerId = playerId;
+        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        playerName.text = "Player" + "_" + index;
+    }
+
+    public void SetPlayerReady(bool playerReady)
+    {
+        isPlayerReady = playerReady;
+        readyIcon.enabled = playerReady;
     }
 
     public void ClickOnPlayerIsReady()
