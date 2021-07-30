@@ -82,6 +82,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
         RoomPanel.SetActive(true);
         JoinRoomPanel.SetActive(false);
+        StartGameButton.gameObject.SetActive(CheckPlayersReady());
     }
 
     public override void OnCreatedRoom()
@@ -170,6 +171,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player player)
     {
         print(player.NickName + " entered the room");
+        StartGameButton.gameObject.SetActive(CheckPlayersReady());
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

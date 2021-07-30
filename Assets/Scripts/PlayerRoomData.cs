@@ -7,7 +7,7 @@ using Photon.Pun;
 public class PlayerRoomData : MonoBehaviour
 {
 
-    [SerializeField] private string playerName;
+    [SerializeField] private TMP_Text playerName;
     [SerializeField] private TMP_Dropdown PlayerFaction;
     [SerializeField] private TMP_Dropdown PlayerColor;
     [SerializeField] private TMP_Dropdown PlayerTeam;
@@ -19,7 +19,8 @@ public class PlayerRoomData : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+        playerName.text = "Player" + "_" + index;
     }
 
     // Update is called once per frame
