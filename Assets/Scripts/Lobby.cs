@@ -18,6 +18,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject JoinRoomPanel;
     [SerializeField] private GameObject RoomPanel;
 
+    public Button StartGameButton;
 
     [SerializeField] private TMP_InputField CreateGameInput;
     [SerializeField] private TMP_InputField JoinGameInput;
@@ -50,6 +51,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
         Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
+        print("Are all ready? " + CheckPlayersReady());
     }
 
     public void SetUsetName()
@@ -85,7 +87,26 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         print(LevelSelection.options[LevelSelection.value]);
-        //PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
+
+        //PhotonNetwork.CurrentRoom.CustomProperties
+        //PhotonNetwork.CurrentRoom.CustomProperties.Add("Level_Selected", LevelSelection.options[LevelSelection.value]);
+        //print(PhotonNetwork.CurrentRoom.CustomProperties);
+
+        /*ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+        props.Add("Level_Selected", LevelSelection.options[LevelSelection.value]);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);*/
+
+        //print("New Room Name: " + PhotonNetwork.CurrentRoom.CustomProperties["Level_Selected"]);
+
+        /*Hashtable properties = new Hashtable { { "Level_Selected", LevelSelection.options[LevelSelection.value] } };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);*/
+
+        /*object levelSelected;
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Level_Selected", out levelSelected))
+        {
+            print("New Room Name: " + levelSelected);
+        }*/
+
         Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -148,7 +169,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player player)
     {
-
+        print(player.NickName + " entered the room");
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -184,5 +205,37 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
 
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        //StartGameButton.gameObject.SetActive(CheckPlayersReady());
+        StartGameButton.interactable = CheckPlayersReady();
+    }
+
+    private bool CheckPlayersReady()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return false;
+        }
+
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            object isPlayerReady;
+            if (p.CustomProperties.TryGetValue("isPlayerReady", out isPlayerReady))
+            {
+                if (!(bool)isPlayerReady)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
