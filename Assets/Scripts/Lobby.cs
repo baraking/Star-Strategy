@@ -11,6 +11,8 @@ using UnityEngine.UI;
 //OnJoinedRoom "SampleScene"
 public class Lobby : MonoBehaviourPunCallbacks
 {
+    public static readonly int SPACEING = 60;
+
     //[SerializeField] private string VersionName = "0.1";
     [SerializeField] private GameObject MainMenuPanel;
     [SerializeField] private GameObject MultiPlayerPanel;
@@ -55,9 +57,9 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
-        Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
-        print("Are all ready? " + CheckPlayersReady());
+        //Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
+        //Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
+        //print("Are all ready? " + CheckPlayersReady());
     }
 
     public void SetUserName()
@@ -98,12 +100,15 @@ public class Lobby : MonoBehaviourPunCallbacks
             playerListEntries = new Dictionary<int, GameObject>();
         }
 
+        print("Attention! We have " + PhotonNetwork.PlayerList.Length + " players! They are:");
+
         foreach (Player p in PhotonNetwork.PlayerList)
         {
+            print(p.ActorNumber);
             GameObject entry = Instantiate(playerRoomDataPrefab);
             entry.transform.SetParent(RoomPanel.transform);
             entry.transform.localScale = Vector3.one;
-            entry.transform.transform.position = RoomPanel.transform.position;
+            entry.transform.position = RoomPanel.transform.position - new Vector3(0, (p.ActorNumber - 1) * SPACEING, 0);
             //entry.GetComponent<PlayerRoomData>().Initialize(p.ActorNumber, p.NickName);
             entry.GetComponent<PlayerRoomData>().Initialize(p.ActorNumber);
 
@@ -208,13 +213,14 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player player)
     {
         print(player.NickName + " entered the room");
+        print("Number of Players: " + PhotonNetwork.CurrentRoom.Players.Count);
         //StartGameButton.gameObject.SetActive(CheckPlayersReady());
 
         //--------------------------------------------
         GameObject entry = Instantiate(playerRoomDataPrefab);
         entry.transform.SetParent(RoomPanel.transform);
         entry.transform.localScale = Vector3.one;
-        entry.transform.transform.position = RoomPanel.transform.position;
+        entry.transform.position = RoomPanel.transform.position-new Vector3(0, (player.ActorNumber-1)*SPACEING, 0);
         entry.GetComponent<PlayerRoomData>().Initialize(player.ActorNumber);
         entry.GetComponent<PlayerRoomData>().SetPlayerReady(false);
 

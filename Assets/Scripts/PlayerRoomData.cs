@@ -26,8 +26,8 @@ public class PlayerRoomData : MonoBehaviour
     void Start()
     {
         //int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
-        int index = PhotonNetwork.CurrentRoom.PlayerCount;
-        playerName.text = "Player" + "_" + index;
+        //int index = PhotonNetwork.CurrentRoom.PlayerCount;
+        //playerName.text = "Player" + "_" + index;
     }
 
     // Update is called once per frame
@@ -38,9 +38,7 @@ public class PlayerRoomData : MonoBehaviour
 
     public void Initialize(int playerId)
     {
-        ownerId = playerId;
-        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
-        playerName.text = "Player" + "_" + index;
+        playerName.text = "Player" + "_" + playerId;
         readyIcon.enabled = false;
     }
 
