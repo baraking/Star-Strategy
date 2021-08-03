@@ -39,7 +39,11 @@ public class PlayerRoomData : MonoBehaviour
     public void Initialize(int playerId)
     {
         playerName.text = "Player" + "_" + playerId;
-        readyIcon.enabled = false;
+        if (playerId != PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            GetComponentInChildren<Button>().interactable = false;
+        }
+        //readyIcon.enabled = false;
     }
 
     public void SetPlayerReady(bool playerReady)

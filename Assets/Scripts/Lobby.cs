@@ -222,7 +222,9 @@ public class Lobby : MonoBehaviourPunCallbacks
         entry.transform.localScale = Vector3.one;
         entry.transform.position = RoomPanel.transform.position-new Vector3(0, (player.ActorNumber-1)*SPACEING, 0);
         entry.GetComponent<PlayerRoomData>().Initialize(player.ActorNumber);
-        entry.GetComponent<PlayerRoomData>().SetPlayerReady(false);
+
+        //entry.GetComponent<PlayerRoomData>().SetPlayerReady(false);
+        entry.GetComponentInChildren<Button>().interactable = false;
 
         playerListEntries.Add(player.ActorNumber, entry);
         //--------------------------------------------
