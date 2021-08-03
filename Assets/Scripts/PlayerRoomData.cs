@@ -41,6 +41,7 @@ public class PlayerRoomData : MonoBehaviour
         ownerId = playerId;
         int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
         playerName.text = "Player" + "_" + index;
+        readyIcon.enabled = false;
     }
 
     public void SetPlayerReady(bool playerReady)

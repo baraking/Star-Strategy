@@ -60,7 +60,7 @@ public class Lobby : MonoBehaviourPunCallbacks
         print("Are all ready? " + CheckPlayersReady());
     }
 
-    public void SetUsetName()
+    public void SetUserName()
     {
         //PhotonNetwork.NickName = //PlayerName
     }
@@ -83,6 +83,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         print(LevelSelection.options[LevelSelection.value]);
         //PhotonNetwork.LoadLevel(LevelSelection.options[LevelSelection.value].text);
+        Debug.Log("Who created this? " + PhotonNetwork.LocalPlayer.NickName);
         Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -102,6 +103,7 @@ public class Lobby : MonoBehaviourPunCallbacks
             GameObject entry = Instantiate(playerRoomDataPrefab);
             entry.transform.SetParent(RoomPanel.transform);
             entry.transform.localScale = Vector3.one;
+            entry.transform.transform.position = RoomPanel.transform.position;
             //entry.GetComponent<PlayerRoomData>().Initialize(p.ActorNumber, p.NickName);
             entry.GetComponent<PlayerRoomData>().Initialize(p.ActorNumber);
 
@@ -138,6 +140,7 @@ public class Lobby : MonoBehaviourPunCallbacks
             print("New Room Name: " + levelSelected);
         }*/
 
+        Debug.Log("Who created this? " + PhotonNetwork.LocalPlayer.NickName);
         Debug.Log("Joined the Room: " + PhotonNetwork.CurrentRoom.Name);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -211,7 +214,9 @@ public class Lobby : MonoBehaviourPunCallbacks
         GameObject entry = Instantiate(playerRoomDataPrefab);
         entry.transform.SetParent(RoomPanel.transform);
         entry.transform.localScale = Vector3.one;
+        entry.transform.transform.position = RoomPanel.transform.position;
         entry.GetComponent<PlayerRoomData>().Initialize(player.ActorNumber);
+        entry.GetComponent<PlayerRoomData>().SetPlayerReady(false);
 
         playerListEntries.Add(player.ActorNumber, entry);
         //--------------------------------------------
