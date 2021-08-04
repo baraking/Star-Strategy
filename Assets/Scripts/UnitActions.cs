@@ -112,7 +112,8 @@ public class UnitActions : MonoBehaviour
 
     public static void Advance(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)//move and attack when in range
     {
-        //print(actingUnit.GetShortestRangeOfWeapons() + " , " + Vector3.Distance(actingUnit.transform.position, target.transform.position));
+        //print(actingUnit + " is heading to attack!");
+        print(actingUnit.GetShortestRangeOfWeapons() + " , " + Vector3.Distance(actingUnit.transform.position, target.transform.position));
         if (actingUnit.GetShortestRangeOfWeapons() < Vector3.Distance(actingUnit.transform.position, target.transform.position))
         {
             Move(actingUnit, target, endQuaternion, targetsLocation);
@@ -126,7 +127,7 @@ public class UnitActions : MonoBehaviour
                 }
             }
         }
-        Move(actingUnit, target, endQuaternion, targetsLocation);
+        Attack(actingUnit, target, endQuaternion, targetsLocation);
     }
 
     public static void Attack(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)

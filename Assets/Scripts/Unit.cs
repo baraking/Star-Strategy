@@ -75,6 +75,7 @@ public class Unit : Purchasables, System.IComparable
         {
             if (isSelected)
             {
+                print(unitAction.Method);
                 if (Input.GetKey(KeyCode.P))
                 {
                     Die();
