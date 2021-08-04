@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,14 @@ public class Resource : MonoBehaviour
 {
 
     public int curValue;
+    public PhotonView photonView;
+        public int photonID;
+
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+        photonID = photonView.ViewID;
+    }
 
     private void Start()
     {
@@ -35,6 +44,7 @@ public class Resource : MonoBehaviour
         if (curValue <= 0)
         {
             print("Resource depleted :(");
+            //PhotonNetwork.Destroy(gameObject);
             Destroy(gameObject);
         }
     }

@@ -12,7 +12,7 @@ using UnityEngine.UI;
 //should write a different ui for units if more than 1 is seleted, and they share a purchasable
 public class mouseController : MonoBehaviour
 {
-    public Player myPlayer;
+    public PlayerController myPlayer;
 
     public Camera playerCamera;
     public Vector3 curPosition;
@@ -43,7 +43,7 @@ public class mouseController : MonoBehaviour
 
     void Start()
     {
-        myPlayer = gameObject.GetComponent<Player>();
+        myPlayer = gameObject.GetComponent<PlayerController>();
         playerCamera = myPlayer.playerCamera;
         isUnitUIDisplaying = false;
         selectedGroupMovement = GroupMovement.PointFormation;
@@ -219,7 +219,7 @@ public class mouseController : MonoBehaviour
                         bool isSelectedUnitsAmountNotOne = selectedUnits.Count == 1;
                         foreach (Unit hooveredUnit in myPlayer.playerUnits)
                         {
-                            print(hooveredUnit);
+                            //print(hooveredUnit);
                             if (IsWithinSelectionBounds(hooveredUnit.gameObject))
                             {
                                 if (!selectedUnits.Contains(hooveredUnit) && hooveredUnit.gameObject.active)

@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         UnitCanvas.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
+        SpawnPlayer();
     }
 
     public void SetUnitCanvasActive()
@@ -101,14 +102,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         Debug.Log("=================" + index + "=================");
 
-        Player[] tmpPlayers = GameObject.FindObjectsOfType<Player>();
-        foreach (Player player in tmpPlayers)
+        PlayerController[] tmpPlayers = GameObject.FindObjectsOfType<PlayerController>();
+        foreach (PlayerController player in tmpPlayers)
         {
             if (player.transform.parent != playersHolder)
             {
                 newPlayer = player.gameObject;
                 player.name = "Player" + "_" + index;
-                player.GetComponent<Player>().playerNumber = (int)index;
+                player.GetComponent<PlayerController>().playerNumber = (int)index;
                 player.transform.SetParent(playersHolder.transform);
                 Debug.Log("Set parent to player");
 
@@ -123,10 +124,10 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (Units.transform.GetChild(i).GetComponent<Unit>().myPlayerNumber == index)
             {
                 //print(newPlayer.GetComponent<Player>().playerUnits);
-                newPlayer.GetComponent<Player>().playerUnits.Add(Units.transform.GetChild(i).GetComponent<Unit>());
+                newPlayer.GetComponent<PlayerController>().playerUnits.Add(Units.transform.GetChild(i).GetComponent<Unit>());
                 //print(newPlayer.GetComponent<Player>().playerUnits);
             }
-            newPlayer.GetComponent<Player>().SortUnits();
+            newPlayer.GetComponent<PlayerController>().SortUnits();
             Units.transform.GetChild(i).gameObject.SetActive(true);
             Units.transform.GetChild(i).GetComponent<Unit>().OnMyPlayerJoined();
         }
@@ -138,14 +139,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         Debug.Log("================="+ instantiationData[0]+ "=================");
 
-        GameObject[] tmpPlayers = (GameObject[])GameObject.FindObjectsOfType(typeof(Player));
+        GameObject[] tmpPlayers = (GameObject[])GameObject.FindObjectsOfType(typeof(PlayerController));
         foreach (GameObject player in tmpPlayers)
         {
             if (player.transform.parent != playersHolder)
             {
                 newPlayer = player;
                 player.name = "Player" + "_" + instantiationData[0];
-                player.GetComponent<Player>().playerNumber = (int)instantiationData[0];
+                player.GetComponent<PlayerController>().playerNumber = (int)instantiationData[0];
                 player.transform.SetParent(playersHolder.transform);
                 Debug.Log("Set parent to player");
 

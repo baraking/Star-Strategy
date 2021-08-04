@@ -112,7 +112,7 @@ public class GroupMovement : MonoBehaviour
 
     public void SetCircleFormationActive()
     {
-        foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
@@ -125,7 +125,7 @@ public class GroupMovement : MonoBehaviour
 
     public void SetOffensiveArcFormationActive()
     {
-        foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
@@ -138,7 +138,7 @@ public class GroupMovement : MonoBehaviour
 
     public void SetDefensiveArcFormationActive()
     {
-        foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
@@ -151,7 +151,7 @@ public class GroupMovement : MonoBehaviour
 
     public void SetRowFormationActive()
     {
-        foreach (Player player in GameManager.Instance.playersHolder.allPlayers)
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
         {
             if (player.photonView.IsMine)
             {
