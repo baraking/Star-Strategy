@@ -43,7 +43,7 @@ public class PlayerRoomData : MonoBehaviour
         {
             GetComponentInChildren<Button>().interactable = false;
         }
-        //readyIcon.enabled = false;
+        readyIcon.enabled = isPlayerReady;
     }
 
     public void SetPlayerReady(bool playerReady)
