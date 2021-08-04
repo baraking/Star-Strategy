@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,9 @@ public class WeaponHolder : MonoBehaviour
         hasAWeapon = true;
         buildTime = chosenPurchasable.GetComponent<Weapon>().weaponDetails.buildTime;
         yield return new WaitForSeconds(chosenPurchasable.GetComponent<Weapon>().weaponDetails.buildTime);
-        GameObject upgrade = Instantiate(chosenPurchasable);
+        //GameObject upgrade = Instantiate(chosenPurchasable);
+        //object[] instantiationData = new object[] { myPlayerNumber };
+        GameObject upgrade = PhotonNetwork.Instantiate(chosenPurchasable.name, spawnPoint, Quaternion.identity, 0/*,instantiationData*/);
         upgrade.transform.SetParent(this.transform, false);
         upgrade.transform.localPosition = spawnPoint;
 

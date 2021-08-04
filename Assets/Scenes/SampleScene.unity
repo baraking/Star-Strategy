@@ -1135,6 +1135,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6584063071346770381, guid: b0386856d7400694a8fee49dfb4aad54,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 27
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0386856d7400694a8fee49dfb4aad54, type: 3}
 --- !u!4 &378284336 stripped
@@ -2054,7 +2059,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &782233643
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3659,6 +3664,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6584063071346770381, guid: b0386856d7400694a8fee49dfb4aad54,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 26
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0386856d7400694a8fee49dfb4aad54, type: 3}
 --- !u!4 &1594393993 stripped
@@ -5182,6 +5192,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6584063071346770381, guid: b0386856d7400694a8fee49dfb4aad54,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0386856d7400694a8fee49dfb4aad54, type: 3}
 --- !u!4 &2059584814 stripped
@@ -5698,6 +5713,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6584063071346770381, guid: b0386856d7400694a8fee49dfb4aad54,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0386856d7400694a8fee49dfb4aad54, type: 3}

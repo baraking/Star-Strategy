@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         UnitCanvas.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
+        SpawnPlayer();
     }
 
     public void SetUnitCanvasActive()
