@@ -10,10 +10,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject PlayerPrefab;
     public GameObject SceneCamera;
-    public GameObject JoinCanvas;
     public GameObject UnitCanvas;
     public GameObject ExpandedMovementCanvas;
     public GameObject MinimizedMovementCanvas;
+
+    public StartPositions startPositions;
 
     public GameObject Units;
     public GameObject newPlayer;
@@ -46,7 +47,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         SceneCamera.SetActive(false);
 
         //SpawnPlayer();
-        JoinCanvas.SetActive(true);
         UnitCanvas.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
@@ -87,11 +87,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
         object[] instantiationData = new object[] {index};
-        newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity,0, instantiationData);
+
+        //newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity,0, instantiationData);
+        newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, startPositions.startPositions[index].transform.position, Quaternion.identity, 0, instantiationData);
 
         photonView.RPC("setPlayersData", RpcTarget.All, index);
-        
-        JoinCanvas.SetActive(false);
     }
 
     [PunRPC]
