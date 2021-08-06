@@ -77,10 +77,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
+        /*Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
         Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
-        Debug.Log("My Player'r Number: " + PhotonNetwork.LocalPlayer.ActorNumber);
+        Debug.Log("My Player'r Number: " + PhotonNetwork.LocalPlayer.ActorNumber);*/
     }
 
     public void SpawnPlayer()

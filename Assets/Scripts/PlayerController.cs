@@ -66,6 +66,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 unit.OnUnitSpawnEnd(i);
             }
         }*/
+
+        //factionStartingData = Resources.Load<FactionStartingData>("Assets/Units/Humans/DefaultHumans");
+        print("Has this many: " + factionStartingData.startingUnits.Length);
     }
 
     public void SortUnits()
