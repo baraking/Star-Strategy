@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: Basic Scout
   m_EditorClassIdentifier: 
-  prerequisites: 00000000
+  prerequisites: 01000000
   requirements: 
   name: 
   unitType: 1

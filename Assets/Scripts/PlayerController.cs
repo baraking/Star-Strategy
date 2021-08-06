@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public int resources;
 
     public HumansPlayerData PlayerRaceData;
+    public FactionStartingData factionStartingData;
 
     public void Awake()
     {
