@@ -409,6 +409,7 @@ MonoBehaviour:
   carriedUnits: []
   carriedAmount: 0
   photonView: {fileID: 0}
+  photonID: 0
   targetsLocation: []
   endQuaternion: {x: 0, y: 0, z: 0, w: 0}
   actionTarget: {fileID: 0}

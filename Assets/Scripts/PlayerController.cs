@@ -79,7 +79,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void SpawnStartingUnits()
     {
-        SpawnUnitImmidiate(transform.position, factionStartingData.startingUnits[0].gameObject);
+        //SpawnUnitImmidiate(transform.position, factionStartingData.startingUnits[0].gameObject);
+        for (int i = 0; i < factionStartingData.startingUnits.Length; i++) 
+        {
+            SpawnUnitImmidiate(transform.position + new Vector3(0.5f * i, 0, 0), factionStartingData.startingUnits[i].gameObject);
+        }
     }
 
     public void SpawnUnitImmidiate(Vector3 location, GameObject purchasable)
