@@ -68,7 +68,41 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }*/
 
         //factionStartingData = Resources.Load<FactionStartingData>("Assets/Units/Humans/DefaultHumans");
-        print("Has this many: " + factionStartingData.startingUnits.Length);
+        //print("Has this many: " + factionStartingData.startingUnits.Length);
+
+        if (photonView.IsMine)
+        {
+            SpawnStartingUnits();
+        }
+        SortUnits();
+    }
+
+    public void SpawnStartingUnits()
+    {
+        SpawnUnitImmidiate(transform.position, factionStartingData.startingUnits[0].gameObject);
+    }
+
+    public void SpawnUnitImmidiate(Vector3 location, GameObject purchasable)
+    {
+        Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
+
+        //GameObject newUnit = Instantiate(purchasable);
+        object[] instantiationData = new object[] { playerNumber };
+        GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
+
+        newUnit.GetComponent<Unit>().myPlayerNumber = playerNumber;
+        newUnit.GetComponent<Unit>().myPlayer = this;
+        //newUnit.transform.position = location + DEFAULT_SPAWN_LOCATION;
+        newUnit.transform.position = location;
+        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        newUnit.GetComponent<Unit>().isComplete = true;
+        newUnit.GetComponent<Unit>().InitUnit();
+        //newUnit.GetComponent<Unit>().isComplete = false;
+
+        //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+
+        newUnit.GetComponent<Unit>().OnUnitSpawnEnd(purchasable);
     }
 
     public void SortUnits()
