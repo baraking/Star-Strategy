@@ -81,6 +81,86 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
         Debug.Log("My Player'r Number: " + PhotonNetwork.LocalPlayer.ActorNumber);*/
+
+        foreach (PlayerController playerController in playersHolder.allPlayers)
+        {
+            foreach (Unit unit in playerController.playerUnits)
+            {
+                if (unit.GetIsSelected())
+                {
+                    //print(unitAction.Method);
+                    if (Input.GetKey(KeyCode.P))
+                    {
+                        //Die();
+
+                        //photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
+
+                        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
+                        object[] instantiationData = new object[] { index };
+
+                        //photonView.RPC("sendGoodbye", RpcTarget.All, instantiationData);
+
+                        object[] instantiationData2 = new object[] { index, index+3 };
+
+                        //photonView.RPC("sendLater", RpcTarget.All, instantiationData2);
+
+                        object[] instantiationData3 = new object[] { unit.photonID, index, new int[] { 1, 2, 3, 4 }};
+
+                        //photonView.RPC("sendTest", RpcTarget.All, instantiationData3);
+
+                        object[] instantiationData4 = new object[] { unit.photonID, index, new int[] { 1, 2, 3, 4 }, new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } } };
+
+                        photonView.RPC("sendGoodbye", RpcTarget.All, index);
+
+                        photonView.RPC("sendFinalTest", RpcTarget.All, new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } });
+                    }
+                }
+            }
+        }
+     }
+
+    [PunRPC]
+    public void sendHello()
+    {
+        print("Hello!!");
+    }
+
+    [PunRPC]
+    public void sendGoodbye(int message)
+    {
+        print("Goodbye!!");
+    }
+
+    [PunRPC]
+    public void sendLater(int message1, int message2)
+    {
+        print(message1 + " , " + message2);
+    }
+
+    [PunRPC]
+    public void sendTest(int message1, int message2, int[] data1)
+    {
+        print("Test!!");
+    }
+
+    [PunRPC]
+    public void sendFinalTest(int[,] data2)
+    {
+        print("Test!!");
+    }
+
+    [PunRPC]
+    public void RecieveCurrentAction(object[] message)
+    {
+        Unit actingUnit = PhotonView.Find((int)message[0]).GetComponent<Unit>();
+        actingUnit.actionTarget = PhotonView.Find((int)message[1]).gameObject;
+        actingUnit.endQuaternion = new Quaternion((int)((object[])message[2])[0], (int)((object[])message[2])[1], (int)((object[])message[2])[2], (int)((object[])message[2])[3]);
+        actingUnit.targetsLocation = new List<Vector3>();
+        for (int i = 0; i < ((object[])message[3]).Length; i++)
+        {
+            actingUnit.targetsLocation.Add(new Vector3((int)((object[])message[3])[0], (int)((object[])message[3])[1], (int)((object[])message[3])[2]));
+        }
+        print(actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
     }
 
     public void SpawnPlayer()

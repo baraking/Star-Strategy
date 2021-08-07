@@ -77,6 +77,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         SortUnits();
     }
 
+    private void Update()
+    {
+
+    }
+
     public void SpawnStartingUnits()
     {
         //SpawnUnitImmidiate(transform.position, factionStartingData.startingUnits[0].gameObject);

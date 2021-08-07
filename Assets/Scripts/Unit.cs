@@ -78,13 +78,17 @@ public class Unit : Purchasables, System.IComparable
                 //print(unitAction.Method);
                 if (Input.GetKey(KeyCode.P))
                 {
-                    Die();
+                    //Die();
+
+
+                    //photonView.RPC("RecieveCurrentAction", RpcTarget.All, SendCurrentAction());
                 }
             }
             unitAction(this, actionTarget, endQuaternion, targetsLocation);
         }
     }
 
+    [PunRPC]
     public object[] SendCurrentAction()
     {
         object[] ans = new object[4];
@@ -112,18 +116,6 @@ public class Unit : Purchasables, System.IComparable
         }
         ans[3] = locations;
         return ans;
-    }
-
-    public void RecieveCurrentAction(object[] message)
-    {
-        Unit actingUnit = PhotonView.Find((int)message[0]).GetComponent<Unit>();
-        actionTarget = PhotonView.Find((int)message[1]).gameObject;
-        endQuaternion = new Quaternion((int)((object[])message[2])[0], (int)((object[])message[2])[1], (int)((object[])message[2])[2], (int)((object[])message[2])[3]);
-        targetsLocation = new List<Vector3>();
-        for (int i = 0; i < ((object[])message[3]).Length; i++)
-        {
-            targetsLocation.Add(new Vector3((int)((object[])message[3])[0], (int)((object[])message[3])[1], (int)((object[])message[3])[2]));
-        }
     }
 
     public void SetIsSelected(bool newState)
