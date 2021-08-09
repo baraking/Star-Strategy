@@ -92,73 +92,12 @@ public class GameManager : MonoBehaviourPunCallbacks
                     //print(unitAction.Method);
                     if (Input.GetKey(KeyCode.P))
                     {
-                        //Die();
-
-                        float[] locations = new float[unit.targetsLocation.Count*3];
-                        for (int i = 0; i < unit.targetsLocation.Count; i+=3)
-                        {
-                            locations[i] = unit.targetsLocation[i].x;
-                            locations[i + 1] = unit.targetsLocation[i].y;
-                            locations[i + 2] = unit.targetsLocation[i].z;
-                        }
-
-                        print(unit.photonID);
-                        int targetPhotonId;
-                        if (unit.actionTarget == null) {
-                            targetPhotonId = -1;
-                        }
-                        else
-                        {
-                            if (unit.actionTarget.GetComponent<Unit>())
-                            {
-                                targetPhotonId = unit.actionTarget.GetComponent<Unit>().photonID;
-                            }
-                            else if (unit.actionTarget.GetComponent<Resource>())
-                            {
-                                targetPhotonId = unit.actionTarget.GetComponent<Resource>().photonID;
-                            }
-                            else
-                            {
-                                targetPhotonId = -1;
-                            }
-                        }
-                        print(targetPhotonId);
-                        print(new float[] { unit.endQuaternion.x, unit.endQuaternion.y, unit.endQuaternion.z, unit.endQuaternion.w });
-                        print(locations);
-
-                        object[] instantiationData = new object[] { unit.photonID, targetPhotonId, new float[] { unit.endQuaternion.x, unit.endQuaternion.y, unit.endQuaternion.z, unit.endQuaternion.w }, locations };
-
-                        photonView.RPC("RecieveCurrentAction", RpcTarget.All, instantiationData);
+                        //photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
                     }
                 }
             }
         }
      }
-
-    [PunRPC]
-    public void RecieveCurrentAction(int photonId, int targetPhotonId, float[] quaternionData, float[] targetsPositions)
-    {
-        //print(photonId + "," + targetPhotonId + "," + quaternionData + "," + targetsPositions);
-
-        Unit actingUnit = PhotonView.Find(photonId).GetComponent<Unit>();
-        print(actingUnit);
-        if (targetPhotonId != -1)
-        {
-            actingUnit.actionTarget = PhotonView.Find(targetPhotonId).gameObject;
-        }
-        else
-        {
-            actingUnit.actionTarget = null;
-        }
-        actingUnit.endQuaternion = new Quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
-        print(actingUnit.endQuaternion);
-        actingUnit.targetsLocation = new List<Vector3>();
-        for (int i = 0; i < targetsPositions.Length; i+=3)
-        {
-            actingUnit.targetsLocation.Add(new Vector3(targetsPositions[i], targetsPositions[i + 1], targetsPositions[i + 2]));
-        }
-        print(actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
-    }
 
     public void SpawnPlayer()
     {
@@ -188,10 +127,10 @@ public class GameManager : MonoBehaviourPunCallbacks
                 player.name = "Player" + "_" + index;
                 player.GetComponent<PlayerController>().playerNumber = (int)index;
                 player.transform.SetParent(playersHolder.transform);
-                Debug.Log("Set parent to player");
+                //Debug.Log("Set parent to player");
 
                 curNumberOfPlayers++;
-                Debug.Log("The number of players is: " + curNumberOfPlayers);
+                //Debug.Log("The number of players is: " + curNumberOfPlayers);
                 break;
             }
         }

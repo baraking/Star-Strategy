@@ -6,6 +6,8 @@ using UnityEngine;
 //should fix the code so that Rotate wont need targetsLocation[0]
 public class UnitActions : MonoBehaviour
 {
+    public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build }
+
     public static float ROTATION_THRESHOLD = 15f;
 
     public static void Rotate(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
@@ -113,7 +115,7 @@ public class UnitActions : MonoBehaviour
     public static void Advance(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)//move and attack when in range
     {
         //print(actingUnit + " is heading to attack!");
-        print(actingUnit.GetShortestRangeOfWeapons() + " , " + Vector3.Distance(actingUnit.transform.position, target.transform.position));
+        //print(actingUnit.GetShortestRangeOfWeapons() + " , " + Vector3.Distance(actingUnit.transform.position, target.transform.position));
         if (actingUnit.GetShortestRangeOfWeapons() < Vector3.Distance(actingUnit.transform.position, target.transform.position))
         {
             Move(actingUnit, target, endQuaternion, targetsLocation);
@@ -268,4 +270,116 @@ public class UnitActions : MonoBehaviour
     //embark
 
     //disembark
+
+    public static int GetNumberFromUnitAction(Unit.UnitAction action)
+    {
+        if (action == UnitActions.Rotate)
+        {
+            return 1;
+        }
+        else if (action == UnitActions.Move)
+        {
+            return 2;
+        }
+        else if (action == UnitActions.Patrol)
+        {
+            return 3;
+        }
+        else if (action == UnitActions.Advance)
+        {
+            return 4;
+        }
+        else if (action == UnitActions.Attack)
+        {
+            return 5;
+        }
+        else if (action == UnitActions.Gather)
+        {
+            return 6;
+        }
+        else if (action == UnitActions.RetrieveResources)
+        {
+            return 7;
+        }
+        else if (action == UnitActions.Ram)
+        {
+            return 8;
+        }
+        else if (action == UnitActions.Idle)
+        {
+            return 9;
+        }
+        else if (action == UnitActions.Spawn)
+        {
+            return 10;
+        }
+        else if (action == UnitActions.StartBuilding)
+        {
+            return 11;
+        }
+        else if (action == UnitActions.Build)
+        {
+            return 12;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public static Unit.UnitAction GetUnitActionFromNumber(int number)
+    {
+        if (number == 1)
+        {
+            return UnitActions.Rotate;
+        }
+        else if (number == 2)
+        {
+            return UnitActions.Move;
+        }
+        else if (number == 3)
+        {
+            return UnitActions.Patrol;
+        }
+        else if (number == 4)
+        {
+            return UnitActions.Advance;
+        }
+        else if (number == 5)
+        {
+            return UnitActions.Attack;
+        }
+        else if (number == 6)
+        {
+            return UnitActions.Gather;
+        }
+        else if (number == 7)
+        {
+            return UnitActions.RetrieveResources;
+        }
+        else if (number == 8)
+        {
+            return UnitActions.Ram;
+        }
+        else if (number == 9)
+        {
+            return UnitActions.Idle;
+        }
+        else if (number == 10)
+        {
+            return UnitActions.Spawn;
+        }
+        else if (number == 11)
+        {
+            return UnitActions.StartBuilding;
+        }
+        else if (number == 12)
+        {
+            return UnitActions.Build;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

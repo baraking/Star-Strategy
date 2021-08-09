@@ -79,7 +79,43 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            foreach (Unit unit in playerUnits)
+            {
+                //if (unit.GetIsSelected())
+                //{
+                    if (Input.GetKey(KeyCode.P))
+                    {
+                        photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
+                    }
+                //}
+            }
+        }
+    }
 
+    [PunRPC]
+    public void RecieveCurrentAction(int photonId, int targetPhotonId, int newUnitActionNumber, float[] quaternionData, float[] targetsPositions)
+    {
+        Unit actingUnit = PhotonView.Find(photonId).GetComponent<Unit>();
+        if (targetPhotonId != -1)
+        {
+            actingUnit.actionTarget = PhotonView.Find(targetPhotonId).gameObject;
+        }
+        else
+        {
+            actingUnit.actionTarget = null;
+        }
+        actingUnit.unitAction = UnitActions.GetUnitActionFromNumber(newUnitActionNumber);
+
+        actingUnit.endQuaternion = new Quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
+
+        actingUnit.targetsLocation = new List<Vector3>();
+        for (int i = 0; i < targetsPositions.Length; i += 3)
+        {
+            actingUnit.targetsLocation.Add(new Vector3(targetsPositions[i], targetsPositions[i + 1], targetsPositions[i + 2]));
+        }
+        //print("Got a message: " + actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.unitAction.Method.Name + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
     }
 
     public void SpawnStartingUnits()
@@ -96,7 +132,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
 
         //GameObject newUnit = Instantiate(purchasable);
-        object[] instantiationData = new object[] { playerNumber };
+        object[] instantiationData = new object[] { playerNumber, Unit.SET_TO_IS_COMPLETE };
         GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
 
         newUnit.GetComponent<Unit>().myPlayerNumber = playerNumber;
