@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //fix setPlayersData to find Instantiated player's prefab
@@ -93,26 +94,41 @@ public class GameManager : MonoBehaviourPunCallbacks
                     {
                         //Die();
 
-                        //photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
+                        float[] locations = new float[unit.targetsLocation.Count*3];
+                        for (int i = 0; i < unit.targetsLocation.Count; i+=3)
+                        {
+                            locations[i] = unit.targetsLocation[i].x;
+                            locations[i + 1] = unit.targetsLocation[i].y;
+                            locations[i + 2] = unit.targetsLocation[i].z;
+                        }
 
-                        int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
-                        object[] instantiationData = new object[] { index };
+                        print(unit.photonID);
+                        int targetPhotonId;
+                        if (unit.actionTarget == null) {
+                            targetPhotonId = -1;
+                        }
+                        else
+                        {
+                            if (unit.actionTarget.GetComponent<Unit>())
+                            {
+                                targetPhotonId = unit.actionTarget.GetComponent<Unit>().photonID;
+                            }
+                            else if (unit.actionTarget.GetComponent<Resource>())
+                            {
+                                targetPhotonId = unit.actionTarget.GetComponent<Resource>().photonID;
+                            }
+                            else
+                            {
+                                targetPhotonId = -1;
+                            }
+                        }
+                        print(targetPhotonId);
+                        print(new float[] { unit.endQuaternion.x, unit.endQuaternion.y, unit.endQuaternion.z, unit.endQuaternion.w });
+                        print(locations);
 
-                        //photonView.RPC("sendGoodbye", RpcTarget.All, instantiationData);
+                        object[] instantiationData = new object[] { unit.photonID, targetPhotonId, new float[] { unit.endQuaternion.x, unit.endQuaternion.y, unit.endQuaternion.z, unit.endQuaternion.w }, locations };
 
-                        object[] instantiationData2 = new object[] { index, index+3 };
-
-                        //photonView.RPC("sendLater", RpcTarget.All, instantiationData2);
-
-                        object[] instantiationData3 = new object[] { unit.photonID, index, new int[] { 1, 2, 3, 4 }};
-
-                        //photonView.RPC("sendTest", RpcTarget.All, instantiationData3);
-
-                        object[] instantiationData4 = new object[] { unit.photonID, index, new int[] { 1, 2, 3, 4 }, new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } } };
-
-                        photonView.RPC("sendGoodbye", RpcTarget.All, index);
-
-                        photonView.RPC("sendFinalTest", RpcTarget.All, new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } });
+                        photonView.RPC("RecieveCurrentAction", RpcTarget.All, instantiationData);
                     }
                 }
             }
@@ -120,45 +136,26 @@ public class GameManager : MonoBehaviourPunCallbacks
      }
 
     [PunRPC]
-    public void sendHello()
+    public void RecieveCurrentAction(int photonId, int targetPhotonId, float[] quaternionData, float[] targetsPositions)
     {
-        print("Hello!!");
-    }
+        //print(photonId + "," + targetPhotonId + "," + quaternionData + "," + targetsPositions);
 
-    [PunRPC]
-    public void sendGoodbye(int message)
-    {
-        print("Goodbye!!");
-    }
-
-    [PunRPC]
-    public void sendLater(int message1, int message2)
-    {
-        print(message1 + " , " + message2);
-    }
-
-    [PunRPC]
-    public void sendTest(int message1, int message2, int[] data1)
-    {
-        print("Test!!");
-    }
-
-    [PunRPC]
-    public void sendFinalTest(int[,] data2)
-    {
-        print("Test!!");
-    }
-
-    [PunRPC]
-    public void RecieveCurrentAction(object[] message)
-    {
-        Unit actingUnit = PhotonView.Find((int)message[0]).GetComponent<Unit>();
-        actingUnit.actionTarget = PhotonView.Find((int)message[1]).gameObject;
-        actingUnit.endQuaternion = new Quaternion((int)((object[])message[2])[0], (int)((object[])message[2])[1], (int)((object[])message[2])[2], (int)((object[])message[2])[3]);
-        actingUnit.targetsLocation = new List<Vector3>();
-        for (int i = 0; i < ((object[])message[3]).Length; i++)
+        Unit actingUnit = PhotonView.Find(photonId).GetComponent<Unit>();
+        print(actingUnit);
+        if (targetPhotonId != -1)
         {
-            actingUnit.targetsLocation.Add(new Vector3((int)((object[])message[3])[0], (int)((object[])message[3])[1], (int)((object[])message[3])[2]));
+            actingUnit.actionTarget = PhotonView.Find(targetPhotonId).gameObject;
+        }
+        else
+        {
+            actingUnit.actionTarget = null;
+        }
+        actingUnit.endQuaternion = new Quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
+        print(actingUnit.endQuaternion);
+        actingUnit.targetsLocation = new List<Vector3>();
+        for (int i = 0; i < targetsPositions.Length; i+=3)
+        {
+            actingUnit.targetsLocation.Add(new Vector3(targetsPositions[i], targetsPositions[i + 1], targetsPositions[i + 2]));
         }
         print(actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
     }
