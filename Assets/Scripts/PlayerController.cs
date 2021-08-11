@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        /*foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
         {
             foreach (Unit unit in playerUnits)
             {
@@ -91,7 +91,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     }
                 //}
             }
-        }
+        }*/
+    }
+
+    public void UpdateUnitAction(Unit unit)
+    {
+        photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
     }
 
     [PunRPC]
