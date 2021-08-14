@@ -152,6 +152,7 @@ MonoBehaviour:
   curMagazineAmmo: 0
   isReloading: 0
   isWaiting: 0
+  photonView: {fileID: 0}
   targetUnit: {fileID: 0}
   enemiesAtRange: []
   sphereCollider: {fileID: 0}

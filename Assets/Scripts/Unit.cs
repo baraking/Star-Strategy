@@ -69,6 +69,7 @@ public class Unit : Purchasables, System.IComparable
                 isComplete = (bool)photonView.InstantiationData[1];
             }
         }
+        this.transform.SetParent(GameManager.Instance.Units.transform);
     }
 
     void Start()

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class Weapon : Purchasables
     public bool isReloading;
     public bool isWaiting;
 
+    public PhotonView photonView;
+
     public Unit targetUnit;
     public List<Unit> enemiesAtRange;
     public SphereCollider sphereCollider;
@@ -31,7 +34,17 @@ public class Weapon : Purchasables
     [SerializeField]
     public WeaponAction weaponAction;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        photonView = GetComponent<PhotonView>();
+        if (photonView.InstantiationData != null)
+        {
+            transform.SetParent(PhotonView.Find((int)photonView.InstantiationData[0]).GetComponentInChildren<WeaponHolder>().transform);
+            //transform.localPosition = weaponParent.GetComponentInParent<Unit>().GetComponentInChildren<WeaponHolder>().transform.localPosition;
+            transform.localPosition = PhotonView.Find((int)photonView.InstantiationData[0]).GetComponentInChildren<WeaponHolder>().spawnPoint;
+        }
+    }
+
     void Start()
     {
         purchasableDetails = weaponDetails;
@@ -50,6 +63,7 @@ public class Weapon : Purchasables
             sphereCollider.isTrigger = true;
         }*/
 
+        gameObject.GetComponentInParent<Unit>().AddWeapons();
         weaponAction = WeaponActions.Idle;
     }
 
