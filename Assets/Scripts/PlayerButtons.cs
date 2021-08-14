@@ -24,6 +24,8 @@ public class PlayerButtons
     #endregion
 
     #region keyboardActions
+    public static readonly KeyCode ESCAPE = KeyCode.Escape;
+
     public static readonly KeyCode DISEMBARK = KeyCode.Space;
     public static readonly KeyCode GROUP = KeyCode.G;
     public static readonly KeyCode DEGROUP = KeyCode.F;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //fix setPlayersData to find Instantiated player's prefab
 //fix the basicColors1 name/colors issue
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject PlayerPrefab;
     public GameObject SceneCamera;
     public GameObject UnitCanvas;
+    public GameObject PauseMenu;
     public GameObject ExpandedMovementCanvas;
     public GameObject MinimizedMovementCanvas;
 
@@ -49,6 +51,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         //SpawnPlayer();
         UnitCanvas.SetActive(false);
+        PauseMenu.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
         SpawnPlayer();
@@ -62,6 +65,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void SetUnitCanvasDeactive()
     {
         UnitCanvas.SetActive(false);
+    }
+
+    public void SetPauseMenusActive()
+    {
+        PauseMenu.SetActive(true);
+    }
+
+    public void SetPauseMenusDeactive()
+    {
+        PauseMenu.SetActive(false);
     }
 
     public void SetMovementCanvasActive()
@@ -171,5 +184,26 @@ public class GameManager : MonoBehaviourPunCallbacks
                 return;
             }
         }
+    }
+
+    public void ContinueGame()
+    {
+        SetPauseMenusDeactive();
+    }
+
+    public void OpenPauseMenu()
+    {
+        SetPauseMenusActive();
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
+    }
+
+    public void QuitGame()
+    {
+        //EditorApplication.isPlaying = false;
+        Application.Quit();
     }
 }

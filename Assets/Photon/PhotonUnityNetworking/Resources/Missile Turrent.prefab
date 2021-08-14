@@ -107,7 +107,6 @@ GameObject:
   - component: {fileID: 8491256260718087249}
   - component: {fileID: 6676915221380271608}
   - component: {fileID: -6542875481566445879}
-  - component: {fileID: 5082965289047099031}
   - component: {fileID: -6676756831859093207}
   m_Layer: 0
   m_Name: Missile Turrent
@@ -171,22 +170,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 265032037181435373, guid: 4cb0f8ddf8460274a980ba064e0f2b56,
     type: 3}
   location: {x: 0, y: 0, z: 0}
---- !u!114 &5082965289047099031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5233486490850220153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0
 --- !u!114 &-6676756831859093207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +189,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 5082965289047099031}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

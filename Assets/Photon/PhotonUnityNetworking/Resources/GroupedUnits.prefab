@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1847361789524317753}
   - component: {fileID: 1847361789524317754}
   - component: {fileID: -2710522777689608080}
-  - component: {fileID: 2659546311818156193}
   m_Layer: 0
   m_Name: GroupedUnits
   m_TagString: Untagged
@@ -62,6 +61,7 @@ MonoBehaviour:
   carriedUnits: []
   carriedAmount: 0
   photonView: {fileID: 0}
+  photonID: 0
   targetsLocation: []
   endQuaternion: {x: 0, y: 0, z: 0, w: 0}
   actionTarget: {fileID: 0}
@@ -92,23 +92,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 2659546311818156193}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2659546311818156193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1847361789524317755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0

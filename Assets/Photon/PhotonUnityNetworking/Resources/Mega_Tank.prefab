@@ -324,7 +324,6 @@ GameObject:
   - component: {fileID: 8348199378616610383}
   - component: {fileID: 8348199378616610382}
   - component: {fileID: -8318354063636529847}
-  - component: {fileID: -313356451360072980}
   m_Layer: 0
   m_Name: Mega_Tank
   m_TagString: Untagged
@@ -377,6 +376,7 @@ MonoBehaviour:
   carriedUnits: []
   carriedAmount: 0
   photonView: {fileID: 0}
+  photonID: 0
   targetsLocation: []
   endQuaternion: {x: 0, y: 0, z: 0, w: 0}
   actionTarget: {fileID: 0}
@@ -403,26 +403,10 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: -313356451360072980}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-313356451360072980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8348199378616610381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0
 --- !u!1 &8348199379073007720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,6 +1058,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mega_Cannon
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695736193763145530, guid: 3a23cad6acb742544b9ab549582d4759,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4149664498317939845, guid: 3a23cad6acb742544b9ab549582d4759,
         type: 3}
