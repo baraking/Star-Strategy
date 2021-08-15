@@ -428,7 +428,6 @@ GameObject:
   - component: {fileID: 1735491384464376206}
   - component: {fileID: 553557335550840920}
   - component: {fileID: 8442085310178837014}
-  - component: {fileID: 5879291615148273593}
   - component: {fileID: -30665110986090220}
   m_Layer: 0
   m_Name: Flame_Turrent
@@ -474,6 +473,7 @@ MonoBehaviour:
   curMagazineAmmo: 0
   isReloading: 0
   isWaiting: 0
+  photonView: {fileID: 0}
   targetUnit: {fileID: 0}
   enemiesAtRange: []
   sphereCollider: {fileID: 0}
@@ -492,22 +492,6 @@ MonoBehaviour:
   firePrefab: {fileID: 265032037181435373, guid: 131ae523f43d9af47b395781f1063c1e,
     type: 3}
   existingFire: {fileID: 0}
---- !u!114 &5879291615148273593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8854161180164962748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0
 --- !u!114 &-30665110986090220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +511,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 5879291615148273593}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

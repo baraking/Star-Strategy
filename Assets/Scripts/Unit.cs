@@ -14,6 +14,8 @@ using UnityEngine;
 //fix auto player pickup
 public class Unit : Purchasables, System.IComparable
 {
+    public static readonly bool SET_TO_IS_COMPLETE=true;
+
     public UnitDetails unitDetails;
 
     public PlayerController myPlayer;
@@ -60,7 +62,14 @@ public class Unit : Purchasables, System.IComparable
             myPlayerNumber = (int)photonView.InstantiationData[0];
             //print(photonView.ViewID);
             photonID=photonView.ViewID;
+
+            //print(photonView.InstantiationData.Length);
+            if (photonView.InstantiationData.Length > 1)
+            {
+                isComplete = (bool)photonView.InstantiationData[1];
+            }
         }
+        this.transform.SetParent(GameManager.Instance.Units.transform);
     }
 
     void Start()
@@ -75,9 +84,10 @@ public class Unit : Purchasables, System.IComparable
         {
             if (isSelected)
             {
+                //print(unitAction.Method);
                 if (Input.GetKey(KeyCode.P))
                 {
-                    Die();
+                    //Die();
                 }
             }
             unitAction(this, actionTarget, endQuaternion, targetsLocation);
@@ -86,7 +96,7 @@ public class Unit : Purchasables, System.IComparable
 
     public object[] SendCurrentAction()
     {
-        object[] ans = new object[4];
+        object[] ans = new object[5];
         ans[0] = photonID;
         if (actionTarget != null)
         {
@@ -103,26 +113,22 @@ public class Unit : Purchasables, System.IComparable
                 ans[1] = -1;
             }
         }
-        ans[2] = new object[] { endQuaternion.x, endQuaternion.y, endQuaternion.z, endQuaternion.w };
-        object[] locations = new object[targetsLocation.Count];
-        for(int i = 0; i < targetsLocation.Count; i++)
+        else
         {
-            locations[i]= new object[] { targetsLocation[i].x, targetsLocation[i].y, targetsLocation[i].z};
+            ans[1] = -1;
         }
-        ans[3] = locations;
-        return ans;
-    }
+        ans[2] = UnitActions.GetNumberFromUnitAction(unitAction);
 
-    public void RecieveCurrentAction(object[] message)
-    {
-        Unit actingUnit = PhotonView.Find((int)message[0]).GetComponent<Unit>();
-        actionTarget = PhotonView.Find((int)message[1]).gameObject;
-        endQuaternion = new Quaternion((int)((object[])message[2])[0], (int)((object[])message[2])[1], (int)((object[])message[2])[2], (int)((object[])message[2])[3]);
-        targetsLocation = new List<Vector3>();
-        for (int i = 0; i < ((object[])message[3]).Length; i++)
+        ans[3] = new float[] { endQuaternion.x, endQuaternion.y, endQuaternion.z, endQuaternion.w };
+        float[] locations = new float[targetsLocation.Count * 3];
+        for (int i = 0; i < targetsLocation.Count; i += 3)
         {
-            targetsLocation.Add(new Vector3((int)((object[])message[3])[0], (int)((object[])message[3])[1], (int)((object[])message[3])[2]));
+            locations[i] = targetsLocation[i].x;
+            locations[i + 1] = targetsLocation[i].y;
+            locations[i + 2] = targetsLocation[i].z;
         }
+        ans[4] = locations;
+        return ans;
     }
 
     public void SetIsSelected(bool newState)
@@ -188,6 +194,7 @@ public class Unit : Purchasables, System.IComparable
         }
         
         AddWeapons();
+        InitWeapons();
 
         isBuilding = false;
         //SetHealthBarActive(false);
@@ -255,7 +262,7 @@ public class Unit : Purchasables, System.IComparable
         yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
         //GameObject newUnit = Instantiate(purchasable);
-        object[] instantiationData = new object[] { myPlayerNumber };
+        object[] instantiationData = new object[] { myPlayerNumber, SET_TO_IS_COMPLETE };
         GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
 
         newUnit.GetComponent<Unit>().myPlayerNumber = myPlayerNumber;
@@ -419,6 +426,7 @@ public class Unit : Purchasables, System.IComparable
             return;
         }
         AddWeapons();
+        InitWeapons();
 
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);
 
@@ -509,8 +517,9 @@ public class Unit : Purchasables, System.IComparable
         }
         if (weapon.IsEligableToFire(targetUnit))
         {
-            print(unitDetails.name + " is ordered to Fire!");
+            //print(unitDetails.name + " is ordered to Fire!");
             weapon.targetUnit = targetUnit;
+            //print(unitDetails.name + " has a new Target!");
             weapon.weaponAction = WeaponActions.Fire;
         }
     }
@@ -543,6 +552,16 @@ public class Unit : Purchasables, System.IComparable
         {
             //print(gameObject.name);
             weaponHolder.UpdateIfHasAWeapon();
+        }
+    }
+
+    public void InitWeapons()
+    {
+        foreach (Weapon weapon in unitWeapons)
+        {
+            weapon.enabled = true;
+            //print(gameObject.name);
+            weapon.InitWeapon();
         }
     }
 
@@ -627,7 +646,7 @@ public class Unit : Purchasables, System.IComparable
     void Die()
     {
         print("I am dead :(");
-        UpdateLandmarksOnSelfDeath();
+        //UpdateLandmarksOnSelfDeath();
         PhotonNetwork.Destroy(gameObject);
     }
 

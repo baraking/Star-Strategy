@@ -1,7 +1,9 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //fix setPlayersData to find Instantiated player's prefab
 //fix the basicColors1 name/colors issue
@@ -10,10 +12,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject PlayerPrefab;
     public GameObject SceneCamera;
-    public GameObject JoinCanvas;
     public GameObject UnitCanvas;
+    public GameObject PauseMenu;
     public GameObject ExpandedMovementCanvas;
     public GameObject MinimizedMovementCanvas;
+
+    public StartPositions startPositions;
 
     public GameObject Units;
     public GameObject newPlayer;
@@ -46,8 +50,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         SceneCamera.SetActive(false);
 
         //SpawnPlayer();
-        JoinCanvas.SetActive(true);
         UnitCanvas.SetActive(false);
+        PauseMenu.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
         SpawnPlayer();
@@ -61,6 +65,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void SetUnitCanvasDeactive()
     {
         UnitCanvas.SetActive(false);
+    }
+
+    public void SetPauseMenusActive()
+    {
+        PauseMenu.SetActive(true);
+    }
+
+    public void SetPauseMenusDeactive()
+    {
+        PauseMenu.SetActive(false);
     }
 
     public void SetMovementCanvasActive()
@@ -77,21 +91,36 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
+        /*Debug.Log("Number of Players: " + PhotonNetwork.CountOfPlayers);
         Debug.Log("Number of Rooms: " + PhotonNetwork.CountOfRooms);
         Debug.Log("Room's Players Count: " + PhotonNetwork.CurrentRoom.PlayerCount);
-        Debug.Log("My Player'r Number: " + PhotonNetwork.LocalPlayer.ActorNumber);
-    }
+        Debug.Log("My Player'r Number: " + PhotonNetwork.LocalPlayer.ActorNumber);*/
+
+        foreach (PlayerController playerController in playersHolder.allPlayers)
+        {
+            foreach (Unit unit in playerController.playerUnits)
+            {
+                if (unit.GetIsSelected())
+                {
+                    //print(unitAction.Method);
+                    if (Input.GetKey(KeyCode.P))
+                    {
+                        //photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
+                    }
+                }
+            }
+        }
+     }
 
     public void SpawnPlayer()
     {
         int index = (PhotonNetwork.LocalPlayer.ActorNumber - 1);
         object[] instantiationData = new object[] {index};
-        newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity,0, instantiationData);
+
+        //newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity,0, instantiationData);
+        newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, startPositions.startPositions[index].transform.position, Quaternion.identity, 0, instantiationData);
 
         photonView.RPC("setPlayersData", RpcTarget.All, index);
-        
-        JoinCanvas.SetActive(false);
     }
 
     [PunRPC]
@@ -111,10 +140,10 @@ public class GameManager : MonoBehaviourPunCallbacks
                 player.name = "Player" + "_" + index;
                 player.GetComponent<PlayerController>().playerNumber = (int)index;
                 player.transform.SetParent(playersHolder.transform);
-                Debug.Log("Set parent to player");
+                //Debug.Log("Set parent to player");
 
                 curNumberOfPlayers++;
-                Debug.Log("The number of players is: " + curNumberOfPlayers);
+                //Debug.Log("The number of players is: " + curNumberOfPlayers);
                 break;
             }
         }
@@ -155,5 +184,26 @@ public class GameManager : MonoBehaviourPunCallbacks
                 return;
             }
         }
+    }
+
+    public void ContinueGame()
+    {
+        SetPauseMenusDeactive();
+    }
+
+    public void OpenPauseMenu()
+    {
+        SetPauseMenusActive();
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
+    }
+
+    public void QuitGame()
+    {
+        //EditorApplication.isPlaying = false;
+        Application.Quit();
     }
 }

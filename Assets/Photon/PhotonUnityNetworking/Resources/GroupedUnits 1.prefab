@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6408989099902154573}
   - component: {fileID: 6408989099902154574}
   - component: {fileID: 8359644311363440046}
-  - component: {fileID: -7303261622472865549}
   m_Layer: 0
   m_Name: GroupedUnits 1
   m_TagString: Untagged
@@ -66,6 +65,7 @@ MonoBehaviour:
   carriedUnits: []
   carriedAmount: 0
   photonView: {fileID: 0}
+  photonID: 0
   targetsLocation: []
   endQuaternion: {x: 0, y: 0, z: 0, w: 0}
   actionTarget: {fileID: 0}
@@ -100,26 +100,10 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: -7303261622472865549}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-7303261622472865549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6408989099902154575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 0
 --- !u!1001 &1020469058543111975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,6 +111,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6408989099902154573}
     m_Modifications:
+    - target: {fileID: -4426105819432934053, guid: afb976fedd1a2a7478753e8a4d36e179,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2938350210530688376, guid: afb976fedd1a2a7478753e8a4d36e179,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -224,6 +213,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6408989099902154573}
     m_Modifications:
+    - target: {fileID: -4426105819432934053, guid: afb976fedd1a2a7478753e8a4d36e179,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2938350210530688376, guid: afb976fedd1a2a7478753e8a4d36e179,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -321,6 +315,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6408989099902154573}
     m_Modifications:
+    - target: {fileID: -4426105819432934053, guid: afb976fedd1a2a7478753e8a4d36e179,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2938350210530688376, guid: afb976fedd1a2a7478753e8a4d36e179,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -418,6 +417,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6408989099902154573}
     m_Modifications:
+    - target: {fileID: -4426105819432934053, guid: afb976fedd1a2a7478753e8a4d36e179,
+        type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2938350210530688376, guid: afb976fedd1a2a7478753e8a4d36e179,
         type: 3}
       propertyPath: m_AnchorMax.x

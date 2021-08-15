@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: TanksFactory
   m_EditorClassIdentifier: 
-  prerequisites: 
-  requirements: 00000000
+  prerequisites: 00000000
+  requirements: 01000000
   name: TanksFactory
   unitType: 4
   unitSize: 0

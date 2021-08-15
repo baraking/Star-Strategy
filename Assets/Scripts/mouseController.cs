@@ -94,6 +94,18 @@ public class mouseController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(PlayerButtons.ESCAPE))
+        {
+            if (GameManager.Instance.PauseMenu.active)
+            {
+                GameManager.Instance.ContinueGame();
+            }
+            else
+            {
+                GameManager.Instance.OpenPauseMenu();
+            }
+        }
+
         if (myPlayer.photonView.IsMine && !IsMouseHoverOnUIElement())
         {
 
@@ -427,10 +439,12 @@ public class mouseController : MonoBehaviour
                                 if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
                                 {
                                     unit.unitAction = UnitActions.Advance;
+                                    unit.myPlayer.UpdateUnitAction(unit);
                                 }
                                 else
                                 {
                                     unit.unitAction = UnitActions.Attack;
+                                    unit.myPlayer.UpdateUnitAction(unit);
                                 } 
                             }
                         }
@@ -458,11 +472,14 @@ public class mouseController : MonoBehaviour
                                 unit.actionTarget = objectHit.GetComponentInParent<Unit>().gameObject;
 
                                 unit.unitAction = UnitActions.Build;
+                                unit.myPlayer.UpdateUnitAction(unit);
+
                                 //else
                                 /*unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
                                 unit.endQuaternion = new Quaternion();
 
-                                unit.unitAction = UnitActions.Move;*/
+                                unit.unitAction = UnitActions.Move;
+                                unit.myPlayer.UpdateUnitAction(unit);*/
                                 //
                             }
                         }
@@ -514,6 +531,7 @@ public class mouseController : MonoBehaviour
                                     unit.actionTarget = objectHit.GetComponentInParent<ResourceSilo>().gameObject;
 
                                     unit.unitAction = UnitActions.RetrieveResources;
+                                    unit.myPlayer.UpdateUnitAction(unit);
                                 }
                             }
 
@@ -544,6 +562,7 @@ public class mouseController : MonoBehaviour
                             unit.actionTarget = objectHit.GetComponentInParent<Resource>().gameObject;
 
                             unit.unitAction = UnitActions.Gather;
+                            unit.myPlayer.UpdateUnitAction(unit);
 
                         }
                     }
@@ -564,10 +583,12 @@ public class mouseController : MonoBehaviour
                     if (selectedUnits[0].actionTarget.GetComponent<Unit>().unitDetails.unitType == UnitDetails.UnitType.Building)
                     {
                         selectedUnits[0].unitAction = UnitActions.StartBuilding;
+                        //unit.myPlayer.UpdateUnitAction(unit);
                     }
                     else
                     {
                         selectedUnits[0].unitAction = UnitActions.Spawn;
+                        //unit.myPlayer.UpdateUnitAction(unit);
                     }
                     //print(buildLocation);
                     playerIsTryingToBuild = false;
@@ -577,6 +598,7 @@ public class mouseController : MonoBehaviour
                         Vector3 buildLocation = hit.transform.position;
                         selectedUnits[0].targetsLocation = new List<Vector3>() { hit.transform.position };
                         selectedUnits[0].unitAction = UnitActions.Build;
+                        unit.myPlayer.UpdateUnitAction(unit);
                         print(buildLocation);
                     }*/
                 }
@@ -623,16 +645,19 @@ public class mouseController : MonoBehaviour
                                 //unit.GetComponent<Walkable>().SetHasTarget(true);
                                 //unit.GetComponent<Walkable>().SetTargetPoint(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
 
-                                unit.unitAction = UnitActions.Move;
                                 if (!Input.GetKey(PlayerButtons.MULTI_SELECTION))
                                 {
+                                    unit.unitAction = UnitActions.Move;
                                     unit.targetsLocation = new List<Vector3> { new Vector3(formation[i].x, unit.transform.position.y, formation[i].z) };
                                     unit.endQuaternion = new Quaternion();
+                                    unit.myPlayer.UpdateUnitAction(unit);
                                 }
                                 else
                                 {
+                                    unit.unitAction = UnitActions.Move;
                                     unit.targetsLocation.Add(new Vector3(formation[i].x, unit.transform.position.y, formation[i].z));
                                     unit.endQuaternion = new Quaternion();
+                                    unit.myPlayer.UpdateUnitAction(unit);
                                 }
                             }
                         }

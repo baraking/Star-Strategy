@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public int resources;
 
     public HumansPlayerData PlayerRaceData;
+    public FactionStartingData factionStartingData;
 
     public void Awake()
     {
@@ -65,6 +66,93 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 unit.OnUnitSpawnEnd(i);
             }
         }*/
+
+        //factionStartingData = Resources.Load<FactionStartingData>("Assets/Units/Humans/DefaultHumans");
+        //print("Has this many: " + factionStartingData.startingUnits.Length);
+
+        if (photonView.IsMine)
+        {
+            SpawnStartingUnits();
+        }
+        SortUnits();
+    }
+
+    private void Update()
+    {
+        /*foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            foreach (Unit unit in playerUnits)
+            {
+                //if (unit.GetIsSelected())
+                //{
+                    if (Input.GetKey(KeyCode.P))
+                    {
+                        photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
+                    }
+                //}
+            }
+        }*/
+    }
+
+    public void UpdateUnitAction(Unit unit)
+    {
+        photonView.RPC("RecieveCurrentAction", RpcTarget.All, unit.SendCurrentAction());
+    }
+
+    [PunRPC]
+    public void RecieveCurrentAction(int photonId, int targetPhotonId, int newUnitActionNumber, float[] quaternionData, float[] targetsPositions)
+    {
+        Unit actingUnit = PhotonView.Find(photonId).GetComponent<Unit>();
+        if (targetPhotonId != -1)
+        {
+            actingUnit.actionTarget = PhotonView.Find(targetPhotonId).gameObject;
+        }
+        else
+        {
+            actingUnit.actionTarget = null;
+        }
+        actingUnit.unitAction = UnitActions.GetUnitActionFromNumber(newUnitActionNumber);
+
+        actingUnit.endQuaternion = new Quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
+
+        actingUnit.targetsLocation = new List<Vector3>();
+        for (int i = 0; i < targetsPositions.Length; i += 3)
+        {
+            actingUnit.targetsLocation.Add(new Vector3(targetsPositions[i], targetsPositions[i + 1], targetsPositions[i + 2]));
+        }
+        //print("Got a message: " + actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.unitAction.Method.Name + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
+    }
+
+    public void SpawnStartingUnits()
+    {
+        //SpawnUnitImmidiate(transform.position, factionStartingData.startingUnits[0].gameObject);
+        for (int i = 0; i < factionStartingData.startingUnits.Length; i++) 
+        {
+            SpawnUnitImmidiate(transform.position + new Vector3(0.5f * i, 0, 0), factionStartingData.startingUnits[i].gameObject);
+        }
+    }
+
+    public void SpawnUnitImmidiate(Vector3 location, GameObject purchasable)
+    {
+        Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
+
+        //GameObject newUnit = Instantiate(purchasable);
+        object[] instantiationData = new object[] { playerNumber, Unit.SET_TO_IS_COMPLETE };
+        GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
+
+        newUnit.GetComponent<Unit>().myPlayerNumber = playerNumber;
+        newUnit.GetComponent<Unit>().myPlayer = this;
+        //newUnit.transform.position = location + DEFAULT_SPAWN_LOCATION;
+        newUnit.transform.position = location;
+        newUnit.transform.SetParent(GameManager.Instance.Units.transform);
+        newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
+        newUnit.GetComponent<Unit>().isComplete = true;
+        newUnit.GetComponent<Unit>().InitUnit();
+        //newUnit.GetComponent<Unit>().isComplete = false;
+
+        //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+
+        newUnit.GetComponent<Unit>().OnUnitSpawnEnd(purchasable);
     }
 
     public void SortUnits()

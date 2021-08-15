@@ -100,11 +100,11 @@ public class Lobby : MonoBehaviourPunCallbacks
             playerListEntries = new Dictionary<int, GameObject>();
         }
 
-        print("Attention! We have " + PhotonNetwork.PlayerList.Length + " players! They are:");
+        //print("Attention! We have " + PhotonNetwork.PlayerList.Length + " players! They are:");
 
         foreach (Player p in PhotonNetwork.PlayerList)
         {
-            print(p.ActorNumber);
+            //print(p.ActorNumber);
             GameObject entry = Instantiate(playerRoomDataPrefab);
             entry.transform.SetParent(RoomPanel.transform);
             entry.transform.localScale = Vector3.one;
