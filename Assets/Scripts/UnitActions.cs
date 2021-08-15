@@ -131,6 +131,8 @@ public class UnitActions : MonoBehaviour
             }
         }
         Attack(actingUnit, target, endQuaternion, targetsLocation);
+
+        targetsLocation[targetsLocation.Count - 1] = target.transform.position;
     }
 
     public static void Attack(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
