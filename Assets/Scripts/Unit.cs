@@ -63,7 +63,7 @@ public class Unit : Purchasables, System.IComparable
             //print(photonView.ViewID);
             photonID=photonView.ViewID;
 
-            print(photonView.InstantiationData.Length);
+            //print(photonView.InstantiationData.Length);
             if (photonView.InstantiationData.Length > 1)
             {
                 isComplete = (bool)photonView.InstantiationData[1];
@@ -194,6 +194,7 @@ public class Unit : Purchasables, System.IComparable
         }
         
         AddWeapons();
+        InitWeapons();
 
         isBuilding = false;
         //SetHealthBarActive(false);
@@ -425,6 +426,7 @@ public class Unit : Purchasables, System.IComparable
             return;
         }
         AddWeapons();
+        InitWeapons();
 
         gameObject.GetComponentInChildren<Renderer>().material.SetColor("_Color",GameManager.Instance.basicColors1[myPlayerNumber]);
 
@@ -515,8 +517,9 @@ public class Unit : Purchasables, System.IComparable
         }
         if (weapon.IsEligableToFire(targetUnit))
         {
-            print(unitDetails.name + " is ordered to Fire!");
+            //print(unitDetails.name + " is ordered to Fire!");
             weapon.targetUnit = targetUnit;
+            //print(unitDetails.name + " has a new Target!");
             weapon.weaponAction = WeaponActions.Fire;
         }
     }
@@ -549,6 +552,16 @@ public class Unit : Purchasables, System.IComparable
         {
             //print(gameObject.name);
             weaponHolder.UpdateIfHasAWeapon();
+        }
+    }
+
+    public void InitWeapons()
+    {
+        foreach (Weapon weapon in unitWeapons)
+        {
+            weapon.enabled = true;
+            //print(gameObject.name);
+            weapon.InitWeapon();
         }
     }
 
@@ -633,7 +646,7 @@ public class Unit : Purchasables, System.IComparable
     void Die()
     {
         print("I am dead :(");
-        UpdateLandmarksOnSelfDeath();
+        //UpdateLandmarksOnSelfDeath();
         PhotonNetwork.Destroy(gameObject);
     }
 

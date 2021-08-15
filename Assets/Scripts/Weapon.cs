@@ -42,15 +42,28 @@ public class Weapon : Purchasables
             transform.SetParent(PhotonView.Find((int)photonView.InstantiationData[0]).GetComponentInChildren<WeaponHolder>().transform);
             //transform.localPosition = weaponParent.GetComponentInParent<Unit>().GetComponentInChildren<WeaponHolder>().transform.localPosition;
             transform.localPosition = PhotonView.Find((int)photonView.InstantiationData[0]).GetComponentInChildren<WeaponHolder>().spawnPoint;
+
+            this.enabled = true;
         }
+
+        InitWeapon();
     }
 
     void Start()
     {
+        InitWeapon();
+    }
+
+    public void InitWeapon()
+    {
+        print("Init Weapon");
+
         purchasableDetails = weaponDetails;
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
+
         weaponParent = gameObject.GetComponentInParent<Unit>();
+        print(weaponParent);
         curMagazineAmmo = weaponDetails.magazineSize;
         isReloading = false;
         enemiesAtRange = new List<Unit>();
@@ -157,6 +170,11 @@ public class Weapon : Purchasables
             {
                 weaponParent.transform.rotation = Quaternion.LookRotation(newDirection);
             }
+        }*/
+
+        /*if (weaponParent.GetIsSelected())
+        {
+            print("Target: " + targetUnit.gameObject + " , Action:" + weaponAction.Method.Name);
         }*/
 
         weaponAction(this, targetUnit.gameObject);

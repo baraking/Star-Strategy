@@ -6,6 +6,7 @@ public class WeaponActions : MonoBehaviour
 {
     public static void RotateWeapon(Weapon actingWeapon,GameObject target)
     {
+        //print("Let's Rotate the weapon!");
         Vector3 targetDirection = actingWeapon.targetUnit.transform.position - actingWeapon.transform.position;
         Vector3 newDirection = Vector3.RotateTowards(actingWeapon.transform.forward, targetDirection, 1f * Time.deltaTime, 0.0f);
         if (!actingWeapon.weaponDetails.shouldTurnToFire)
@@ -28,7 +29,7 @@ public class WeaponActions : MonoBehaviour
             return;
         }*/
         Vector3 targetDirection = actingWeapon.targetUnit.transform.position - actingWeapon.transform.position;
-        //print(actingWeapon.transform.forward + " , " + targetDirection +" : "+ (actingWeapon.transform.forward-targetDirection));
+        print(actingWeapon.transform.forward + " , " + targetDirection +" : "+ (actingWeapon.transform.forward-targetDirection));
 
         float distanceToTarget = Vector3.Distance(actingWeapon.transform.position, target.transform.position);
         if (distanceToTarget <= actingWeapon.weaponDetails.range)
