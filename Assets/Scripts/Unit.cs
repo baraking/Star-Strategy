@@ -171,6 +171,7 @@ public class Unit : Purchasables, System.IComparable
         }
         SetHealthBarActive(true);
         healthBar.SetMaxHealth(unitDetails.max_hp);
+        //healthBar.SetMaxConstruction(unitDetails.buildTime);
 
         curHP = unitDetails.max_hp;
         healthBar.setHealth(curHP);
@@ -344,7 +345,6 @@ public class Unit : Purchasables, System.IComparable
         {
             actionTarget.GetComponent<Unit>().curHP = actionTarget.GetComponent<Unit>().unitDetails.max_hp;
             actionTarget.GetComponent<Unit>().healthBar.setHealth(actionTarget.GetComponent<Unit>().curHP);
-            actionTarget.GetComponent<Unit>().healthBar.DisableConstructionBar();
         }
 
         print(actionTarget.GetComponent<Unit>().unitDetails.name + ": " + actionTarget.GetComponent<Unit>().buildProgress + "/" + actionTarget.GetComponent<Unit>().unitDetails.buildTime);

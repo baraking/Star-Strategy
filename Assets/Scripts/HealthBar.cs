@@ -29,6 +29,11 @@ public class HealthBar : MonoBehaviour
         healthSlider.value = maxHealth;
     }
 
+    public void SetMaxConstruction(float maxConstruction)
+    {
+        constructionSlider.maxValue = maxConstruction;
+    }
+
     public bool IsHealthVisible()
     {
         return gameObject.active;

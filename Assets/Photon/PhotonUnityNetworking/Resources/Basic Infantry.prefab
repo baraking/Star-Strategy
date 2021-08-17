@@ -26,6 +26,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 2938350211111562747}
+  constructionSlider: {fileID: 0}
 --- !u!1 &3837319077457398278
 GameObject:
   m_ObjectHideFlags: 0
