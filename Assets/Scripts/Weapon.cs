@@ -56,14 +56,11 @@ public class Weapon : Purchasables
 
     public void InitWeapon()
     {
-        print("Init Weapon");
-
         purchasableDetails = weaponDetails;
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
 
         weaponParent = gameObject.GetComponentInParent<Unit>();
-        print(weaponParent);
         curMagazineAmmo = weaponDetails.magazineSize;
         isReloading = false;
         enemiesAtRange = new List<Unit>();

@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public List<Unit> playerUnits;
     public GameObject cameraHolder;
     public Camera playerCamera;
+    public PlayerUI playerUI;
 
     public bool debugMode;
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         photonView = GetComponent<PhotonView>();
+        playerUI = GetComponent<PlayerUI>();
 
         playerUnits = new List<Unit>();
         GameManager.Instance.playersHolder.allPlayers.Add(this);
@@ -51,7 +53,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
             playerCamera.gameObject.SetActive(true);
 
             //GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber-1];
-            GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber];
+
+            //playerUI.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber];
+        }
+
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (player.photonView.IsMine)
+            {
+                player.playerUI.SetMovementCanvasActive();
+            }
+            else
+            {
+                player.playerUI.PauseMenu.gameObject.SetActive(false);
+                player.playerUI.UnitCanvas.gameObject.SetActive(false);
+                player.playerUI.ExpandedMovementCanvas.gameObject.SetActive(false);
+                player.playerUI.MinimizedMovementCanvas.gameObject.SetActive(false);
+            }
         }
 
     }

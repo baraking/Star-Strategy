@@ -66,7 +66,7 @@ public class mouseController : MonoBehaviour
             GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
             newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
 
-            newPurchasableUI.transform.SetParent(GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
+            newPurchasableUI.transform.SetParent(myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform,false);
 
             if (curPurchasable.GetPrerequisites().Length > 0)
             {
@@ -86,7 +86,7 @@ public class mouseController : MonoBehaviour
     public void ResetDisplayedUnitPurchasableUnits()
     {
         isUnitUIDisplaying = false;
-        foreach (Transform child in GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform)
+        foreach (Transform child in myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform)
         {
             GameObject.Destroy(child.gameObject);
         }
@@ -96,13 +96,13 @@ public class mouseController : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerButtons.ESCAPE))
         {
-            if (GameManager.Instance.PauseMenu.active)
+            if (myPlayer.playerUI.PauseMenu.active)
             {
-                GameManager.Instance.ContinueGame();
+                myPlayer.playerUI.ContinueGame();
             }
             else
             {
-                GameManager.Instance.OpenPauseMenu();
+                myPlayer.playerUI.OpenPauseMenu();
             }
         }
 
@@ -119,11 +119,11 @@ public class mouseController : MonoBehaviour
             if (selectedUnits.Count == 0)
             {
                 ResetDisplayedUnitPurchasableUnits();
-                GameManager.Instance.SetUnitCanvasDeactive();
+                myPlayer.playerUI.SetUnitCanvasDeactive();
             }
             if (selectedUnits.Count > 0)
             {
-                GameManager.Instance.SetUnitCanvasActive();
+                myPlayer.playerUI.SetUnitCanvasActive();
             }
 
             /*if (selectedUnits.Count == 1)
