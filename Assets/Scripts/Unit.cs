@@ -171,7 +171,10 @@ public class Unit : Purchasables, System.IComparable
         }
         SetHealthBarActive(true);
         healthBar.SetMaxHealth(unitDetails.max_hp);
-        //healthBar.SetMaxConstruction(unitDetails.buildTime);
+        if (unitDetails.unitType == UnitDetails.UnitType.Building)
+        {
+            healthBar.SetMaxConstruction(unitDetails.buildTime);
+        }
 
         curHP = unitDetails.max_hp;
         healthBar.setHealth(curHP);
@@ -273,6 +276,8 @@ public class Unit : Purchasables, System.IComparable
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         newUnit.GetComponent<Unit>().isComplete = true;
+        print("2");
+        actionTarget.GetComponent<Unit>().healthBar.DisableConstructionBar();
         newUnit.GetComponent<Unit>().InitUnit();
         //newUnit.GetComponent<Unit>().isComplete = false;
 
@@ -333,6 +338,7 @@ public class Unit : Purchasables, System.IComparable
 
     public void Build()
     {
+        print(actionTarget.GetComponent<Unit>().buildProgress);
         actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         if (actionTarget.GetComponent<Unit>().curHP < actionTarget.GetComponent<Unit>().unitDetails.max_hp)
@@ -351,9 +357,14 @@ public class Unit : Purchasables, System.IComparable
 
         if(actionTarget.GetComponent<Unit>().buildProgress>= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
         {
-            actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
+            //actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
             OnUnitSpawnEnd(actionTarget);
             actionTarget.GetComponent<Unit>().isComplete = true;
+            print("1");
+            if (actionTarget.GetComponent<Unit>().unitDetails.unitType == UnitDetails.UnitType.Building)
+            {
+                actionTarget.GetComponent<Unit>().healthBar.DisableConstructionBar();
+            }
             unitAction = UnitActions.Idle;
         }
     }

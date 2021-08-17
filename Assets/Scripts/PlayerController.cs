@@ -167,6 +167,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         newUnit.GetComponent<Unit>().isComplete = true;
+        newUnit.GetComponent<Unit>().healthBar.DisableConstructionBar();
+
         newUnit.GetComponent<Unit>().InitUnit();
         //newUnit.GetComponent<Unit>().isComplete = false;
 

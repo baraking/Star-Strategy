@@ -26,6 +26,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 6124470210567265736}
+  constructionSlider: {fileID: 5766083806471543878}
 --- !u!1 &8348199377967241813
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,8 +403,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -832,6 +832,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 8348199378720225554}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6124470210567265734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5766083806471543878 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2585063672332100948, guid: de06968c77f067a459908d7e657fc258,
+    type: 3}
+  m_PrefabInstance: {fileID: 8348199378720225554}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
