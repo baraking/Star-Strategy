@@ -61,7 +61,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             if (player.photonView.IsMine)
             {
-                player.playerUI.SetMovementCanvasActive();
+                //player.playerUI.SetMovementCanvasActive();
+                player.playerUI.SetMovementCanvasDeactive();
             }
             else
             {
