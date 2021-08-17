@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     public Slider healthSlider;
+    public Slider constructionSlider;
 
     public static readonly float SET_UP_TIME = 0.5f;
 
@@ -36,5 +37,15 @@ public class HealthBar : MonoBehaviour
     public void setHealth(float health)
     {
         healthSlider.value = health;
+    }
+
+    public void setConstruction(float health)
+    {
+        constructionSlider.value = health;
+    }
+
+    public void DisableConstructionBar()
+    {
+        constructionSlider.gameObject.SetActive(false);
     }
 }
