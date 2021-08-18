@@ -4,6 +4,7 @@ using UnityEngine;
 
 //maybe should have a class like this for each unit type? - walkable,gatherer,ant etc.
 //should fix the code so that Rotate wont need targetsLocation[0]
+//attacking a building while it is being built may cause an endless build
 public class UnitActions : MonoBehaviour
 {
     public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build }
