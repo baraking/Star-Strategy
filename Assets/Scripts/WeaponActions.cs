@@ -29,7 +29,7 @@ public class WeaponActions : MonoBehaviour
             return;
         }*/
         Vector3 targetDirection = actingWeapon.targetUnit.transform.position - actingWeapon.transform.position;
-        print(actingWeapon.transform.forward + " , " + targetDirection +" : "+ (actingWeapon.transform.forward-targetDirection));
+        //print(actingWeapon.transform.forward + " , " + targetDirection +" : "+ (actingWeapon.transform.forward-targetDirection));
 
         float distanceToTarget = Vector3.Distance(actingWeapon.transform.position, target.transform.position);
         if (distanceToTarget <= actingWeapon.weaponDetails.range)

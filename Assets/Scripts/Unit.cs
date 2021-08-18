@@ -230,9 +230,10 @@ public class Unit : Purchasables, System.IComparable
         {
             //StartCoroutine(SpawnUnit(unitIndex));
 
-            print(unitDetails.unitType == UnitDetails.UnitType.Building);
+            //print(unitDetails.unitType == UnitDetails.UnitType.Building);
 
             actionTarget = unitDetails.purchasables[unitIndex].gameObject;
+            print(actionTarget);
             if (unitDetails.unitType == UnitDetails.UnitType.Building)
             {
                 //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);

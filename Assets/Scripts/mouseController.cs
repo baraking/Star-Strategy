@@ -112,7 +112,7 @@ public class mouseController : MonoBehaviour
             if (playerIsTryingToBuild)
             {
                 //show building on pointer
-                print("Show Building Location and Shape!");
+                //print("Show Building Location and Shape!");
             }
             //print("selectedUnits.Count: " + selectedUnits.Count);
 
@@ -583,7 +583,7 @@ public class mouseController : MonoBehaviour
                     if (selectedUnits[0].actionTarget.GetComponent<Unit>().unitDetails.unitType == UnitDetails.UnitType.Building)
                     {
                         selectedUnits[0].unitAction = UnitActions.StartBuilding;
-                        //unit.myPlayer.UpdateUnitAction(unit);
+                        selectedUnits[0].myPlayer.UpdateUnitAction(selectedUnits[0]);
                     }
                     else
                     {

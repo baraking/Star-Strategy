@@ -255,6 +255,7 @@ public class UnitActions : MonoBehaviour
         {
             actingUnit.StartSpawningBuilding();
             actingUnit.unitAction = Build;
+            actingUnit.myPlayer.UpdateUnitAction(actingUnit);
         }
     }
 

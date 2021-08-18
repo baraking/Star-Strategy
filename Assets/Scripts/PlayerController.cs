@@ -123,14 +123,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void RecieveCurrentAction(int photonId, int targetPhotonId, int newUnitActionNumber, float[] quaternionData, float[] targetsPositions)
     {
         Unit actingUnit = PhotonView.Find(photonId).GetComponent<Unit>();
-        if (targetPhotonId != -1)
+
+        if (targetPhotonId > 0)
         {
             actingUnit.actionTarget = PhotonView.Find(targetPhotonId).gameObject;
         }
         else
         {
-            actingUnit.actionTarget = null;
+            if (playerNumber != actingUnit.myPlayerNumber)
+            {
+                actingUnit.actionTarget = null;
+            }
         }
+
         actingUnit.unitAction = UnitActions.GetUnitActionFromNumber(newUnitActionNumber);
 
         actingUnit.endQuaternion = new Quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
