@@ -9,11 +9,28 @@ public class PlayerUI : MonoBehaviour
     public GameObject PauseMenu;
     public GameObject ExpandedMovementCanvas;
     public GameObject MinimizedMovementCanvas;
+    public GameObject EndGameMessage;
+    public GameObject VictoryMessage;
+    public GameObject DefeatMessage;
 
     private void Awake()
     {
         UnitCanvas.SetActive(false);
         PauseMenu.SetActive(false);
+    }
+
+    public void DisplayVictory()
+    {
+        EndGameMessage.SetActive(true);
+        DefeatMessage.SetActive(false);
+        VictoryMessage.SetActive(true);
+    }
+
+    public void DisplayDefeat()
+    {
+        EndGameMessage.SetActive(true);
+        VictoryMessage.SetActive(false);
+        DefeatMessage.SetActive(true);
     }
 
     public void SetUnitCanvasActive()
