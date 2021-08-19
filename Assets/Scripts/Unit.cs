@@ -661,6 +661,7 @@ public class Unit : Purchasables, System.IComparable
     {
         print("I am dead :(");
         myPlayer.playerUnits.Remove(this);
+        GameManager.Instance.CheckForDefeat(myPlayer);
         //UpdateLandmarksOnSelfDeath();
         PhotonNetwork.Destroy(gameObject);
     }

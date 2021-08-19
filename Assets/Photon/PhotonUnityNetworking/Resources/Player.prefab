@@ -365,6 +365,7 @@ MonoBehaviour:
   playerUI: {fileID: -2424868967306261634}
   debugMode: 0
   resources: 0
+  isDefeated: 0
   PlayerRaceData: {fileID: 0}
   factionStartingData: {fileID: 11400000, guid: 2224c56cc65f2a74e8106cd29930e33f,
     type: 2}

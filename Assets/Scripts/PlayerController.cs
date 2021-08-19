@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 //fix IsUnitSelectable(Unit other)
 //may need to update/fix the player camera part.
@@ -187,6 +188,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void SortUnits()
     {
+        playerUnits = playerUnits.Distinct().ToList();
         playerUnits.Sort();
     }
 
