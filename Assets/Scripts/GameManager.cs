@@ -85,6 +85,33 @@ public class GameManager : MonoBehaviourPunCallbacks
         photonView.RPC("setPlayersData", RpcTarget.All, index);
     }
 
+    public bool CheckForDefeat(PlayerController playerController)
+    {
+        if (playerController.playerUnits.Count < 1)
+        {
+            playerController.isDefeated = true;
+            playerController.playerUI.DisplayDefeat();
+            CheckForVictory();
+        }
+        return playerController.isDefeated;
+    }
+
+    public void CheckForVictory()
+    {
+        List<PlayerController> candidateForWin = new List<PlayerController>();
+        foreach(PlayerController playerController in playersHolder.allPlayers)
+        {
+            if (playerController.isDefeated == false)
+            {
+                candidateForWin.Add(playerController);
+            }
+        }
+        if (candidateForWin.Count == 1)
+        {
+            candidateForWin[0].playerUI.DisplayVictory();
+        }
+    }
+
     [PunRPC]
     public void setPlayersData(int index)
     {

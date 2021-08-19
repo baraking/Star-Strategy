@@ -96,6 +96,8 @@ public class mouseController : MonoBehaviour
     {
         if (Input.GetKeyDown(PlayerButtons.ESCAPE))
         {
+            isClicking = false;
+
             if (myPlayer.playerUI.PauseMenu.active)
             {
                 myPlayer.playerUI.ContinueGame();

@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public int resources;
 
+    public bool isDefeated;
+
     public HumansPlayerData PlayerRaceData;
     public FactionStartingData factionStartingData;
 
@@ -73,6 +75,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
         }
 
+        isDefeated = false;
     }
 
     public void Start()
