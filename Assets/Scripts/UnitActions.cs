@@ -123,7 +123,7 @@ public class UnitActions : MonoBehaviour
 
             foreach (Weapon weapon in actingUnit.unitWeapons)
             {
-                print(weapon + ", range:" + weapon.weaponDetails.range + ", distance: " + Vector3.Distance(weapon.transform.position, target.transform.position));
+                //print(weapon + ", range:" + weapon.weaponDetails.range + ", distance: " + Vector3.Distance(weapon.transform.position, target.transform.position));
                 if (Vector3.Distance(weapon.transform.position, target.transform.position) > weapon.weaponDetails.range)
                 {
                     weapon.targetUnit = target.GetComponent<Unit>();

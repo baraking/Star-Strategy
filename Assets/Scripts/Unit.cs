@@ -60,8 +60,20 @@ public class Unit : Purchasables, System.IComparable
         if (photonView.InstantiationData != null)
         {
             myPlayerNumber = (int)photonView.InstantiationData[0];
+
+            if (myPlayer == null)
+            {
+                foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+                {
+                    if (playerController.playerNumber == myPlayerNumber)
+                    {
+                        myPlayer = playerController;
+                    }
+                }
+            }
+
             //print(photonView.ViewID);
-            photonID=photonView.ViewID;
+            photonID = photonView.ViewID;
 
             //print(photonView.InstantiationData.Length);
             if (photonView.InstantiationData.Length > 1)
@@ -661,7 +673,7 @@ public class Unit : Purchasables, System.IComparable
     {
         print("I am dead :(");
         myPlayer.playerUnits.Remove(this);
-        GameManager.Instance.CheckForDefeat(myPlayer);
+        myPlayer.CheckForDefeat(myPlayer);
         //UpdateLandmarksOnSelfDeath();
         PhotonNetwork.Destroy(gameObject);
     }

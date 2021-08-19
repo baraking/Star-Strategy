@@ -9,7 +9,7 @@ using System.Linq;
 //cameraHolder
 //awake is written pretty bad
 //give resources a set value
-public class PlayerController : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 {
     public enum Race { Humans, Parasites, Bugs }
     public PhotonView photonView;
@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         playerUnits = new List<Unit>();
         GameManager.Instance.playersHolder.allPlayers.Add(this);
+        GameManager.Instance.playersHolder.allPlayers.Sort();
+
         //cameraHolder = gameObject.transform.FindChild("CameraHolder").gameObject;
         if (photonView.IsMine)
         {
@@ -152,6 +154,44 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //print("Got a message: " + actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.unitAction.Method.Name + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
     }
 
+    public bool CheckForDefeat(PlayerController playerController)
+    {
+        print("Player: " + playerController.name + " , Units: " + playerController.playerUnits.Count);
+        if (playerController.playerUnits.Count < 1)
+        {
+            playerController.isDefeated = true;
+            playerController.playerUI.DisplayDefeat();
+            photonView.RPC("CheckForVictory", RpcTarget.All,playerController.playerNumber);
+        }
+        return playerController.isDefeated;
+    }
+
+    [PunRPC]
+    public void CheckForVictory(int defeatedPlayer)
+    {
+        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (playerController.playerNumber == defeatedPlayer)
+            {
+                playerController.isDefeated = true;
+            }
+        }
+
+        List<PlayerController> candidateForWin = new List<PlayerController>();
+        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (!playerController.isDefeated)
+            {
+                candidateForWin.Add(playerController);
+            }
+        }
+
+        if (candidateForWin.Count == 1)
+        {
+            candidateForWin[0].playerUI.DisplayVictory();
+        }
+    }
+
     public void SpawnStartingUnits()
     {
         //SpawnUnitImmidiate(transform.position, factionStartingData.startingUnits[0].gameObject);
@@ -195,5 +235,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public bool IsUnitSelectable(Unit other)
     {
         return (other.myPlayerNumber==playerNumber);
+    }
+
+    public int CompareTo(object obj)
+    {
+        Unit other = obj as Unit;
+        return this.name.CompareTo(other.name);
     }
 }
