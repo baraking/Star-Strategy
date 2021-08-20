@@ -12,10 +12,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject PlayerPrefab;
     public GameObject SceneCamera;
-    public GameObject UnitCanvas;
-    public GameObject PauseMenu;
-    public GameObject ExpandedMovementCanvas;
-    public GameObject MinimizedMovementCanvas;
 
     public StartPositions startPositions;
 
@@ -50,43 +46,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         SceneCamera.SetActive(false);
 
         //SpawnPlayer();
-        UnitCanvas.SetActive(false);
-        PauseMenu.SetActive(false);
 
         PhotonView PV = GetComponent<PhotonView>();
         SpawnPlayer();
-    }
-
-    public void SetUnitCanvasActive()
-    {
-        UnitCanvas.SetActive(true);
-    }
-
-    public void SetUnitCanvasDeactive()
-    {
-        UnitCanvas.SetActive(false);
-    }
-
-    public void SetPauseMenusActive()
-    {
-        PauseMenu.SetActive(true);
-    }
-
-    public void SetPauseMenusDeactive()
-    {
-        PauseMenu.SetActive(false);
-    }
-
-    public void SetMovementCanvasActive()
-    {
-        ExpandedMovementCanvas.SetActive(true);
-        MinimizedMovementCanvas.SetActive(false);
-    }
-
-    public void SetMovementCanvasDeactive()
-    {
-        MinimizedMovementCanvas.SetActive(true);
-        ExpandedMovementCanvas.SetActive(false);
     }
 
     private void Update()
@@ -139,6 +101,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 newPlayer = player.gameObject;
                 player.name = "Player" + "_" + index;
                 player.GetComponent<PlayerController>().playerNumber = (int)index;
+                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[(int)index];
                 player.transform.SetParent(playersHolder.transform);
                 //Debug.Log("Set parent to player");
 
@@ -147,6 +110,8 @@ public class GameManager : MonoBehaviourPunCallbacks
                 break;
             }
         }
+
+        GameManager.Instance.playersHolder.allPlayers.Sort();
 
         for (int i = 0; i < Units.transform.childCount; i++)
         {
@@ -184,16 +149,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 return;
             }
         }
-    }
-
-    public void ContinueGame()
-    {
-        SetPauseMenusDeactive();
-    }
-
-    public void OpenPauseMenu()
-    {
-        SetPauseMenusActive();
     }
 
     public void BackToMainMenu()

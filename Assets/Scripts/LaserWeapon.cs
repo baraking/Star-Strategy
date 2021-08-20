@@ -16,8 +16,8 @@ public class LaserWeapon : MonoBehaviour
         GetComponent<LineRenderer>().SetPosition(1, this.transform.position);
         GetComponent<LineRenderer>().startWidth = laserWidth;
         GetComponent<LineRenderer>().endWidth = laserWidth;
-        GetComponent<LineRenderer>().startColor = GameManager.Instance.basicColors1[0];
-        GetComponent<LineRenderer>().endColor = GameManager.Instance.basicColors1[0];
+        GetComponent<LineRenderer>().startColor = GameManager.Instance.basicColors1[GetComponentInParent<Unit>().myPlayerNumber];
+        GetComponent<LineRenderer>().endColor = GameManager.Instance.basicColors1[GetComponentInParent<Unit>().myPlayerNumber];
     }
 
     public void FireLaser(Vector3 target)

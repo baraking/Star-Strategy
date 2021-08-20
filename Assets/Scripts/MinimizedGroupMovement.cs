@@ -17,11 +17,25 @@ public class MinimizedGroupMovement : MonoBehaviour
 
     public void closeMovementCanvas()
     {
-        GameManager.Instance.SetMovementCanvasDeactive();
+        foreach(PlayerController player in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (player.photonView.IsMine)
+            {
+                player.playerUI.SetMovementCanvasDeactive();
+                return;
+            }
+        }
     }
 
     public void openMovementCanvas()
     {
-        GameManager.Instance.SetMovementCanvasActive();
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (player.photonView.IsMine)
+            {
+                player.playerUI.SetMovementCanvasActive();
+                return;
+            }
+        }
     }
 }

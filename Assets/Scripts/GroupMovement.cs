@@ -21,12 +21,26 @@ public class GroupMovement : MonoBehaviour
 
     public void closeMovementCanvas()
     {
-        GameManager.Instance.SetMovementCanvasDeactive();
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (player.photonView.IsMine)
+            {
+                player.playerUI.SetMovementCanvasDeactive();
+                return;
+            }
+        }
     }
 
     public void openMovementCanvas()
     {
-        GameManager.Instance.SetMovementCanvasActive();
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (player.photonView.IsMine)
+            {
+                player.playerUI.SetMovementCanvasActive();
+                return;
+            }
+        }
     }
 
     public static Vector3[] ArcFormation(List<Unit> selectedUnits, Vector3 targetLocation, Vector3 rightDirection, float radius, float additionalRotation)

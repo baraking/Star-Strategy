@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 //fix IsUnitSelectable(Unit other)
 //may need to update/fix the player camera part.
 //cameraHolder
 //awake is written pretty bad
 //give resources a set value
-public class PlayerController : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 {
     public enum Race { Humans, Parasites, Bugs }
     public PhotonView photonView;
@@ -18,10 +19,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public List<Unit> playerUnits;
     public GameObject cameraHolder;
     public Camera playerCamera;
+    public PlayerUI playerUI;
 
     public bool debugMode;
 
     public int resources;
+
+    public bool isDefeated;
 
     public HumansPlayerData PlayerRaceData;
     public FactionStartingData factionStartingData;
@@ -37,9 +41,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
         photonView = GetComponent<PhotonView>();
+        playerUI = GetComponent<PlayerUI>();
 
         playerUnits = new List<Unit>();
         GameManager.Instance.playersHolder.allPlayers.Add(this);
+        GameManager.Instance.playersHolder.allPlayers.Sort();
+
         //cameraHolder = gameObject.transform.FindChild("CameraHolder").gameObject;
         if (photonView.IsMine)
         {
@@ -50,9 +57,28 @@ public class PlayerController : MonoBehaviourPunCallbacks
             playerCamera = gameObject.GetComponentInChildren<Camera>();*/
             playerCamera.gameObject.SetActive(true);
 
-            GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber-1];
+            //GameManager.Instance.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber-1];
+
+            //playerUI.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[playerNumber];
         }
-        
+
+        foreach (PlayerController player in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (player.photonView.IsMine)
+            {
+                //player.playerUI.SetMovementCanvasActive();
+                player.playerUI.SetMovementCanvasDeactive();
+            }
+            else
+            {
+                player.playerUI.PauseMenu.gameObject.SetActive(false);
+                player.playerUI.UnitCanvas.gameObject.SetActive(false);
+                player.playerUI.ExpandedMovementCanvas.gameObject.SetActive(false);
+                player.playerUI.MinimizedMovementCanvas.gameObject.SetActive(false);
+            }
+        }
+
+        isDefeated = false;
     }
 
     public void Start()
@@ -103,14 +129,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public void RecieveCurrentAction(int photonId, int targetPhotonId, int newUnitActionNumber, float[] quaternionData, float[] targetsPositions)
     {
         Unit actingUnit = PhotonView.Find(photonId).GetComponent<Unit>();
-        if (targetPhotonId != -1)
+
+        if (targetPhotonId > 0)
         {
             actingUnit.actionTarget = PhotonView.Find(targetPhotonId).gameObject;
         }
         else
         {
-            actingUnit.actionTarget = null;
+            if (playerNumber != actingUnit.myPlayerNumber)
+            {
+                actingUnit.actionTarget = null;
+            }
         }
+
         actingUnit.unitAction = UnitActions.GetUnitActionFromNumber(newUnitActionNumber);
 
         actingUnit.endQuaternion = new Quaternion(quaternionData[0], quaternionData[1], quaternionData[2], quaternionData[3]);
@@ -121,6 +152,44 @@ public class PlayerController : MonoBehaviourPunCallbacks
             actingUnit.targetsLocation.Add(new Vector3(targetsPositions[i], targetsPositions[i + 1], targetsPositions[i + 2]));
         }
         //print("Got a message: " + actingUnit + "," + actingUnit.actionTarget + "," + actingUnit.unitAction.Method.Name + "," + actingUnit.endQuaternion + "," + actingUnit.targetsLocation);
+    }
+
+    public bool CheckForDefeat(PlayerController playerController)
+    {
+        print("Player: " + playerController.name + " , Units: " + playerController.playerUnits.Count);
+        if (playerController.playerUnits.Count < 1)
+        {
+            playerController.isDefeated = true;
+            playerController.playerUI.DisplayDefeat();
+            photonView.RPC("CheckForVictory", RpcTarget.All,playerController.playerNumber);
+        }
+        return playerController.isDefeated;
+    }
+
+    [PunRPC]
+    public void CheckForVictory(int defeatedPlayer)
+    {
+        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (playerController.playerNumber == defeatedPlayer)
+            {
+                playerController.isDefeated = true;
+            }
+        }
+
+        List<PlayerController> candidateForWin = new List<PlayerController>();
+        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (!playerController.isDefeated)
+            {
+                candidateForWin.Add(playerController);
+            }
+        }
+
+        if (candidateForWin.Count == 1)
+        {
+            candidateForWin[0].playerUI.DisplayVictory();
+        }
     }
 
     public void SpawnStartingUnits()
@@ -147,6 +216,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         newUnit.GetComponent<Unit>().isComplete = true;
+        newUnit.GetComponent<Unit>().healthBar.DisableConstructionBar();
+
         newUnit.GetComponent<Unit>().InitUnit();
         //newUnit.GetComponent<Unit>().isComplete = false;
 
@@ -157,11 +228,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void SortUnits()
     {
+        playerUnits = playerUnits.Distinct().ToList();
         playerUnits.Sort();
     }
 
     public bool IsUnitSelectable(Unit other)
     {
         return (other.myPlayerNumber==playerNumber);
+    }
+
+    public int CompareTo(object obj)
+    {
+        Unit other = obj as Unit;
+        return this.name.CompareTo(other.name);
     }
 }

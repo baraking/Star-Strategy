@@ -60,8 +60,20 @@ public class Unit : Purchasables, System.IComparable
         if (photonView.InstantiationData != null)
         {
             myPlayerNumber = (int)photonView.InstantiationData[0];
+
+            if (myPlayer == null)
+            {
+                foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+                {
+                    if (playerController.playerNumber == myPlayerNumber)
+                    {
+                        myPlayer = playerController;
+                    }
+                }
+            }
+
             //print(photonView.ViewID);
-            photonID=photonView.ViewID;
+            photonID = photonView.ViewID;
 
             //print(photonView.InstantiationData.Length);
             if (photonView.InstantiationData.Length > 1)
@@ -171,6 +183,10 @@ public class Unit : Purchasables, System.IComparable
         }
         SetHealthBarActive(true);
         healthBar.SetMaxHealth(unitDetails.max_hp);
+        if (unitDetails.unitType == UnitDetails.UnitType.Building)
+        {
+            healthBar.SetMaxConstruction(unitDetails.buildTime);
+        }
 
         curHP = unitDetails.max_hp;
         healthBar.setHealth(curHP);
@@ -226,9 +242,10 @@ public class Unit : Purchasables, System.IComparable
         {
             //StartCoroutine(SpawnUnit(unitIndex));
 
-            print(unitDetails.unitType == UnitDetails.UnitType.Building);
+            //print(unitDetails.unitType == UnitDetails.UnitType.Building);
 
             actionTarget = unitDetails.purchasables[unitIndex].gameObject;
+            print(actionTarget);
             if (unitDetails.unitType == UnitDetails.UnitType.Building)
             {
                 //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
@@ -272,6 +289,8 @@ public class Unit : Purchasables, System.IComparable
         newUnit.transform.SetParent(GameManager.Instance.Units.transform);
         newUnit.GetComponent<Unit>().healthBar = newUnit.GetComponentInChildren<HealthBar>();
         newUnit.GetComponent<Unit>().isComplete = true;
+
+        actionTarget.GetComponent<Unit>().healthBar.DisableConstructionBar();
         newUnit.GetComponent<Unit>().InitUnit();
         //newUnit.GetComponent<Unit>().isComplete = false;
 
@@ -332,12 +351,14 @@ public class Unit : Purchasables, System.IComparable
 
     public void Build()
     {
+        print(actionTarget.GetComponent<Unit>().buildProgress);
         actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         if (actionTarget.GetComponent<Unit>().curHP < actionTarget.GetComponent<Unit>().unitDetails.max_hp)
         {
             actionTarget.GetComponent<Unit>().curHP += ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp )/ actionTarget.GetComponent<Unit>().unitDetails.buildTime);
             actionTarget.GetComponent<Unit>().healthBar.setHealth(actionTarget.GetComponent<Unit>().curHP);
+            actionTarget.GetComponent<Unit>().healthBar.SetConstruction(actionTarget.GetComponent<Unit>().buildProgress);
         }
         if(actionTarget.GetComponent<Unit>().curHP > actionTarget.GetComponent<Unit>().unitDetails.max_hp)
         {
@@ -349,9 +370,14 @@ public class Unit : Purchasables, System.IComparable
 
         if(actionTarget.GetComponent<Unit>().buildProgress>= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
         {
-            actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
+            //actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
             OnUnitSpawnEnd(actionTarget);
             actionTarget.GetComponent<Unit>().isComplete = true;
+
+            if (actionTarget.GetComponent<Unit>().unitDetails.unitType == UnitDetails.UnitType.Building)
+            {
+                actionTarget.GetComponent<Unit>().healthBar.DisableConstructionBar();
+            }
             unitAction = UnitActions.Idle;
         }
     }
@@ -646,6 +672,8 @@ public class Unit : Purchasables, System.IComparable
     void Die()
     {
         print("I am dead :(");
+        myPlayer.playerUnits.Remove(this);
+        myPlayer.CheckForDefeat(myPlayer);
         //UpdateLandmarksOnSelfDeath();
         PhotonNetwork.Destroy(gameObject);
     }

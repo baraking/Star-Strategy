@@ -4,6 +4,7 @@ using UnityEngine;
 
 //maybe should have a class like this for each unit type? - walkable,gatherer,ant etc.
 //should fix the code so that Rotate wont need targetsLocation[0]
+//attacking a building while it is being built may cause an endless build
 public class UnitActions : MonoBehaviour
 {
     public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build }
@@ -122,7 +123,7 @@ public class UnitActions : MonoBehaviour
 
             foreach (Weapon weapon in actingUnit.unitWeapons)
             {
-                print(weapon + ", range:" + weapon.weaponDetails.range + ", distance: " + Vector3.Distance(weapon.transform.position, target.transform.position));
+                //print(weapon + ", range:" + weapon.weaponDetails.range + ", distance: " + Vector3.Distance(weapon.transform.position, target.transform.position));
                 if (Vector3.Distance(weapon.transform.position, target.transform.position) > weapon.weaponDetails.range)
                 {
                     weapon.targetUnit = target.GetComponent<Unit>();
@@ -255,6 +256,7 @@ public class UnitActions : MonoBehaviour
         {
             actingUnit.StartSpawningBuilding();
             actingUnit.unitAction = Build;
+            actingUnit.myPlayer.UpdateUnitAction(actingUnit);
         }
     }
 

@@ -436,6 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthSlider: {fileID: 5842493528031240636}
+  constructionSlider: {fileID: 6192440079565103154}
 --- !u!1 &9046036134651825316
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,6 +716,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 8516318746049086822}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5842493528031240626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6192440079565103154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2585063672332100948, guid: de06968c77f067a459908d7e657fc258,
+    type: 3}
+  m_PrefabInstance: {fileID: 8516318746049086822}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}

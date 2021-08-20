@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//after a unit is destroyed while firing, the fire stays
 public class FlameWeapon : MonoBehaviour
 {
 
