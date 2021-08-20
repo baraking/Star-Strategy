@@ -6,6 +6,7 @@ public class PlayerUI : MonoBehaviour
 {
 
     public GameObject UnitCanvas;
+    public GameObject PurchaseableQueueCanvas;
     public GameObject PauseMenu;
     public GameObject ExpandedMovementCanvas;
     public GameObject MinimizedMovementCanvas;

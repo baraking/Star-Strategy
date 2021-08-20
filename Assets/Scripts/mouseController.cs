@@ -80,13 +80,24 @@ public class mouseController : MonoBehaviour
             }
 
             newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
-        } 
+        }
+
+        /*if (selectedUnit.creationQueue.Count > 0)
+        {
+            DisplayPurchasableQueue(selectedUnit);
+        }*/
+        myPlayer.DisplayPurchasableQueue(selectedUnit);
     }
 
     public void ResetDisplayedUnitPurchasableUnits()
     {
         isUnitUIDisplaying = false;
         foreach (Transform child in myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().upgradesCanvas.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform)
         {
             GameObject.Destroy(child.gameObject);
         }

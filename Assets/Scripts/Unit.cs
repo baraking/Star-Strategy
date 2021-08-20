@@ -274,6 +274,7 @@ public class Unit : Purchasables, System.IComparable
                 creationQueue.Add(actionTarget.GetComponent<Purchasables>());
             }
         }
+        myPlayer.DisplayPurchasableQueue(this);
     }
 
     public void StartSpawningUnit()
@@ -313,6 +314,7 @@ public class Unit : Purchasables, System.IComparable
         OnUnitSpawnEnd(purchasable);
 
         creationQueue.Remove(creationQueue[0]);
+        myPlayer.DisplayPurchasableQueue(this);
 
         Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
 

@@ -8,6 +8,7 @@ public class UnitUICanvas : MonoBehaviour
 
     public Image backgroundImage;
     public GameObject upgradesCanvas;
+    public GameObject purchaseableQueueCanvas;
 
     // Start is called before the first frame update
     void Start()

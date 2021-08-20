@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 //fix IsUnitSelectable(Unit other)
 //may need to update/fix the player camera part.
@@ -118,6 +119,36 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
                 //}
             }
         }*/
+    }
+
+    public void DisplayPurchasableQueue(Unit selectedUnit)
+    {
+        foreach (Transform child in playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        foreach (Purchasables curPurchasable in selectedUnit.creationQueue)
+        {
+            //print("purchasables: " + curPurchasable);
+            GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
+            newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
+
+            newPurchasableUI.transform.SetParent(playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform, false);
+
+            /*if (curPurchasable.GetPrerequisites().Length > 0)
+            {
+                foreach (int i in curPurchasable.GetPrerequisites())
+                {
+                    if (!myPlayer.PlayerRaceData.landmarks[i])
+                    {
+                        newPurchasableUI.GetComponentInChildren<Button>().interactable = false;
+                    }
+                }
+            }*/
+
+            //newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
+        }
     }
 
     public void UpdateUnitAction(Unit unit)
