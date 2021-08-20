@@ -94,6 +94,9 @@ MonoBehaviour:
   healthBar: {fileID: 1657116494975148640}
   carriedUnits: []
   carriedAmount: 0
+  creationQueue: []
+  curCreationProgress: 0
+  curCreatonTarget: 0
   photonView: {fileID: 0}
   photonID: 0
   targetsLocation: []
@@ -498,6 +501,11 @@ PrefabInstance:
     - target: {fileID: 2820588378834875481, guid: de06968c77f067a459908d7e657fc258,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693595227616444433, guid: de06968c77f067a459908d7e657fc258,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

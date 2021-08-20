@@ -41,6 +41,11 @@ public class Unit : Purchasables, System.IComparable
     public List<Unit> carriedUnits = new List<Unit>();
     public int carriedAmount;
 
+    [SerializeField]
+    public List<Purchasables> creationQueue = new List<Purchasables>();
+    public float curCreationProgress;
+    public float curCreatonTarget;
+
     public PhotonView photonView;
     public int photonID;
 
@@ -238,27 +243,36 @@ public class Unit : Purchasables, System.IComparable
 
     public void AttemptToSpawnUnit(int unitIndex)
     {
-        if (isSelected && !isBuilding)
+        if (isSelected)
         {
-            //StartCoroutine(SpawnUnit(unitIndex));
-
-            //print(unitDetails.unitType == UnitDetails.UnitType.Building);
-
             actionTarget = unitDetails.purchasables[unitIndex].gameObject;
-            print(actionTarget);
-            if (unitDetails.unitType == UnitDetails.UnitType.Building)
-            {
-                //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
-                targetsLocation = new List<Vector3>() { transform.position + Unit.DEFAULT_SPAWN_LOCATION };
-                unitAction = UnitActions.Spawn;
-            }
-            else
-            {
-                //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
-                myPlayer.GetComponent<mouseController>().playerIsTryingToBuild = true;
-            }
 
-            //unitAction = UnitActions.Build;
+            if (!isBuilding)
+            {
+                //StartCoroutine(SpawnUnit(unitIndex));
+
+                //print(unitDetails.unitType == UnitDetails.UnitType.Building);
+
+                print(actionTarget);
+                if (unitDetails.unitType == UnitDetails.UnitType.Building)
+                {
+                    //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+                    targetsLocation = new List<Vector3>() { transform.position + Unit.DEFAULT_SPAWN_LOCATION };
+                    creationQueue.Add(actionTarget.GetComponent<Purchasables>());
+                    unitAction = UnitActions.Spawn;
+                }
+                else
+                {
+                    //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+                    myPlayer.GetComponent<mouseController>().playerIsTryingToBuild = true;
+                }
+
+                //unitAction = UnitActions.Build;
+            }
+            else if (isBuilding)
+            {
+                creationQueue.Add(actionTarget.GetComponent<Purchasables>());
+            }
         }
     }
 
@@ -297,10 +311,21 @@ public class Unit : Purchasables, System.IComparable
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
         OnUnitSpawnEnd(purchasable);
-        
+
+        creationQueue.Remove(creationQueue[0]);
+
         Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
+
         isBuilding = false;
-        unitAction = UnitActions.Idle;
+        if (creationQueue.Count < 1)
+        {
+            unitAction = UnitActions.Idle;
+        }
+        else
+        {
+            actionTarget = creationQueue[0].gameObject;
+            unitAction = UnitActions.Spawn;
+        }
     }
 
     public void StartSpawningBuilding()
@@ -351,7 +376,7 @@ public class Unit : Purchasables, System.IComparable
 
     public void Build()
     {
-        print(actionTarget.GetComponent<Unit>().buildProgress);
+        //print(actionTarget.GetComponent<Unit>().buildProgress);
         actionTarget.GetComponent<Unit>().buildProgress += Time.deltaTime;
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         if (actionTarget.GetComponent<Unit>().curHP < actionTarget.GetComponent<Unit>().unitDetails.max_hp)

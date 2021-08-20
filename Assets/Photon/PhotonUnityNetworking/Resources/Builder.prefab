@@ -408,6 +408,9 @@ MonoBehaviour:
   healthBar: {fileID: 7516853792238265833}
   carriedUnits: []
   carriedAmount: 0
+  creationQueue: []
+  curCreationProgress: 0
+  curCreatonTarget: 0
   photonView: {fileID: 0}
   photonID: 0
   targetsLocation: []
