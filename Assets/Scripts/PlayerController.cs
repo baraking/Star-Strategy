@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using System;
 
 //fix IsUnitSelectable(Unit other)
 //may need to update/fix the player camera part.
@@ -133,11 +134,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
             GameObject.Destroy(child.gameObject);
         }
 
+        int i = 0;
         foreach (Purchasables curPurchasable in selectedUnit.creationQueue)
         {
             //print("purchasables: " + curPurchasable);
             GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
             newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
+            newPurchasableUI.transform.name = curPurchasable.GetName();
+            newPurchasableUI.GetComponentInChildren<Button>().transform.name = i.ToString();
 
             newPurchasableUI.transform.SetParent(playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform, false);
 
@@ -152,7 +156,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
                 }
             }*/
 
-            //newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { curPurchasable.Purchase(selectedUnit.gameObject); });
+            if (curPurchasable.GetComponent<Weapon>())
+            {
+                print("@@@@@Fix this!!@@@@@");
+            }
+
+            newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { selectedUnit.RemoveFromCreationQueue(Int32.Parse(newPurchasableUI.GetComponentInChildren<Button>().transform.name)); });
+            print("Added for " + i);
+            i++;
         }
     }
 
