@@ -696,13 +696,40 @@ public class Unit : Purchasables, System.IComparable
         disembarkingUnit.GetComponent<GroupedUnits>().SetTargetPoint(transform.position);
     }
 
+    [PunRPC]
+    public void NotifyUnitDeath(int unit, int player)
+    {
+        Unit unitToDestroy = PhotonView.Find(unit).GetComponent<Unit>();
+        /*if (unitToDestroy.GetIsSelected())
+        {
+            unitToDestroy.SetIsSelected(false);
+        }*/
+
+        foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
+        {
+            if (playerController.playerNumber == player)
+            {
+                if (playerController.GetComponent<mouseController>().selectedUnits.Contains(unitToDestroy))
+                {
+                    playerController.GetComponent<mouseController>().selectedUnits.Remove(unitToDestroy);
+                }
+                playerController.playerUnits.Remove(unitToDestroy);
+                playerController.CheckForDefeat(myPlayer);
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+    }
+
     void Die()
     {
-        print("I am dead :(");
-        myPlayer.playerUnits.Remove(this);
-        myPlayer.CheckForDefeat(myPlayer);
+        //print("I am dead :(");w
+        //myPlayer.playerUnits.Remove(this);
+
+        photonView.RPC("NotifyUnitDeath", RpcTarget.All, photonID,myPlayer.playerNumber);
+
+        //myPlayer.CheckForDefeat(myPlayer);
         //UpdateLandmarksOnSelfDeath();
-        PhotonNetwork.Destroy(gameObject);
+        //PhotonNetwork.Destroy(gameObject);
     }
 
     public void Wait(UnitAction previousAction, float time)

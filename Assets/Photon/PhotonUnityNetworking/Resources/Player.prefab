@@ -2048,7 +2048,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed332cb1f86f71478fe6b7efcd770ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundImage: {fileID: 4297415326867996587}
+  purchaseableBackgroundImage: {fileID: 4297415326867996587}
+  purchaseableQueueBackgroundImage: {fileID: 62607418629637306}
   upgradesCanvas: {fileID: 5497177796342070537}
   purchaseableQueueCanvas: {fileID: 3236812526001120514}
 --- !u!1 &3953715419361791800

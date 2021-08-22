@@ -101,7 +101,9 @@ public class GameManager : MonoBehaviourPunCallbacks
                 newPlayer = player.gameObject;
                 player.name = "Player" + "_" + index;
                 player.GetComponent<PlayerController>().playerNumber = (int)index;
-                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[(int)index];
+                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableBackgroundImage.color = GameManager.Instance.basicColors1[(int)index];
+                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueBackgroundImage.color = GameManager.Instance.basicColors1[(int)index];
+
                 player.transform.SetParent(playersHolder.transform);
                 //Debug.Log("Set parent to player");
 
