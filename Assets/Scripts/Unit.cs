@@ -279,8 +279,6 @@ public class Unit : Purchasables, System.IComparable
 
     public void RemoveFromCreationQueue(int i)
     {
-        print("I am " + unitDetails.name);
-        print("Removing item number: " + i);
         creationQueue.RemoveAt(i);
         myPlayer.DisplayPurchasableQueue(this);
     }

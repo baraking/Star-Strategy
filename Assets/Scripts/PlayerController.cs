@@ -124,10 +124,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 
     public void DisplayPurchasableQueue(Unit selectedUnit)
     {
-        if (selectedUnit.creationQueue.Count < 1)
+        /*if (selectedUnit.creationQueue.Count < 1)
         {
             return;
-        }
+        }*/
 
         foreach (Transform child in playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform)
         {
