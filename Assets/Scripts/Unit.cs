@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //show unit datasheet,icon etc
 //be able to group units under a number
@@ -304,12 +305,18 @@ public class Unit : Purchasables, System.IComparable
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
         yield return new WaitForSeconds(0);
         buildProgress = 0;
+
+        ProgressBar progressBar = myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>();
+        progressBar.SetImageToState(true);
+        progressBar.slider.maxValue = buildTime;
+        progressBar.slider.value = buildProgress;
     }
 
     public void ProduceUnit()
     {
         //print("Producing!");
         buildProgress += Time.deltaTime;
+        myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>().slider.value = buildProgress;
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         print(creationQueue[0].GetComponent<Unit>().unitDetails.name + ": " + buildProgress + "/" + creationQueue[0].GetComponent<Unit>().unitDetails.buildTime);
 
@@ -322,6 +329,8 @@ public class Unit : Purchasables, System.IComparable
             creationQueue[0].GetComponent<Unit>().isComplete = true;
 
             Debug.Log("Finished building a " + creationQueue[0].GetComponent<Unit>().unitDetails.name);
+
+            myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<Slider>().gameObject.SetActive(false);
 
             creationQueue.Remove(creationQueue[0]);
             myPlayer.DisplayPurchasableQueue(this);
