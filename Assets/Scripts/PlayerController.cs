@@ -145,6 +145,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 
             newPurchasableUI.transform.SetParent(playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform, false);
 
+            if (i == 0)
+            {
+                //ProgressBar progressBar = playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>();
+                ProgressBar progressBar = newPurchasableUI.GetComponentInChildren<ProgressBar>();
+                progressBar.SetImageToState(true);
+                progressBar.slider.maxValue = selectedUnit.creationQueue[0].GetComponent<Unit>().unitDetails.buildTime;
+                progressBar.slider.value = selectedUnit.buildProgress;
+            }
+
             /*if (curPurchasable.GetPrerequisites().Length > 0)
             {
                 foreach (int i in curPurchasable.GetPrerequisites())
