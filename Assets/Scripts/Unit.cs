@@ -280,6 +280,10 @@ public class Unit : Purchasables, System.IComparable
     public void RemoveFromCreationQueue(int i)
     {
         creationQueue.RemoveAt(i);
+        if (i == 0)
+        {
+            buildProgress = 0;
+        }
         myPlayer.DisplayPurchasableQueue(this);
     }
 
@@ -297,8 +301,46 @@ public class Unit : Purchasables, System.IComparable
         buildTime = purchasable.GetComponent<Unit>().unitDetails.buildTime;
         Debug.Log("Started building a " + purchasable.GetComponent<Unit>().unitDetails.name);
 
-        yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+        //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
+        yield return new WaitForSeconds(0);
+        buildProgress = 0;
+    }
 
+    public void ProduceUnit()
+    {
+        //print("Producing!");
+        buildProgress += Time.deltaTime;
+        //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
+        print(creationQueue[0].GetComponent<Unit>().unitDetails.name + ": " + buildProgress + "/" + creationQueue[0].GetComponent<Unit>().unitDetails.buildTime);
+
+        if (buildProgress >= creationQueue[0].GetComponent<Unit>().unitDetails.buildTime)
+        {
+            buildProgress = creationQueue[0].GetComponent<Unit>().unitDetails.buildTime;
+            DeployUnit(targetsLocation[0], actionTarget);
+            buildProgress = 0;
+            OnUnitSpawnEnd(actionTarget);
+            creationQueue[0].GetComponent<Unit>().isComplete = true;
+
+            Debug.Log("Finished building a " + creationQueue[0].GetComponent<Unit>().unitDetails.name);
+
+            creationQueue.Remove(creationQueue[0]);
+            myPlayer.DisplayPurchasableQueue(this);
+
+            isBuilding = false;
+            if (creationQueue.Count< 1)
+            {
+                unitAction = UnitActions.Idle;
+            }
+            else
+            {
+                actionTarget = creationQueue[0].gameObject;
+                unitAction = UnitActions.Spawn;
+            }
+        }
+    }
+
+    public void DeployUnit(Vector3 location, GameObject purchasable)
+    {
         //GameObject newUnit = Instantiate(purchasable);
         object[] instantiationData = new object[] { myPlayerNumber, SET_TO_IS_COMPLETE };
         GameObject newUnit = PhotonNetwork.Instantiate(purchasable.name, location, Quaternion.identity, 0, instantiationData);
@@ -318,22 +360,6 @@ public class Unit : Purchasables, System.IComparable
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
 
         OnUnitSpawnEnd(purchasable);
-
-        creationQueue.Remove(creationQueue[0]);
-        myPlayer.DisplayPurchasableQueue(this);
-
-        Debug.Log("Finished building a " + purchasable.GetComponent<Unit>().unitDetails.name);
-
-        isBuilding = false;
-        if (creationQueue.Count < 1)
-        {
-            unitAction = UnitActions.Idle;
-        }
-        else
-        {
-            actionTarget = creationQueue[0].gameObject;
-            unitAction = UnitActions.Spawn;
-        }
     }
 
     public void StartSpawningBuilding()
@@ -389,11 +415,11 @@ public class Unit : Purchasables, System.IComparable
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         if (actionTarget.GetComponent<Unit>().curHP < actionTarget.GetComponent<Unit>().unitDetails.max_hp)
         {
-            actionTarget.GetComponent<Unit>().curHP += ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp )/ actionTarget.GetComponent<Unit>().unitDetails.buildTime);
+            actionTarget.GetComponent<Unit>().curHP += ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime);
             actionTarget.GetComponent<Unit>().healthBar.setHealth(actionTarget.GetComponent<Unit>().curHP);
             actionTarget.GetComponent<Unit>().healthBar.SetConstruction(actionTarget.GetComponent<Unit>().buildProgress);
         }
-        if(actionTarget.GetComponent<Unit>().curHP > actionTarget.GetComponent<Unit>().unitDetails.max_hp)
+        if (actionTarget.GetComponent<Unit>().curHP > actionTarget.GetComponent<Unit>().unitDetails.max_hp)
         {
             actionTarget.GetComponent<Unit>().curHP = actionTarget.GetComponent<Unit>().unitDetails.max_hp;
             actionTarget.GetComponent<Unit>().healthBar.setHealth(actionTarget.GetComponent<Unit>().curHP);
@@ -401,9 +427,9 @@ public class Unit : Purchasables, System.IComparable
 
         print(actionTarget.GetComponent<Unit>().unitDetails.name + ": " + actionTarget.GetComponent<Unit>().buildProgress + "/" + actionTarget.GetComponent<Unit>().unitDetails.buildTime);
 
-        if(actionTarget.GetComponent<Unit>().buildProgress>= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
+        if (actionTarget.GetComponent<Unit>().buildProgress >= actionTarget.GetComponent<Unit>().unitDetails.buildTime)
         {
-            //actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
+            actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
             OnUnitSpawnEnd(actionTarget);
             actionTarget.GetComponent<Unit>().isComplete = true;
 

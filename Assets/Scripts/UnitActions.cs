@@ -7,7 +7,7 @@ using UnityEngine;
 //attacking a building while it is being built may cause an endless build
 public class UnitActions : MonoBehaviour
 {
-    public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build }
+    public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build , Produce }
 
     public static float ROTATION_THRESHOLD = 15f;
 
@@ -235,6 +235,8 @@ public class UnitActions : MonoBehaviour
         if (actingUnit.unitDetails.unitType == UnitDetails.UnitType.Building)
         {
             actingUnit.StartSpawningUnit();
+            actingUnit.unitAction = Produce;
+            actingUnit.myPlayer.UpdateUnitAction(actingUnit);
         }
         else if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
@@ -243,6 +245,8 @@ public class UnitActions : MonoBehaviour
         else
         {
             actingUnit.StartSpawningUnit();
+            actingUnit.unitAction = Produce;
+            actingUnit.myPlayer.UpdateUnitAction(actingUnit);
         }
     }
 
@@ -270,6 +274,11 @@ public class UnitActions : MonoBehaviour
         {
             actingUnit.Build();
         }
+    }
+
+    public static void Produce(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
+    {
+         actingUnit.ProduceUnit();
     }
 
     //embark
@@ -326,6 +335,10 @@ public class UnitActions : MonoBehaviour
         {
             return 12;
         }
+        else if (action == UnitActions.Produce)
+        {
+            return 13;
+        }
         else
         {
             return -1;
@@ -381,6 +394,10 @@ public class UnitActions : MonoBehaviour
         else if (number == 12)
         {
             return UnitActions.Build;
+        }
+        else if (number == 13)
+        {
+            return UnitActions.Produce;
         }
         else
         {
