@@ -441,6 +441,7 @@ public class Unit : Purchasables, System.IComparable
             actionTarget.GetComponent<Unit>().buildProgress = actionTarget.GetComponent<Unit>().unitDetails.buildTime;
             OnUnitSpawnEnd(actionTarget);
             actionTarget.GetComponent<Unit>().isComplete = true;
+            actionTarget.GetComponent<Unit>().buildProgress = 0;
 
             if (actionTarget.GetComponent<Unit>().unitDetails.unitType == UnitDetails.UnitType.Building)
             {
