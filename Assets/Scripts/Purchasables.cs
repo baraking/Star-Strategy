@@ -35,19 +35,24 @@ public class Purchasables : MonoBehaviour
         return null;
     }
 
-    public string GetName()
+    public PurchasableDetails GetData()
     {
         if (this.GetComponent<Weapon>())
         {
-            return this.GetComponent<Weapon>().weaponDetails.name;
+            return this.GetComponent<Weapon>().weaponDetails;
         }
 
         if (this.GetComponent<Unit>())
         {
-            return this.GetComponent<Unit>().unitDetails.name;
+            return this.GetComponent<Unit>().unitDetails;
         }
 
         return null;
+    }
+
+    public string GetName()
+    {
+        return GetData().name;
     }
 
     public void Purchase(GameObject purchasingParent)
