@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: MainBuilding
   m_EditorClassIdentifier: 
+  buildTime: 30
+  costToBuild: 2000
+  price: 500
+  purchasables: []
+  icon: {fileID: 21300000, guid: 6b28c240e8c851849a85079a37c7abe3, type: 3}
   prerequisites: 
   requirements: 00000000
   name: MainBuilding
@@ -21,11 +26,7 @@ MonoBehaviour:
   max_hp: 500
   speed: 0
   rotation_speed: 0
-  buildTime: 30
-  costToBuild: 2000
   gatherAmount: 0
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
-  purchasables: []
-  icon: {fileID: 21300000, guid: 6b28c240e8c851849a85079a37c7abe3, type: 3}

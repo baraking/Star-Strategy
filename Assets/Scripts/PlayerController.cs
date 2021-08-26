@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
     public void Start()
     {
         resources = 1000;
+        playerUI.ResourcesAmount.text = resources.ToString();
 
         /*foreach(Unit unit in playerUnits)
         {
@@ -103,6 +104,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
             SpawnStartingUnits();
         }
         SortUnits();
+    }
+
+    public void AddResources(int amount)
+    {
+        resources += amount;
+        playerUI.ResourcesAmount.text = resources.ToString();
     }
 
     private void Update()

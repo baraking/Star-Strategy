@@ -280,6 +280,7 @@ public class Unit : Purchasables, System.IComparable
 
     public void RemoveFromCreationQueue(int i)
     {
+        myPlayer.AddResources(creationQueue[i].GetPrice());
         creationQueue.RemoveAt(i);
         if (i == 0)
         {

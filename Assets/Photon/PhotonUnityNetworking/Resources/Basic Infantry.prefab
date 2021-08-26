@@ -115,7 +115,7 @@ MonoBehaviour:
   isWaiting: 0
   curHP: 0
   unitWeapons: []
-  isComplete: 0
+  isComplete: 1
   buildProgress: 0
   healthBar: {fileID: 301798535742791991}
   carriedUnits: []

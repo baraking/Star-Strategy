@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerUI : MonoBehaviour
@@ -13,6 +14,8 @@ public class PlayerUI : MonoBehaviour
     public GameObject EndGameMessage;
     public GameObject VictoryMessage;
     public GameObject DefeatMessage;
+    public GameObject ResourcesPanel;
+    public TMP_Text ResourcesAmount;
 
     private void Awake()
     {

@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: Barracks
   m_EditorClassIdentifier: 
+  buildTime: 5
+  costToBuild: 500
+  price: 100
+  purchasables:
+  - {fileID: 6495721097943785211, guid: afb976fedd1a2a7478753e8a4d36e179, type: 3}
+  - {fileID: 6408989099902154574, guid: 9039c3378342bf1458545ae18194696f, type: 3}
+  - {fileID: 7407236614044257174, guid: 01c6ad6f77609994ea98414e0df406c6, type: 3}
+  icon: {fileID: 21300000, guid: 6f5312a6165e9ed41af3a18e8a1de3b1, type: 3}
   prerequisites: 
   requirements: 
   name: Barracks
@@ -21,14 +29,7 @@ MonoBehaviour:
   max_hp: 1000
   speed: 0
   rotation_speed: 0
-  buildTime: 5
-  costToBuild: 500
   gatherAmount: 0
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
-  purchasables:
-  - {fileID: 6495721097943785211, guid: afb976fedd1a2a7478753e8a4d36e179, type: 3}
-  - {fileID: 6408989099902154574, guid: 9039c3378342bf1458545ae18194696f, type: 3}
-  - {fileID: 7407236614044257174, guid: 01c6ad6f77609994ea98414e0df406c6, type: 3}
-  icon: {fileID: 21300000, guid: 6f5312a6165e9ed41af3a18e8a1de3b1, type: 3}

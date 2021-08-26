@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: Builder
   m_EditorClassIdentifier: 
+  buildTime: 10
+  costToBuild: 0
+  price: 75
+  purchasables:
+  - {fileID: 4864560888133127384, guid: ec256ad70e26a434ab11ba3bd3eb27d0, type: 3}
+  - {fileID: 6510670095988132590, guid: ed25c87afafd5154fa8debf56250f82f, type: 3}
+  - {fileID: 6333845333840030689, guid: ff5a3d8b26a3bc54e90c2ff8f80c64bf, type: 3}
+  - {fileID: 7577451267206726350, guid: f978c28e2cdaed34bab2cec78083de19, type: 3}
+  icon: {fileID: 21300000, guid: 8cdab3c2f96aebf49887be470239fe49, type: 3}
   prerequisites: 
   requirements: 
   name: Builder
@@ -21,15 +30,7 @@ MonoBehaviour:
   max_hp: 200
   speed: 0.5
   rotation_speed: 1
-  buildTime: 10
-  costToBuild: 0
   gatherAmount: 10
   gatheringCapacity: 75
   gatheringRange: 0.25
   gatheringCooldown: 1
-  purchasables:
-  - {fileID: 4864560888133127384, guid: ec256ad70e26a434ab11ba3bd3eb27d0, type: 3}
-  - {fileID: 6510670095988132590, guid: ed25c87afafd5154fa8debf56250f82f, type: 3}
-  - {fileID: 6333845333840030689, guid: ff5a3d8b26a3bc54e90c2ff8f80c64bf, type: 3}
-  - {fileID: 7577451267206726350, guid: f978c28e2cdaed34bab2cec78083de19, type: 3}
-  icon: {fileID: 21300000, guid: 8cdab3c2f96aebf49887be470239fe49, type: 3}

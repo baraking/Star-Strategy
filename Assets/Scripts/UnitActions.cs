@@ -208,7 +208,7 @@ public class UnitActions : MonoBehaviour
         {
             actingUnit.Wait(Gather, actingUnit.unitDetails.gatheringCooldown);
             actingUnit.GetComponent<Gatherer>().isFull = false;
-            actingUnit.myPlayer.resources += actingUnit.GetComponent<Gatherer>().carryingAmount;
+            actingUnit.myPlayer.AddResources(actingUnit.GetComponent<Gatherer>().carryingAmount);
             actingUnit.GetComponent<Gatherer>().carryingAmount = 0;
             actingUnit.GetComponent<Gatherer>().targetResourceSilo = null;
             if (actingUnit.GetComponent<Gatherer>().targetResource != null)
@@ -258,6 +258,15 @@ public class UnitActions : MonoBehaviour
         }
         else
         {
+            if (actingUnit.GetComponent<Unit>().myPlayer.resources >= target.GetComponent<Purchasables>().GetPrice())
+            {
+                actingUnit.GetComponent<Unit>().myPlayer.AddResources(-target.GetComponent<Purchasables>().GetPrice());
+            }
+            else
+            {
+                actingUnit.unitAction = Idle;
+                return;
+            }
             actingUnit.StartSpawningBuilding();
             actingUnit.unitAction = Build;
             actingUnit.myPlayer.UpdateUnitAction(actingUnit);

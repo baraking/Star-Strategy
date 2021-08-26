@@ -6,6 +6,7 @@ public class PurchasableDetails : ScriptableObject
 {
     public float buildTime;
     public int costToBuild;
+    public int price;
 
     public List<Purchasables> purchasables;
 

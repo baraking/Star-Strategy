@@ -12,6 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: Mega Tank
   m_EditorClassIdentifier: 
+  buildTime: 25
+  costToBuild: 0
+  price: 10000
+  purchasables:
+  - {fileID: 2942943752841473789, guid: 028849d5b788dcd4db41dded8f9d9de7, type: 3}
+  - {fileID: 553557335550840920, guid: b08f64d4f8732404f89ca7c42aa4ddfa, type: 3}
+  - {fileID: 6676915221380271608, guid: c4c606646f3957c41a32663ea85fad66, type: 3}
+  icon: {fileID: 21300000, guid: 2f224a4fa47643f4a9d252713557b6d2, type: 3}
   prerequisites: 
   requirements: 
   name: Basic APC
@@ -21,14 +29,7 @@ MonoBehaviour:
   max_hp: 300
   speed: 0.5
   rotation_speed: 0.5
-  buildTime: 25
-  costToBuild: 0
   gatherAmount: 0
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
-  purchasables:
-  - {fileID: 2942943752841473789, guid: 028849d5b788dcd4db41dded8f9d9de7, type: 3}
-  - {fileID: 553557335550840920, guid: b08f64d4f8732404f89ca7c42aa4ddfa, type: 3}
-  - {fileID: 6676915221380271608, guid: c4c606646f3957c41a32663ea85fad66, type: 3}
-  icon: {fileID: 21300000, guid: 2f224a4fa47643f4a9d252713557b6d2, type: 3}

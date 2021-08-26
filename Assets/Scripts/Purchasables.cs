@@ -55,23 +55,40 @@ public class Purchasables : MonoBehaviour
         return GetData().name;
     }
 
+    public int GetPrice()
+    {
+        return GetData().price;
+    }
+
     public void Purchase(GameObject purchasingParent)
     {
         //print("Purchase " + gameObject.name + " for " + purchasingParent.gameObject.name);
         //print("My Position: " + purchasingParent.transform.position);
-
-        if (this.GetComponent<Weapon>())
+        if (purchasingParent.GetComponent<Unit>().myPlayer.resources>=GetPrice())
         {
-            purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
-            PurchaseWeapon(purchasingParent);
-            return;
+            
+            if (this.GetComponent<Weapon>())
+            {
+                purchasingParent.GetComponent<Unit>().myPlayer.AddResources(-GetPrice());
+                purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
+                PurchaseWeapon(purchasingParent);
+                return;
+            }
+
+            if (this.GetComponent<Unit>())
+            {
+                if (this.GetComponent<Unit>().unitDetails.unitType != UnitDetails.UnitType.Building)
+                {
+                    purchasingParent.GetComponent<Unit>().myPlayer.AddResources(-GetPrice());
+                }
+                purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
+                PurchaseUnit(purchasingParent);
+                return;
+            }
         }
-
-        if (this.GetComponent<Unit>())
+        else
         {
-            purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
-            PurchaseUnit(purchasingParent);
-            return;
+            print("Not enough resources");
         }
     }
 
