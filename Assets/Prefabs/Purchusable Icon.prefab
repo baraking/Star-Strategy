@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1436898179569455324}
   - component: {fileID: 1436898179569455322}
   - component: {fileID: 1436898179569455323}
+  - component: {fileID: 955200124765365545}
   m_Layer: 5
   m_Name: Purchusable Icon
   m_TagString: Untagged
@@ -76,6 +77,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &955200124765365545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436898179569455325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 733e7bd7545abb04e9d4f31a3540fbee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1436898179584612368
 GameObject:
   m_ObjectHideFlags: 0
