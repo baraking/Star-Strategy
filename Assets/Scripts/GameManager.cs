@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject SceneCamera;
 
     public StartPositions startPositions;
+    public ResourcePositions resourcePositions;
 
     public GameObject Units;
     public GameObject newPlayer;
