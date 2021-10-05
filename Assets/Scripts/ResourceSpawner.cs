@@ -5,21 +5,22 @@ using UnityEngine;
 public class ResourceSpawner : MonoBehaviour
 {
     public static readonly int BASE_RESOURCES_NUMBER = 5;
+    public List<GameObject> myResources = new List<GameObject>();
 
     public void SpawnResources(GameObject resource)
     {
-        int radius = GetComponent<DrawGizmo>().value;
+        float radius = GetComponent<DrawGizmo>().value * 0.1f;
 
-        for (int i = 0; i < radius * BASE_RESOURCES_NUMBER; i++)
+        float r2 = radius * radius;
+
+        for (int i = 0; i < GetComponent<DrawGizmo>().value * BASE_RESOURCES_NUMBER; i++)
         {
+            float x = Random.Range(-radius, radius);
+            float x2 = x * x;
+            float z = Random.Range(-Mathf.Sqrt(r2-x2), Mathf.Sqrt(r2 - x2));
 
+            myResources.Add(Photon.Pun.PhotonNetwork.Instantiate(resource.name, new Vector3(x + transform.position.x,0, z + transform.position.z), Quaternion.Euler(0,Random.Range(0f,360f),0), 0));
         }
-        //int x = Random in -radius,radius
-        //int y = Random in -sqrt(radius^2-x^2),sqrt(radius^2-x^2)
-
-        //random rotation
-
-        //instantiate at (x,0,y) with random rotation
     }
 
     public void OnResourceDepleted()

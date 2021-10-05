@@ -265,7 +265,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 
     public void SpawnUnitImmidiate(Vector3 location, GameObject purchasable)
     {
-        Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
+        //Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
 
         //GameObject newUnit = Instantiate(purchasable);
         object[] instantiationData = new object[] { playerNumber, Unit.SET_TO_IS_COMPLETE };

@@ -5,22 +5,22 @@ using UnityEngine;
 public class ResourcePositions : MonoBehaviour
 {
 
-    public List<ResourceSpawner> resourcePositions;
+    public List<ResourceSpawner> resourcePositionsList;
     public GameObject resourcePrefab;
 
     void Awake()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            resourcePositions.Add(transform.GetChild(i).GetComponent<ResourceSpawner>());
-
-            //if is the master
-            //resourcePositions[i].SpawnResources(resourcePrefab);
+            resourcePositionsList.Add(transform.GetChild(i).GetComponent<ResourceSpawner>());
         }
     }
 
-    void Update()
+    public void SpawnResourceInChildren()
     {
-        
+        foreach(ResourceSpawner spawner in resourcePositionsList)
+        {
+            spawner.SpawnResources(resourcePrefab);
+        }
     }
 }
