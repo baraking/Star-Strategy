@@ -27,7 +27,13 @@ public class ResourceSpawner : MonoBehaviour
             float z = RandomNumberCloserToCenter(Mathf.Sqrt(r2 - x2));
 
             myResources.Add(Photon.Pun.PhotonNetwork.Instantiate(resource.name, new Vector3(x + transform.position.x,0, z + transform.position.z), Quaternion.Euler(0,Random.Range(0f,360f),0), 0));
+            myResources[i].GetComponent<Resource>().parentResourceGroup = this;
         }
+    }
+
+    public Resource GetRandomResourceFromSpawner()
+    {
+        return myResources[Random.Range(0, myResources.Count - 1)].GetComponent<Resource>();
     }
 
     private float RandomNumberCloserToCenter(float baseValue)

@@ -8,7 +8,9 @@ public class Resource : MonoBehaviour
 
     public int curValue;
     public PhotonView photonView;
-        public int photonID;
+    public int photonID;
+
+    public ResourceSpawner parentResourceGroup;
 
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class Resource : MonoBehaviour
         }
         if (curValue < 0)
         {
-            OnDepleted();
+            //OnDepleted();
             return tmpValue;
         }
         return amountTaken;

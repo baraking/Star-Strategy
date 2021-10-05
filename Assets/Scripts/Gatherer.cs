@@ -12,6 +12,7 @@ public class Gatherer : Walkable
 
     public Resource targetResource;
     public ResourceSilo targetResourceSilo;
+    public ResourceSpawner targetResourceParent;
 
     void Start()
     {

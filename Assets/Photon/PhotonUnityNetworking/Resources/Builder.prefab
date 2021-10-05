@@ -425,6 +425,7 @@ MonoBehaviour:
   carryingAmount: 0
   targetResource: {fileID: 0}
   targetResourceSilo: {fileID: 0}
+  targetResourceParent: {fileID: 0}
 --- !u!114 &8344108302598083539
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class PurchusableIcon : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (mouseOver)
         {
             hoverTime += Time.deltaTime;
-            Debug.Log(hoverTime);
+            //Debug.Log(hoverTime);
         }
     }
 

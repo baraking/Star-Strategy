@@ -176,12 +176,26 @@ public class UnitActions : MonoBehaviour
                     actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResourceSilo.gameObject;
                     actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResourceSilo.transform.position };
                     actingUnit.unitAction = RetrieveResources;
+
+                    if (target.GetComponent<Resource>().curValue <= 0)
+                    {
+                        target.GetComponent<Resource>().OnDepleted();
+                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner();
+                    }
                 }
                 else
                 {
                     actingUnit.GetComponent<Gatherer>().carryingAmount += target.GetComponent<Resource>().GiveResources(actingUnit.unitDetails.gatherAmount);
                     actingUnit.GetComponent<Gatherer>().isInGatheringCooldown = true;
                     actingUnit.Wait(Gather, actingUnit.unitDetails.gatheringCooldown);
+
+                    if (target.GetComponent<Resource>().curValue <= 0)
+                    {
+                        target.GetComponent<Resource>().OnDepleted();
+                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner();
+                        actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResource.gameObject;
+                        actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResource.transform.position };
+                    }
                 }
             }
             else

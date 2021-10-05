@@ -569,6 +569,7 @@ public class mouseController : MonoBehaviour
                         if (unit.GetComponent<Gatherer>())
                         {
                             unit.GetComponent<Gatherer>().targetResource = objectHit.GetComponentInParent<Resource>();
+                            unit.GetComponent<Gatherer>().targetResourceParent = objectHit.GetComponentInParent<Resource>().parentResourceGroup;
 
                             unit.targetsLocation = new List<Vector3>() { objectHit.transform.position };
                             unit.endQuaternion = new Quaternion();
