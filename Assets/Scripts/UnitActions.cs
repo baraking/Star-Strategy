@@ -7,7 +7,7 @@ using UnityEngine;
 //attacking a building while it is being built may cause an endless build
 public class UnitActions : MonoBehaviour
 {
-    public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build }
+    public enum PossibleAction { Rotate, Move, Patrol, Advance, Attack, Gather, RetrieveResources, Ram, Idle , Spawn , StartBuilding , Build , Produce }
 
     public static float ROTATION_THRESHOLD = 15f;
 
@@ -176,12 +176,26 @@ public class UnitActions : MonoBehaviour
                     actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResourceSilo.gameObject;
                     actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResourceSilo.transform.position };
                     actingUnit.unitAction = RetrieveResources;
+
+                    if (target.GetComponent<Resource>().curValue <= 0)
+                    {
+                        target.GetComponent<Resource>().OnDepleted();
+                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner();
+                    }
                 }
                 else
                 {
                     actingUnit.GetComponent<Gatherer>().carryingAmount += target.GetComponent<Resource>().GiveResources(actingUnit.unitDetails.gatherAmount);
                     actingUnit.GetComponent<Gatherer>().isInGatheringCooldown = true;
                     actingUnit.Wait(Gather, actingUnit.unitDetails.gatheringCooldown);
+
+                    if (target.GetComponent<Resource>().curValue <= 0)
+                    {
+                        target.GetComponent<Resource>().OnDepleted();
+                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner();
+                        actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResource.gameObject;
+                        actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResource.transform.position };
+                    }
                 }
             }
             else
@@ -208,7 +222,7 @@ public class UnitActions : MonoBehaviour
         {
             actingUnit.Wait(Gather, actingUnit.unitDetails.gatheringCooldown);
             actingUnit.GetComponent<Gatherer>().isFull = false;
-            actingUnit.myPlayer.resources += actingUnit.GetComponent<Gatherer>().carryingAmount;
+            actingUnit.myPlayer.AddResources(actingUnit.GetComponent<Gatherer>().carryingAmount);
             actingUnit.GetComponent<Gatherer>().carryingAmount = 0;
             actingUnit.GetComponent<Gatherer>().targetResourceSilo = null;
             if (actingUnit.GetComponent<Gatherer>().targetResource != null)
@@ -235,6 +249,8 @@ public class UnitActions : MonoBehaviour
         if (actingUnit.unitDetails.unitType == UnitDetails.UnitType.Building)
         {
             actingUnit.StartSpawningUnit();
+            actingUnit.unitAction = Produce;
+            actingUnit.myPlayer.UpdateUnitAction(actingUnit);
         }
         else if (Vector3.Distance(actingUnit.transform.position, targetsLocation[0]) > actingUnit.unitDetails.gatheringRange)
         {
@@ -243,6 +259,8 @@ public class UnitActions : MonoBehaviour
         else
         {
             actingUnit.StartSpawningUnit();
+            actingUnit.unitAction = Produce;
+            actingUnit.myPlayer.UpdateUnitAction(actingUnit);
         }
     }
 
@@ -254,6 +272,15 @@ public class UnitActions : MonoBehaviour
         }
         else
         {
+            if (actingUnit.GetComponent<Unit>().myPlayer.resources >= target.GetComponent<Purchasables>().GetPrice())
+            {
+                actingUnit.GetComponent<Unit>().myPlayer.AddResources(-target.GetComponent<Purchasables>().GetPrice());
+            }
+            else
+            {
+                actingUnit.unitAction = Idle;
+                return;
+            }
             actingUnit.StartSpawningBuilding();
             actingUnit.unitAction = Build;
             actingUnit.myPlayer.UpdateUnitAction(actingUnit);
@@ -270,6 +297,11 @@ public class UnitActions : MonoBehaviour
         {
             actingUnit.Build();
         }
+    }
+
+    public static void Produce(Unit actingUnit, GameObject target, Quaternion endQuaternion, List<Vector3> targetsLocation)
+    {
+         actingUnit.ProduceUnit();
     }
 
     //embark
@@ -326,6 +358,10 @@ public class UnitActions : MonoBehaviour
         {
             return 12;
         }
+        else if (action == UnitActions.Produce)
+        {
+            return 13;
+        }
         else
         {
             return -1;
@@ -381,6 +417,10 @@ public class UnitActions : MonoBehaviour
         else if (number == 12)
         {
             return UnitActions.Build;
+        }
+        else if (number == 13)
+        {
+            return UnitActions.Produce;
         }
         else
         {

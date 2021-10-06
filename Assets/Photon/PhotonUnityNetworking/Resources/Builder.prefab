@@ -408,6 +408,9 @@ MonoBehaviour:
   healthBar: {fileID: 7516853792238265833}
   carriedUnits: []
   carriedAmount: 0
+  creationQueue: []
+  curCreationProgress: 0
+  curCreatonTarget: 0
   photonView: {fileID: 0}
   photonID: 0
   targetsLocation: []
@@ -422,6 +425,7 @@ MonoBehaviour:
   carryingAmount: 0
   targetResource: {fileID: 0}
   targetResourceSilo: {fileID: 0}
+  targetResourceParent: {fileID: 0}
 --- !u!114 &8344108302598083539
 MonoBehaviour:
   m_ObjectHideFlags: 0

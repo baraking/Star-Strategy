@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
+using System;
 
 //fix IsUnitSelectable(Unit other)
 //may need to update/fix the player camera part.
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
     public void Start()
     {
         resources = 1000;
+        playerUI.ResourcesAmount.text = resources.ToString();
 
         /*foreach(Unit unit in playerUnits)
         {
@@ -103,6 +106,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
         SortUnits();
     }
 
+    public void AddResources(int amount)
+    {
+        resources += amount;
+        playerUI.ResourcesAmount.text = resources.ToString();
+    }
+
     private void Update()
     {
         /*foreach (PlayerController playerController in GameManager.Instance.playersHolder.allPlayers)
@@ -118,6 +127,59 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
                 //}
             }
         }*/
+    }
+
+    public void DisplayPurchasableQueue(Unit selectedUnit)
+    {
+        /*if (selectedUnit.creationQueue.Count < 1)
+        {
+            return;
+        }*/
+
+        foreach (Transform child in playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        int i = 0;
+        foreach (Purchasables curPurchasable in selectedUnit.creationQueue)
+        {
+            //print("purchasables: " + curPurchasable);
+            GameObject newPurchasableUI = Instantiate(GameManager.Instance.purchaseablePrefab);
+            newPurchasableUI.GetComponentInChildren<Button>().image.sprite = curPurchasable.GetIcon();
+            newPurchasableUI.transform.name = curPurchasable.GetName();
+            newPurchasableUI.GetComponentInChildren<Button>().transform.name = i.ToString();
+
+            newPurchasableUI.transform.SetParent(playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform, false);
+            if (i == 0)
+            {
+                //ProgressBar progressBar = playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>();
+                ProgressBar progressBar = newPurchasableUI.GetComponentInChildren<ProgressBar>();
+                progressBar.SetImageToState(true);
+                progressBar.slider.maxValue = selectedUnit.creationQueue[0].GetData().buildTime;
+                progressBar.slider.value = selectedUnit.buildProgress;
+            }
+
+            /*if (curPurchasable.GetPrerequisites().Length > 0)
+            {
+                foreach (int i in curPurchasable.GetPrerequisites())
+                {
+                    if (!myPlayer.PlayerRaceData.landmarks[i])
+                    {
+                        newPurchasableUI.GetComponentInChildren<Button>().interactable = false;
+                    }
+                }
+            }*/
+
+            if (curPurchasable.GetComponent<Weapon>())
+            {
+                print("@@@@@Fix this!!@@@@@");
+            }
+
+            newPurchasableUI.GetComponentInChildren<Button>().onClick.AddListener(delegate () { selectedUnit.RemoveFromCreationQueue(Int32.Parse(newPurchasableUI.GetComponentInChildren<Button>().transform.name)); });
+            print("Added for " + i);
+            i++;
+        }
     }
 
     public void UpdateUnitAction(Unit unit)
@@ -203,7 +265,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 
     public void SpawnUnitImmidiate(Vector3 location, GameObject purchasable)
     {
-        Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
+        //Debug.Log("spawning a " + purchasable.GetComponent<Unit>().unitDetails.name);
 
         //GameObject newUnit = Instantiate(purchasable);
         object[] instantiationData = new object[] { playerNumber, Unit.SET_TO_IS_COMPLETE };

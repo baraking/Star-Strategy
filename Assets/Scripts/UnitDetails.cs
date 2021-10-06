@@ -22,15 +22,8 @@ public class UnitDetails : PurchasableDetails
     public float speed;
     public float rotation_speed;
 
-    public float buildTime;
-    public int costToBuild;
-
     public int gatherAmount;
     public int gatheringCapacity;
     public float gatheringRange;
     public float gatheringCooldown;
-
-    public List<Purchasables> purchasables;
-
-    public Sprite icon;
 }

@@ -81,6 +81,7 @@ MonoBehaviour:
   curValue: 100
   photonView: {fileID: 0}
   photonID: 0
+  parentResourceGroup: {fileID: 0}
 --- !u!135 &3706704526329712862
 SphereCollider:
   m_ObjectHideFlags: 0

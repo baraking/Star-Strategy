@@ -35,23 +35,60 @@ public class Purchasables : MonoBehaviour
         return null;
     }
 
-    public void Purchase(GameObject purchasingParent)
+    public PurchasableDetails GetData()
     {
-        //print("Purchase " + gameObject.name + " for " + purchasingParent.gameObject.name);
-        //print("My Position: " + purchasingParent.transform.position);
-
         if (this.GetComponent<Weapon>())
         {
-            purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
-            PurchaseWeapon(purchasingParent);
-            return;
+            return this.GetComponent<Weapon>().weaponDetails;
         }
 
         if (this.GetComponent<Unit>())
         {
-            purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
-            PurchaseUnit(purchasingParent);
-            return;
+            return this.GetComponent<Unit>().unitDetails;
+        }
+
+        return null;
+    }
+
+    public string GetName()
+    {
+        return GetData().name;
+    }
+
+    public int GetPrice()
+    {
+        return GetData().price;
+    }
+
+    public void Purchase(GameObject purchasingParent)
+    {
+        //print("Purchase " + gameObject.name + " for " + purchasingParent.gameObject.name);
+        //print("My Position: " + purchasingParent.transform.position);
+        if (purchasingParent.GetComponent<Unit>().myPlayer.resources>=GetPrice())
+        {
+            
+            if (this.GetComponent<Weapon>())
+            {
+                purchasingParent.GetComponent<Unit>().myPlayer.AddResources(-GetPrice());
+                purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
+                PurchaseWeapon(purchasingParent);
+                return;
+            }
+
+            if (this.GetComponent<Unit>())
+            {
+                if (this.GetComponent<Unit>().unitDetails.unitType != UnitDetails.UnitType.Building)
+                {
+                    purchasingParent.GetComponent<Unit>().myPlayer.AddResources(-GetPrice());
+                }
+                purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
+                PurchaseUnit(purchasingParent);
+                return;
+            }
+        }
+        else
+        {
+            print("Not enough resources");
         }
     }
 

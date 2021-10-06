@@ -12,11 +12,4 @@ public class WeaponDetails : PurchasableDetails
     public float timeToReload;
     public int magazineSize;
     public bool shouldTurnToFire;
-
-    public float buildTime;
-    public int costToBuild;
-
-    public List<Purchasables> purchasables;
-
-    public Sprite icon;
 }

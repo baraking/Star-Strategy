@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f835c833d280a24c8996e3258ac54d0, type: 3}
   m_Name: Sample Laser
   m_EditorClassIdentifier: 
+  buildTime: 3
+  costToBuild: 100
+  price: 25
+  purchasables: []
+  icon: {fileID: 21300000, guid: d81eac7d019167f4ba7a4cfc83645722, type: 3}
+  prerequisites: 
+  requirements: 
   name: Sample Laser Data
   range: 1
   damage: 2
@@ -19,7 +26,3 @@ MonoBehaviour:
   timeToReload: 1
   magazineSize: 1
   shouldTurnToFire: 0
-  buildTime: 3
-  costToBuild: 100
-  purchasables: []
-  icon: {fileID: 21300000, guid: d81eac7d019167f4ba7a4cfc83645722, type: 3}

@@ -84,11 +84,14 @@ MonoBehaviour:
   isWaiting: 0
   curHP: 0
   unitWeapons: []
-  isComplete: 0
+  isComplete: 1
   buildProgress: 0
   healthBar: {fileID: 1408828618449008082}
   carriedUnits: []
   carriedAmount: 0
+  creationQueue: []
+  curCreationProgress: 0
+  curCreatonTarget: 0
   photonView: {fileID: 0}
   photonID: 0
   targetsLocation: []

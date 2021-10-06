@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject SceneCamera;
 
     public StartPositions startPositions;
+    public List<ResourcePositions> resourcePositionsByTypeAndLocation;
 
     public GameObject Units;
     public GameObject newPlayer;
@@ -83,6 +84,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         newPlayer = PhotonNetwork.Instantiate(PlayerPrefab.name, startPositions.startPositions[index].transform.position, Quaternion.identity, 0, instantiationData);
 
         photonView.RPC("setPlayersData", RpcTarget.All, index);
+
+        if (index == 0)
+        {
+            LevelDataSetup();
+        }
     }
 
     [PunRPC]
@@ -101,7 +107,9 @@ public class GameManager : MonoBehaviourPunCallbacks
                 newPlayer = player.gameObject;
                 player.name = "Player" + "_" + index;
                 player.GetComponent<PlayerController>().playerNumber = (int)index;
-                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().backgroundImage.color = GameManager.Instance.basicColors1[(int)index];
+                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableBackgroundImage.color = GameManager.Instance.basicColors1[(int)index];
+                player.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueBackgroundImage.color = GameManager.Instance.basicColors1[(int)index];
+
                 player.transform.SetParent(playersHolder.transform);
                 //Debug.Log("Set parent to player");
 
@@ -160,5 +168,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         //EditorApplication.isPlaying = false;
         Application.Quit();
+    }
+
+    public void LevelDataSetup()
+    {
+        foreach(ResourcePositions resourcePositions in resourcePositionsByTypeAndLocation)
+        {
+            print(resourcePositions.name);
+            resourcePositions.SpawnResourceInChildren();
+        }
     }
 }

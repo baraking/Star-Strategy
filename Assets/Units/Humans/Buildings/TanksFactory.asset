@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed6e7752daf65243a94d3c49eb6b6c5, type: 3}
   m_Name: TanksFactory
   m_EditorClassIdentifier: 
+  buildTime: 5
+  costToBuild: 1500
+  price: 150
+  purchasables:
+  - {fileID: 3231060419954714136, guid: 3ce97692faaac194cb946de3354dd10c, type: 3}
+  - {fileID: 6194072957137350217, guid: 33de378a9a3cc6945b40d65cde375c7b, type: 3}
+  icon: {fileID: 21300000, guid: a9b5e133b77f1b54584014458b9c5cf3, type: 3}
   prerequisites: 00000000
   requirements: 01000000
   name: TanksFactory
@@ -21,13 +28,7 @@ MonoBehaviour:
   max_hp: 1500
   speed: 0
   rotation_speed: 0
-  buildTime: 5
-  costToBuild: 1500
   gatherAmount: 0
   gatheringCapacity: 0
   gatheringRange: 0
   gatheringCooldown: 0
-  purchasables:
-  - {fileID: 3231060419954714136, guid: 3ce97692faaac194cb946de3354dd10c, type: 3}
-  - {fileID: 6194072957137350217, guid: 33de378a9a3cc6945b40d65cde375c7b, type: 3}
-  icon: {fileID: 21300000, guid: a9b5e133b77f1b54584014458b9c5cf3, type: 3}
