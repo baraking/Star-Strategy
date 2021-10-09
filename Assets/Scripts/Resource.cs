@@ -11,6 +11,7 @@ public class Resource : MonoBehaviour
     public int photonID;
 
     public ResourceSpawner parentResourceGroup;
+    public int indexInParent;
 
     private void Awake()
     {
@@ -35,8 +36,8 @@ public class Resource : MonoBehaviour
         }
         if (curValue < 0)
         {
-            //OnDepleted();
-            return tmpValue;
+            OnDepleted();
+            //return tmpValue;
         }
         return amountTaken;
     }
@@ -46,8 +47,8 @@ public class Resource : MonoBehaviour
         if (curValue <= 0)
         {
             print("Resource depleted :(");
-            //PhotonNetwork.Destroy(gameObject);
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }

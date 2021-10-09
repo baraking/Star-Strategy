@@ -180,7 +180,7 @@ public class UnitActions : MonoBehaviour
                     if (target.GetComponent<Resource>().curValue <= 0)
                     {
                         target.GetComponent<Resource>().OnDepleted();
-                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner();
+                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner(target.GetComponent<Resource>().indexInParent, actingUnit.photonID);
                     }
                 }
                 else
@@ -192,7 +192,7 @@ public class UnitActions : MonoBehaviour
                     if (target.GetComponent<Resource>().curValue <= 0)
                     {
                         target.GetComponent<Resource>().OnDepleted();
-                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner();
+                        actingUnit.GetComponent<Gatherer>().targetResource = actingUnit.GetComponent<Gatherer>().targetResourceParent.GetRandomResourceFromSpawner(target.GetComponent<Resource>().indexInParent, actingUnit.photonID);
                         actingUnit.actionTarget = actingUnit.GetComponent<Gatherer>().targetResource.gameObject;
                         actingUnit.targetsLocation = new List<Vector3>() { actingUnit.GetComponent<Gatherer>().targetResource.transform.position };
                     }
