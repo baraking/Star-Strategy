@@ -47,6 +47,11 @@ public class Purchasables : MonoBehaviour
             return this.GetComponent<Unit>().unitDetails;
         }
 
+        if (this.GetComponent<Upgrade>())
+        {
+            return this.GetComponent<Upgrade>().upgradeDetails;
+        }
+
         return null;
     }
 
