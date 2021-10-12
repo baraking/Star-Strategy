@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Purchasables : MonoBehaviour
 {
-    public PurchasableDetails purchasableDetails;
+    public int RACE_INDEX;
+
+    [SerializeField] public PurchasableDetails purchasableDetails;
     public float timeStartedUpgrading;
     public bool isBuilding;
 

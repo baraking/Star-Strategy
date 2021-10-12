@@ -17,7 +17,7 @@ public class Unit : Purchasables, System.IComparable
 {
     public static readonly bool SET_TO_IS_COMPLETE=true;
 
-    public UnitDetails unitDetails;
+    [SerializeField] public UnitDetails unitDetails;
 
     public PlayerController myPlayer;
     public int myPlayerNumber;

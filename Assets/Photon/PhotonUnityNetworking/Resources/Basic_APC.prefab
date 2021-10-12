@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69f7cc0e6b24abf4a98080941d2d8044, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RACE_INDEX: 3
   purchasableDetails: {fileID: 0}
   timeStartedUpgrading: 0
   isBuilding: 0

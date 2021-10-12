@@ -16,7 +16,7 @@ using UnityEngine;
 //should fire only after weapon turned on target
 public class Weapon : Purchasables
 {
-    public WeaponDetails weaponDetails;
+    [SerializeField] public WeaponDetails weaponDetails;
     public bool isInCooldown;
     public Vector3 rangeCalculationPoint;
     public Unit weaponParent;

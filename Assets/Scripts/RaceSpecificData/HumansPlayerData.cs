@@ -9,8 +9,11 @@ public class HumansPlayerData : MonoBehaviour
     //index 1 - has Tanks Factory
     public int arraySize = 2;
 
+    public FactionSpeciefcPurchasablesList factionSpeciefcPurchasablesList;
+
     private void Awake()
     {
         landmarks = new bool[arraySize];
+        factionSpeciefcPurchasablesList = (FactionSpeciefcPurchasablesList)Resources.Load("HumansList");
     }
 }

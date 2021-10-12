@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 573c6aa1bfd1217459534ba6f27221b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RACE_INDEX: 11
   purchasableDetails: {fileID: 0}
   timeStartedUpgrading: 0
   isBuilding: 0
@@ -189,8 +190,7 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
