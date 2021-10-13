@@ -517,6 +517,8 @@ MonoBehaviour:
   PlayerRaceData: {fileID: 0}
   factionStartingData: {fileID: 11400000, guid: 2224c56cc65f2a74e8106cd29930e33f,
     type: 2}
+  humanFactionDataHolder: {fileID: 3367112079761551310, guid: bbdf4a914a40fc5408005de3500fc206,
+    type: 3}
 --- !u!114 &8761641264708706018
 MonoBehaviour:
   m_ObjectHideFlags: 0

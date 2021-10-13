@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FactionList", menuName = "FactionList")]
 public class FactionSpeciefcPurchasablesList : ScriptableObject
 {
-    public Purchasables[] details;
+    public PurchasableDetails[] details;
 }

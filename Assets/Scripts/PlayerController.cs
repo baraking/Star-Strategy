@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
     public HumansPlayerData PlayerRaceData;
     public FactionStartingData factionStartingData;
 
+    public GameObject humanFactionDataHolder;
+
     public void Awake()
     {
         //Default Setting!
@@ -39,7 +41,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
 
         if (playingRace == Race.Humans)
         {
-            PlayerRaceData = gameObject.AddComponent<HumansPlayerData>();
+            //PlayerRaceData = gameObject.AddComponent<HumansPlayerData>();
+            GameObject factionDataHolder = Instantiate(humanFactionDataHolder);
+            factionDataHolder.transform.SetParent(transform);
+            PlayerRaceData = factionDataHolder.GetComponent<HumansPlayerData>();
+
+            PlayerRaceData.factionSpeciefcPurchasablesList.details[0].price += 10;
         }
 
         photonView = GetComponent<PhotonView>();

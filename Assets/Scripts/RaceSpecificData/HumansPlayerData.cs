@@ -14,6 +14,13 @@ public class HumansPlayerData : MonoBehaviour
     private void Awake()
     {
         landmarks = new bool[arraySize];
-        factionSpeciefcPurchasablesList = (FactionSpeciefcPurchasablesList)Resources.Load("HumansList");
+
+        for(int i=0;i< factionSpeciefcPurchasablesList.details.Length; i++)
+        {
+            PurchasableDetails tmp = new PurchasableDetails();
+
+            //foreach(var in ...)
+            //factionSpeciefcPurchasablesList.details[i] = ScriptableObject.Instantiate(factionSpeciefcPurchasablesList.details[i]);
+        }
     }
 }
