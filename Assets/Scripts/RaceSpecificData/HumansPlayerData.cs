@@ -17,7 +17,6 @@ public class HumansPlayerData : MonoBehaviour
         landmarks = new bool[arraySize];
 
         myFactionSpeciefcPurchasablesList = new List<PurchasableDetails>();
-        print(factionSpeciefcPurchasablesList.details.Length);
 
         for (int i=0;i< factionSpeciefcPurchasablesList.details.Length; i++)
         {

@@ -51,12 +51,13 @@ public class Weapon : Purchasables
 
     void Start()
     {
-        weaponDetails.CopyData((WeaponDetails)weaponParent.myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
         InitWeapon();
     }
 
     public void InitWeapon()
     {
+        weaponDetails = (WeaponDetails)ScriptableObject.CreateInstance("WeaponDetails");
+        weaponDetails.CopyData((WeaponDetails)weaponParent.myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
         purchasableDetails = weaponDetails;
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
