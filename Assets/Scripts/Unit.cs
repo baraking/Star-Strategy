@@ -93,6 +93,7 @@ public class Unit : Purchasables, System.IComparable
     void Start()
     {
         //photonView.RPC("InitUnit", RpcTarget.All);
+        unitDetails.CopyData((UnitDetails)myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
         InitUnit();
     }
 

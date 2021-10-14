@@ -51,6 +51,7 @@ public class Weapon : Purchasables
 
     void Start()
     {
+        weaponDetails.CopyData((WeaponDetails)weaponParent.myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
         InitWeapon();
     }
 
