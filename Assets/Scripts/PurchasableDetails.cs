@@ -22,6 +22,8 @@ public class PurchasableDetails : ScriptableObject
 
     public void CopyData(PurchasableDetails other)
     {
+        this.purchasables = new List<Purchasables>();
+ 
         this.buildTime = other.buildTime;
         this.costToBuild = other.costToBuild;
         this.price = other.price;
@@ -30,15 +32,17 @@ public class PurchasableDetails : ScriptableObject
         {
             this.purchasables.Add(tmpPurchasables);
         }
-        this.icon = other.icon;
 
+        this.icon = other.icon;
         this.prerequisites = new int[other.prerequisites.Length];
+
         for (int i = 0; i < this.prerequisites.Length; i++)
         {
             this.prerequisites[i] = other.prerequisites[i];
         }
 
         this.requirements = new int[other.requirements.Length];
+
         for (int i = 0; i < this.requirements.Length; i++)
         {
             this.requirements[i] = other.requirements[i];

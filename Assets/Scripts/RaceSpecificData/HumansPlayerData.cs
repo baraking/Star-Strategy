@@ -9,7 +9,7 @@ public class HumansPlayerData : MonoBehaviour
     //index 1 - has Tanks Factory
     public int arraySize = 2;
 
-    public FactionSpeciefcPurchasablesList factionSpeciefcPurchasablesList;
+    [SerializeField] private FactionSpeciefcPurchasablesList factionSpeciefcPurchasablesList;
     public List<PurchasableDetails> myFactionSpeciefcPurchasablesList;
    
     private void Awake()

@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
             factionDataHolder.transform.SetParent(transform);
             PlayerRaceData = factionDataHolder.GetComponent<HumansPlayerData>();
 
-            //PlayerRaceData.factionSpeciefcPurchasablesList.details[0].price += 10;
+            PlayerRaceData.myFactionSpeciefcPurchasablesList[0].price += 10;
         }
 
         photonView = GetComponent<PhotonView>();
