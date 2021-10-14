@@ -19,7 +19,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 1184508e9d07dbc478a3a36cb97232bb, type: 3}
   prerequisites: 01000000
   requirements: 
-  name: 
+  name: Basic Scout
   unitType: 1
   unitSize: 6
   carryingCapacity: 4

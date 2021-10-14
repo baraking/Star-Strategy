@@ -17,11 +17,16 @@ public class PurchasableDetails : ScriptableObject
 
     public PurchasableDetails(PurchasableDetails other)
     {
+        CopyData(other);
+    }
+
+    public void CopyData(PurchasableDetails other)
+    {
         this.buildTime = other.buildTime;
         this.costToBuild = other.costToBuild;
         this.price = other.price;
 
-        foreach(Purchasables tmpPurchasables in other.purchasables)
+        foreach (Purchasables tmpPurchasables in other.purchasables)
         {
             this.purchasables.Add(tmpPurchasables);
         }

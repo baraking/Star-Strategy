@@ -10,30 +10,36 @@ public class HumansPlayerData : MonoBehaviour
     public int arraySize = 2;
 
     public FactionSpeciefcPurchasablesList factionSpeciefcPurchasablesList;
-
+    public List<PurchasableDetails> myFactionSpeciefcPurchasablesList;
+   
     private void Awake()
     {
         landmarks = new bool[arraySize];
 
-        for(int i=0;i< factionSpeciefcPurchasablesList.details.Length; i++)
+        myFactionSpeciefcPurchasablesList = new List<PurchasableDetails>();
+        print(factionSpeciefcPurchasablesList.details.Length);
+
+        for (int i=0;i< factionSpeciefcPurchasablesList.details.Length; i++)
         {
-            if(factionSpeciefcPurchasablesList.details[i] is UnitDetails)
+            if (factionSpeciefcPurchasablesList.details[i] is UnitDetails)
             {
-                print("Unit!");
-                factionSpeciefcPurchasablesList.details[i] = new UnitDetails((UnitDetails)factionSpeciefcPurchasablesList.details[i]);
+                UnitDetails tmp = (UnitDetails)ScriptableObject.CreateInstance("UnitDetails");
+                tmp.CopyData((UnitDetails)factionSpeciefcPurchasablesList.details[i]);
+                myFactionSpeciefcPurchasablesList.Add(tmp);
             }
             else if (factionSpeciefcPurchasablesList.details[i] is WeaponDetails)
             {
-                print("Weapon!");
-                factionSpeciefcPurchasablesList.details[i] = new WeaponDetails(factionSpeciefcPurchasablesList.details[i]);
+                WeaponDetails tmp = (WeaponDetails)ScriptableObject.CreateInstance("WeaponDetails");
+                tmp.CopyData((WeaponDetails)factionSpeciefcPurchasablesList.details[i]);
+                myFactionSpeciefcPurchasablesList.Add(tmp);
             }
-            else
+            /*else
             {
                 print("Purchasable!");
                 factionSpeciefcPurchasablesList.details[i] = new PurchasableDetails(factionSpeciefcPurchasablesList.details[i]);
-            }
+            }*/
             //foreach(var in ...)
-            //factionSpeciefcPurchasablesList.details[i] = ScriptableObject.Instantiate(factionSpeciefcPurchasablesList.details[i]);
+            //myFactionSpeciefcPurchasablesList[i] = ScriptableObject.Instantiate(factionSpeciefcPurchasablesList.details[i]);
         }
     }
 }

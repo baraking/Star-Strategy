@@ -29,6 +29,13 @@ public class UnitDetails : PurchasableDetails
 
     public UnitDetails(UnitDetails other) : base(other)
     {
+        CopyData(other);
+    }
+
+    public void CopyData(UnitDetails other)
+    {
+        base.CopyData(other);
+
         this.name = other.name;
         this.unitType = other.unitType;
         this.unitSize = other.unitSize;

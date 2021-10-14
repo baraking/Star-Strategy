@@ -47,3 +47,4 @@ MonoBehaviour:
   arraySize: 2
   factionSpeciefcPurchasablesList: {fileID: 11400000, guid: 30af51646276ba04baa91f8149d1566d,
     type: 2}
+  myFactionSpeciefcPurchasablesList: []

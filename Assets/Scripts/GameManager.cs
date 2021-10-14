@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         foreach(ResourcePositions resourcePositions in resourcePositionsByTypeAndLocation)
         {
-            print(resourcePositions.name);
+            //print(resourcePositions.name);
             resourcePositions.SpawnResourceInChildren();
         }
     }
