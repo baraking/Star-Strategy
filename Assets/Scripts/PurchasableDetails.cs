@@ -14,4 +14,29 @@ public class PurchasableDetails : ScriptableObject
 
     public int[] prerequisites = new int[0];
     public int[] requirements = new int[0];
+
+    public PurchasableDetails(PurchasableDetails other)
+    {
+        this.buildTime = other.buildTime;
+        this.costToBuild = other.costToBuild;
+        this.price = other.price;
+
+        foreach(Purchasables tmpPurchasables in other.purchasables)
+        {
+            this.purchasables.Add(tmpPurchasables);
+        }
+        this.icon = other.icon;
+
+        this.prerequisites = new int[other.prerequisites.Length];
+        for (int i = 0; i < this.prerequisites.Length; i++)
+        {
+            this.prerequisites[i] = other.prerequisites[i];
+        }
+
+        this.requirements = new int[other.requirements.Length];
+        for (int i = 0; i < this.requirements.Length; i++)
+        {
+            this.requirements[i] = other.requirements[i];
+        }
+    }
 }

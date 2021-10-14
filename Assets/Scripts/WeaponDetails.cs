@@ -12,4 +12,9 @@ public class WeaponDetails : PurchasableDetails
     public float timeToReload;
     public int magazineSize;
     public bool shouldTurnToFire;
+
+    public WeaponDetails(PurchasableDetails other) : base(other)
+    {
+
+    }
 }

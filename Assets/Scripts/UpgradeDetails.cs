@@ -16,4 +16,8 @@ public class UpgradeDetails : PurchasableDetails
 
     //have a boolean array of all upgrades to not buy them a 2nd time
 
+    public UpgradeDetails(PurchasableDetails other) : base(other)
+    {
+
+    }
 }

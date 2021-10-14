@@ -26,4 +26,21 @@ public class UnitDetails : PurchasableDetails
     public int gatheringCapacity;
     public float gatheringRange;
     public float gatheringCooldown;
+
+    public UnitDetails(UnitDetails other) : base(other)
+    {
+        this.name = other.name;
+        this.unitType = other.unitType;
+        this.unitSize = other.unitSize;
+        this.carryingCapacity = other.carryingCapacity;
+        this.max_hp = other.max_hp;
+
+        this.speed = other.speed;
+        this.rotation_speed = other.rotation_speed;
+
+        this.gatherAmount = other.gatherAmount;
+        this.gatheringCapacity = other.gatheringCapacity;
+        this.gatheringRange = other.gatheringRange;
+        this.gatheringCooldown = other.gatheringCooldown;
+    }
 }

@@ -6,4 +6,9 @@ using UnityEngine;
 public class GroupMovementData : PurchasableDetails
 {
     public Sprite icon;
+
+    public GroupMovementData(PurchasableDetails other) : base(other)
+    {
+
+    }
 }
