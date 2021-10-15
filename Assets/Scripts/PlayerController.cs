@@ -287,13 +287,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, System.IComparable
         newUnit.GetComponent<Unit>().isComplete = true;
         newUnit.GetComponent<Unit>().healthBar.DisableConstructionBar();
 
-        print(name + "1");
-
-        print("Add a fix for this prior to InitUnit");
-
         newUnit.GetComponent<Unit>().InitUnit();
-
-        print(name + "2");
 
         //newUnit.GetComponent<Unit>().isComplete = false;
 

@@ -184,6 +184,7 @@ public class Unit : Purchasables, System.IComparable
     {
         unitDetails = (UnitDetails)ScriptableObject.CreateInstance("UnitDetails");
         unitDetails.CopyData((UnitDetails)myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
+
         purchasableDetails = unitDetails;
         if (healthBar == null)
         {
