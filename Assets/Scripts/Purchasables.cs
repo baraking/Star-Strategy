@@ -92,6 +92,12 @@ public class Purchasables : MonoBehaviour
                 PurchaseUnit(purchasingParent);
                 return;
             }
+            if (this.GetComponent<Upgrade>())
+            {
+                //purchasingParent.GetComponent<Unit>().myPlayer.AddResources(-GetPrice());
+                //purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
+                PurchaseUpgrade(purchasingParent);
+            }
         }
         else
         {
@@ -133,5 +139,10 @@ public class Purchasables : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void PurchaseUpgrade(GameObject purchasingParent)
+    {
+
     }
 }
