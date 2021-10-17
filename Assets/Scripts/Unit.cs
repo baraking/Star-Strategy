@@ -182,8 +182,10 @@ public class Unit : Purchasables, System.IComparable
     [PunRPC]
     public void InitUnit()
     {
-        unitDetails = (UnitDetails)ScriptableObject.CreateInstance("UnitDetails");
-        unitDetails.CopyData((UnitDetails)myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
+        //unitDetails = (UnitDetails)ScriptableObject.CreateInstance("UnitDetails");
+        //unitDetails.CopyData((UnitDetails)myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
+
+        unitDetails = (UnitDetails)myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX];
 
         purchasableDetails = unitDetails;
         if (healthBar == null)

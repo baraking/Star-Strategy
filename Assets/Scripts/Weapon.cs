@@ -58,8 +58,11 @@ public class Weapon : Purchasables
     {
         weaponParent = gameObject.GetComponentInParent<Unit>();
 
-        weaponDetails = (WeaponDetails)ScriptableObject.CreateInstance("WeaponDetails");
-        weaponDetails.CopyData((WeaponDetails)weaponParent.myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
+        //weaponDetails = (WeaponDetails)ScriptableObject.CreateInstance("WeaponDetails");
+        //weaponDetails.CopyData((WeaponDetails)weaponParent.myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX]);
+
+        weaponDetails = (WeaponDetails)weaponParent.myPlayer.PlayerRaceData.myFactionSpeciefcPurchasablesList[RACE_INDEX];
+
         purchasableDetails = weaponDetails;
         isInCooldown = false;
         //rangeCalculationPoint = transform.position;
