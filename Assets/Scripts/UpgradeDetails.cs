@@ -6,9 +6,9 @@ using UnityEngine;
 public class UpgradeDetails : PurchasableDetails
 {
 
-    //need to create for each player a list with all of his units details, and use that.
+    //need to create for each player a list with all of his units details, and use that.                        V
 
-    //hold other purchasableDetails parameters with the changed value, and change for the specifec player only.
+    //hold other purchasableDetails parameters with the changed value, and change for the specifec player only. V
 
     //have them as regular purchasables in buildings to buy
 
