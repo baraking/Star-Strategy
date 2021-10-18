@@ -7,13 +7,20 @@ public class Upgrade : Purchasables
 
     public UpgradeDetails upgradeDetails;
 
-    void Start()
+
+    public override int[] GetPrerequisites()
     {
-        
+        return upgradeDetails.prerequisites;
     }
 
-    void Update()
+    public override int[] GetRequirements()
     {
-        
+        return upgradeDetails.requirements;
     }
+
+    public override Sprite GetIcon()
+    {
+        return upgradeDetails.icon;
+    }
+
 }

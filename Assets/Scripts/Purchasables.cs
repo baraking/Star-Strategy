@@ -143,6 +143,6 @@ public class Purchasables : MonoBehaviour
 
     public void PurchaseUpgrade(GameObject purchasingParent)
     {
-
+        print("Buy " + purchasingParent.name);
     }
 }
