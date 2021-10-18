@@ -16,8 +16,10 @@ public class UpgradeDetails : PurchasableDetails
 
     //have a boolean array of all upgrades to not buy them a 2nd time
 
+    public enum PossibleParameters { Max_hp, Damage }
+
     public int[] unitIndex;
-    public string[] parameter;
+    public PossibleParameters[] parameter;
     public float[] newValueMultiplier;
 
     public UpgradeDetails(PurchasableDetails other) : base(other)

@@ -385,7 +385,7 @@ public class Unit : Purchasables, System.IComparable
         else if (actionTarget.GetComponent<Upgrade>() && buildProgress >= creationQueue[0].GetComponent<Upgrade>().upgradeDetails.buildTime)
         {
             buildProgress = creationQueue[0].GetComponent<Upgrade>().upgradeDetails.buildTime;
-            actionTarget.GetComponent<Upgrade>().ApplyUpgrade();
+            actionTarget.GetComponent<Upgrade>().ApplyUpgrade(myPlayerNumber);
             buildProgress = 0;
 
             Debug.Log("Finished building a " + creationQueue[0].GetComponent<Upgrade>().upgradeDetails.name);

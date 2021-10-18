@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6449d4c7e2a45c4080f8b0c57bfda89, type: 3}
   m_Name: InfantryHealthBoost
   m_EditorClassIdentifier: 
-  buildTime: 30
+  buildTime: 5
   costToBuild: 0
   price: 250
   purchasables: []
