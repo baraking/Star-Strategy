@@ -92,11 +92,13 @@ public class Purchasables : MonoBehaviour
                 PurchaseUnit(purchasingParent);
                 return;
             }
+
             if (this.GetComponent<Upgrade>())
             {
                 //purchasingParent.GetComponent<Unit>().myPlayer.AddResources(-GetPrice());
                 //purchasingParent.GetComponent<Purchasables>().timeStartedUpgrading = Time.time;
                 PurchaseUpgrade(purchasingParent);
+                return;
             }
         }
         else
@@ -144,5 +146,17 @@ public class Purchasables : MonoBehaviour
     public void PurchaseUpgrade(GameObject purchasingParent)
     {
         print("Buy " + purchasingParent.name);
+
+        int i = 0;
+        foreach (Purchasables purchasable in purchasingParent.GetComponentInChildren<Unit>().GetPurchasables())
+        {
+            print(purchasable.name);
+            if (purchasable.name == this.gameObject.name)
+            {
+                purchasingParent.GetComponentInChildren<Unit>().AttemptToBuyUpgrade(i);
+                return;
+            }
+            i++;
+        }
     }
 }

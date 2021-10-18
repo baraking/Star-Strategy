@@ -283,6 +283,31 @@ public class Unit : Purchasables, System.IComparable
         myPlayer.DisplayPurchasableQueue(this);
     }
 
+    public void AttemptToBuyUpgrade(int unitIndex)
+    {
+        if (isSelected)
+        {
+            actionTarget = unitDetails.purchasables[unitIndex].gameObject;
+
+            if (!isBuilding)
+            {
+                print(actionTarget);
+                if (unitDetails.unitType == UnitDetails.UnitType.Building)
+                {
+                    //print("Will create " + unitDetails.purchasables[unitIndex].GetComponent<Unit>().unitDetails.name);
+                    targetsLocation = new List<Vector3>() { transform.position + Unit.DEFAULT_SPAWN_LOCATION };
+                    creationQueue.Add(actionTarget.GetComponent<Purchasables>());
+                    unitAction = UnitActions.Spawn;
+                }
+            }
+            else if (isBuilding)
+            {
+                creationQueue.Add(actionTarget.GetComponent<Purchasables>());
+            }
+        }
+        myPlayer.DisplayPurchasableQueue(this);
+    }
+
     public void RemoveFromCreationQueue(int i)
     {
         myPlayer.AddResources(creationQueue[i].GetPrice());
@@ -323,12 +348,17 @@ public class Unit : Purchasables, System.IComparable
         //print("Producing!");
         buildProgress += Time.deltaTime;
         myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>().slider.value = buildProgress;
-        //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
-        print(creationQueue[0].GetComponent<Unit>().unitDetails.name + ": " + buildProgress + "/" + creationQueue[0].GetComponent<Unit>().unitDetails.buildTime);
 
-        if (buildProgress >= creationQueue[0].GetComponent<Unit>().unitDetails.buildTime)
+        //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
+
+        //print(creationQueue[0].GetComponent<Unit>().unitDetails.name + ": " + buildProgress + "/" + creationQueue[0].GetComponent<Unit>().unitDetails.buildTime);
+
+        //print(creationQueue[0].GetComponent<Upgrade>().upgradeDetails.name + ": " + buildProgress + "/" + creationQueue[0].GetComponent<Upgrade>().upgradeDetails.buildTime);
+
+        if (actionTarget.GetComponent<Unit>() && buildProgress >= creationQueue[0].GetComponent<Unit>().unitDetails.buildTime)
         {
             buildProgress = creationQueue[0].GetComponent<Unit>().unitDetails.buildTime;
+
             DeployUnit(targetsLocation[0], actionTarget);
             buildProgress = 0;
             OnUnitSpawnEnd(actionTarget);
@@ -343,6 +373,30 @@ public class Unit : Purchasables, System.IComparable
 
             isBuilding = false;
             if (creationQueue.Count< 1)
+            {
+                unitAction = UnitActions.Idle;
+            }
+            else
+            {
+                actionTarget = creationQueue[0].gameObject;
+                unitAction = UnitActions.Spawn;
+            }
+        }
+        else if (actionTarget.GetComponent<Upgrade>() && buildProgress >= creationQueue[0].GetComponent<Upgrade>().upgradeDetails.buildTime)
+        {
+            buildProgress = creationQueue[0].GetComponent<Upgrade>().upgradeDetails.buildTime;
+            actionTarget.GetComponent<Upgrade>().ApplyUpgrade();
+            buildProgress = 0;
+
+            Debug.Log("Finished building a " + creationQueue[0].GetComponent<Upgrade>().upgradeDetails.name);
+
+            myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<Slider>().gameObject.SetActive(false);
+
+            creationQueue.Remove(creationQueue[0]);
+            myPlayer.DisplayPurchasableQueue(this);
+
+            isBuilding = false;
+            if (creationQueue.Count < 1)
             {
                 unitAction = UnitActions.Idle;
             }

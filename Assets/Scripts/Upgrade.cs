@@ -23,4 +23,13 @@ public class Upgrade : Purchasables
         return upgradeDetails.icon;
     }
 
+    public void ApplyUpgrade()
+    {
+        for(int i = 0; i < upgradeDetails.unitIndex.Length; i++)
+        {
+            print(upgradeDetails.GetType().GetProperty(upgradeDetails.parameter[i]));
+            upgradeDetails.GetType().GetProperty(upgradeDetails.parameter[i]);
+        }
+    }
+
 }
