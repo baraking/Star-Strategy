@@ -37,6 +37,12 @@ public class Weapon : Purchasables
     private void Awake()
     {
         photonView = GetComponent<PhotonView>();
+
+        InitWeapon();
+    }
+
+    void Start()
+    {
         if (photonView.InstantiationData != null)
         {
             transform.SetParent(PhotonView.Find((int)photonView.InstantiationData[0]).GetComponentInChildren<WeaponHolder>().transform);
@@ -46,11 +52,6 @@ public class Weapon : Purchasables
             this.enabled = true;
         }
 
-        InitWeapon();
-    }
-
-    void Start()
-    {
         InitWeapon();
     }
 
@@ -180,12 +181,15 @@ public class Weapon : Purchasables
             print("Target: " + targetUnit.gameObject + " , Action:" + weaponAction.Method.Name);
         }*/
 
-        weaponAction(this, targetUnit.gameObject);
-
-        if (enemiesAtRange.Contains(null))
+        if (targetUnit)
         {
-            print("Spotted null!!");
-            enemiesAtRange.RemoveAll(null);
+            weaponAction(this, targetUnit.gameObject);
+
+            if (enemiesAtRange.Contains(null))
+            {
+                print("Spotted null!!");
+                enemiesAtRange.RemoveAll(null);
+            }
         }
     }
 

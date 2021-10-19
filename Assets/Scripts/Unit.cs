@@ -625,14 +625,9 @@ public class Unit : Purchasables, System.IComparable
 
     public void HealUnit(int amount)
     {
-        print("===============");
-        print(curHP);
         curHP += amount;
-        print(curHP);
         DisplayeHealthForLimitedTime();
         healthBar.setHealth(curHP);
-        print(curHP);
-        print("===============");
     }
 
     [PunRPC]
