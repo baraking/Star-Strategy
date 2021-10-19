@@ -623,6 +623,13 @@ public class Unit : Purchasables, System.IComparable
         }
     }
 
+    public void HealDamage(int amount)
+    {
+        curHP += damage;
+        DisplayeHealthForLimitedTime();
+        healthBar.setHealth(curHP);
+    }
+
     [PunRPC]
     public void Fire(Unit targetUnit)
     {
