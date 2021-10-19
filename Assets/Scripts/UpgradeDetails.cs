@@ -10,9 +10,9 @@ public class UpgradeDetails : PurchasableDetails
 
     //hold other purchasableDetails parameters with the changed value, and change for the specifec player only. V
 
-    //have them as regular purchasables in buildings to buy
+    //have them as regular purchasables in buildings to buy                                                     V
 
-    //after buy make all relevant purchaseables update thier purchaseablesDetails
+    //after buy make all relevant purchaseables update thier purchaseablesDetails                               V
 
     //have a boolean array of all upgrades to not buy them a 2nd time
 

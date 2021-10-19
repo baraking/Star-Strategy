@@ -31,17 +31,17 @@ public class Upgrade : Purchasables
             if (upgradeDetails.parameter[i] == UpgradeDetails.PossibleParameters.Max_hp)
             {
                 int prevMax_hp = (GameManager.Instance.playersHolder.allPlayers[playerNumber].PlayerRaceData.myFactionSpeciefcPurchasablesList[upgradeDetails.unitIndex[i]] as UnitDetails).max_hp;
-                (GameManager.Instance.playersHolder.allPlayers[playerNumber].PlayerRaceData.myFactionSpeciefcPurchasablesList[upgradeDetails.unitIndex[i]] as UnitDetails).max_hp *= (int)upgradeDetails.newValueMultiplier[i];
-
-                int hpToAdd = prevMax_hp * ((int)upgradeDetails.newValueMultiplier[i] - 1);
+                (GameManager.Instance.playersHolder.allPlayers[playerNumber].PlayerRaceData.myFactionSpeciefcPurchasablesList[upgradeDetails.unitIndex[i]] as UnitDetails).max_hp = (int)(prevMax_hp * upgradeDetails.newValueMultiplier[i]);
+                int hpToAdd = (int)(prevMax_hp * (upgradeDetails.newValueMultiplier[i] - 1));
 
                 //set for all units
 
                 //update all units cur health by +=hpToAdd
                 foreach(Unit unit in GameManager.Instance.playersHolder.allPlayers[playerNumber].playerUnits)
                 {
-                    if(unit.RACE_INDEX== upgradeDetails.unitIndex[i])
+                    if(unit.RACE_INDEX == upgradeDetails.unitIndex[i])
                     {
+                        print(unit.name);
                         unit.HealUnit(hpToAdd);
                     }
                 }
