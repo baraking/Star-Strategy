@@ -330,7 +330,7 @@ public class Unit : Purchasables, System.IComparable
     public IEnumerator SpawnUnit(Vector3 location, GameObject purchasable)
     {
         isBuilding = true;
-        buildTime = purchasable.GetComponent<Unit>().unitDetails.buildTime;
+        buildTime = purchasable.GetComponent<Purchasables>().GetData().buildTime;
         Debug.Log("Started building a " + purchasable.GetComponent<Unit>().unitDetails.name);
 
         //yield return new WaitForSeconds(purchasable.GetComponent<Unit>().unitDetails.buildTime);
