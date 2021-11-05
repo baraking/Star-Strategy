@@ -397,10 +397,13 @@ public class Unit : Purchasables, System.IComparable
 
             Debug.Log("Finished building a " + creationQueue[0].GetComponent<Upgrade>().upgradeDetails.name);
 
-            myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<Slider>().gameObject.SetActive(false);
-
             creationQueue.Remove(creationQueue[0]);
-            myPlayer.DisplayPurchasableQueue(this);
+
+            if (GetIsSelected())
+            {
+                myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<Slider>().gameObject.SetActive(false);
+                myPlayer.DisplayPurchasableQueue(this);
+            }
 
             isBuilding = false;
             if (creationQueue.Count < 1)
