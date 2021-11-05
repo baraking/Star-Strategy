@@ -128,6 +128,7 @@ public class Unit : Purchasables, System.IComparable
             }
             else
             {
+                //fix for upgrades over here!!!
                 ans[1] = -1;
             }
         }
@@ -285,9 +286,12 @@ public class Unit : Purchasables, System.IComparable
 
     public void AttemptToBuyUpgrade(int unitIndex)
     {
+        actionTarget = unitDetails.purchasables[unitIndex].gameObject;
+        myPlayer.UpdateUnitAction(this);
+
         if (isSelected)
         {
-            actionTarget = unitDetails.purchasables[unitIndex].gameObject;
+            //actionTarget = unitDetails.purchasables[unitIndex].gameObject;
 
             if (!isBuilding)
             {
