@@ -347,7 +347,11 @@ public class Unit : Purchasables, System.IComparable
     {
         //print("Producing!");
         buildProgress += Time.deltaTime;
-        myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>().slider.value = buildProgress;
+
+        if (GetIsSelected())
+        {
+            myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>().slider.value = buildProgress;
+        }
 
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
 
@@ -366,10 +370,13 @@ public class Unit : Purchasables, System.IComparable
 
             Debug.Log("Finished building a " + creationQueue[0].GetComponent<Unit>().unitDetails.name);
 
-            myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<Slider>().gameObject.SetActive(false);
-
             creationQueue.Remove(creationQueue[0]);
-            myPlayer.DisplayPurchasableQueue(this);
+
+            if (GetIsSelected())
+            {
+                myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<Slider>().gameObject.SetActive(false);
+                myPlayer.DisplayPurchasableQueue(this);
+            }      
 
             isBuilding = false;
             if (creationQueue.Count< 1)
@@ -831,7 +838,7 @@ public class Unit : Purchasables, System.IComparable
 
     void Die()
     {
-        //print("I am dead :(");w
+        //print("I am dead :(");
         //myPlayer.playerUnits.Remove(this);
 
         photonView.RPC("NotifyUnitDeath", RpcTarget.All, photonID,myPlayer.playerNumber);

@@ -77,12 +77,17 @@ public class WeaponHolder : MonoBehaviour
         //print("Producing!");
         buildProgress += Time.deltaTime;
         //print("buildProgress: " + buildProgress);
-        GetComponentInParent<Unit>().myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>().slider.value = buildProgress;
+        if (GetComponentInParent<Unit>().GetIsSelected())
+        {
+            GetComponentInParent<Unit>().myPlayer.playerUI.UnitCanvas.GetComponent<UnitUICanvas>().purchaseableQueueCanvas.transform.GetChild(0).GetComponentInChildren<ProgressBar>().slider.value = buildProgress;
+        }
         //print("Add Amount: " + ((Time.deltaTime * actionTarget.GetComponent<Unit>().unitDetails.max_hp) / actionTarget.GetComponent<Unit>().unitDetails.buildTime) +"/"+ actionTarget.GetComponent<Unit>().unitDetails.max_hp);
         print(GetComponentInParent<Unit>().creationQueue[0].GetData().name + ": " + buildProgress + "/" + GetComponentInParent<Unit>().creationQueue[0].GetData().buildTime);
 
         if (buildProgress >= GetComponentInParent<Unit>().creationQueue[0].GetData().buildTime)
         {
+            print("Start done producing protocl");
+
             isBuilding = false;
             buildProgress = GetComponentInParent<Unit>().creationQueue[0].GetData().buildTime;
             DeployWeapon(chosenPurchasable);
