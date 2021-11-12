@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Upgrade", menuName = "Upgrades")]
+[System.Serializable]
 public class UpgradeDetails : PurchasableDetails
 {
-
     //need to create for each player a list with all of his units details, and use that.                        V
 
     //hold other purchasableDetails parameters with the changed value, and change for the specifec player only. V
@@ -17,6 +17,8 @@ public class UpgradeDetails : PurchasableDetails
     //have a boolean array of all upgrades to not buy them a 2nd time
 
     public enum PossibleParameters { Max_hp, Damage }
+
+    public string name;
 
     public int[] unitIndex;
     public PossibleParameters[] parameter;

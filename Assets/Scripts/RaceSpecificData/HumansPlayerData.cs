@@ -7,14 +7,22 @@ public class HumansPlayerData : MonoBehaviour
     public bool[] landmarks;
     //index 0 - has Main Building
     //index 1 - has Tanks Factory
-    public int arraySize = 2;
+    public const int landmarkAarraySize = 2;
+
+    [SerializeField]
+    public UpgradeDetails[] upgrades;
+
+    public bool[] isActive;
+
+    public const int upgradesAarraySize = 2;
 
     [SerializeField] private FactionSpeciefcPurchasablesList factionSpeciefcPurchasablesList;
     public List<PurchasableDetails> myFactionSpeciefcPurchasablesList;
    
     private void Awake()
     {
-        landmarks = new bool[arraySize];
+        landmarks = new bool[landmarkAarraySize];
+        isActive = new bool[landmarkAarraySize];
 
         myFactionSpeciefcPurchasablesList = new List<PurchasableDetails>();
 
